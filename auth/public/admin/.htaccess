@@ -1,0 +1,35 @@
+# Admin area protection
+# Additional security for admin panel
+
+# Require authentication check (handled by PHP)
+# Optional: Add IP whitelist or HTTP basic auth as secondary protection
+
+# Prevent direct access to this .htaccess
+<Files .htaccess>
+    Order allow,deny
+    Deny from all
+</Files>
+
+# Optional: IP whitelist (uncomment and add your IPs)
+# <Limit GET POST>
+#     Order deny,allow
+#     Deny from all
+#     Allow from 127.0.0.1
+#     Allow from YOUR_IP_ADDRESS
+# </Limit>
+
+# Optional: HTTP Basic Auth (uncomment to enable)
+# AuthType Basic
+# AuthName "Admin Area - Restricted Access"
+# AuthUserFile /path/to/.htpasswd
+# Require valid-user
+
+# Additional security headers for admin
+<IfModule mod_headers.c>
+    # Stricter CSP for admin area
+    Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:;"
+    
+    # Cache control for admin pages
+    Header always set Cache-Control "no-store, no-cache, must-revalidate, max-age=0"
+    Header always set Pragma "no-cache"
+</IfModule>
