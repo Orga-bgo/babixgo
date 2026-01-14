@@ -1093,3 +1093,360 @@ If something breaks:
 - ❌ User will know what "configure the database" means
 
 **Remember**: The person following your instructions may not be technical. Write for someone who needs step-by-step guidance with screenshots-level detail.
+
+# Ergänzung: PWA Requirements & Monorepo Restructuring Task
+
+Füge diese beiden Abschnitte zu den Copilot Instructions hinzu:
+
+---
+
+## Progressive Web App (PWA) Requirements (MANDATORY)
+
+**ALL domains MUST be PWA-compliant** with installable, offline-capable functionality.
+
+### Required PWA Files (Per Domain)
+
+Each domain (`babixgo.de`, `files.babixgo.de`, `auth.babixgo.de`) must have:
+
+#### 1. Manifest File (`manifest.json`)
+**Location**: `/[domain]/public/manifest.json`
+
+```json
+{
+  "name": "BabixGo [Domain Purpose]",
+  "short_name": "BabixGo",
+  "description": "[Domain-specific description]",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#1a1a1a",
+  "theme_color": "#6366f1",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/shared/assets/icons/icon-72x72.png",
+      "sizes": "72x72",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/shared/assets/icons/icon-96x96.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/shared/assets/icons/icon-128x128.png",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/shared/assets/icons/icon-144x144.png",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/shared/assets/icons/icon-152x152.png",
+      "sizes": "152x152",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/shared/assets/icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/shared/assets/icons/icon-384x384.png",
+      "sizes": "384x384",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/shared/assets/icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/shared/assets/screenshots/desktop-1.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide"
+    },
+    {
+      "src": "/shared/assets/screenshots/mobile-1.png",
+      "sizes": "750x1334",
+      "type": "image/png",
+      "form_factor": "narrow"
+    }
+  ],
+  "categories": ["productivity", "utilities"],
+  "shortcuts": [
+    {
+      "name": "Login",
+      "short_name": "Login",
+      "description": "Login to your account",
+      "url": "/login",
+      "icons": [{ "src": "/shared/assets/icons/login-icon.png", "sizes": "96x96" }]
+    }
+  ]
+}
+```
+
+**Domain-Specific Adaptations**:
+- `babixgo.de`: Main website, focus on content browsing
+- `files.babixgo.de`: Download portal, focus on file management
+- `auth.babixgo.de`: Authentication, focus on account management
+
+#### 2. Service Worker (`sw.js`)
+**Location**: `/[domain]/public/sw.js`
+
+```javascript
+const CACHE_NAME = 'babixgo-[domain]-v1';
+const urlsToCache = [
+  '/',
+  '/shared/assets/css/main.css',
+  '/assets/css/[domain-specific].css',
+  '/shared/assets/js/main.js',
+  '/assets/js/[domain-specific].js',
+  '/shared/assets/icons/icon-192x192.png',
+  '/shared/assets/icons/icon-512x512.png',
+  '/offline.html'
+];
+
+// Install event - cache essential assets
+self.addEventListener('install', event => {
+  event.waitUntil(
+    caches.open(CACHE_NAME)
+      .then(cache => cache.addAll(urlsToCache))
+      .then(() => self.skipWaiting())
+  );
+});
+
+// Activate event - clean up old caches
+self.addEventListener('activate', event => {
+  event.waitUntil(
+    caches.keys().then(cacheNames => {
+      return Promise.all(
+        cacheNames.map(cacheName => {
+          if (cacheName !== CACHE_NAME) {
+            return caches.delete(cacheName);
+          }
+        })
+      );
+    }).then(() => self.clients.claim())
+  );
+});
+
+// Fetch event - network first, fallback to cache
+self.addEventListener('fetch', event => {
+  event.respondWith(
+    fetch(event.request)
+      .then(response => {
+        // Clone response for caching
+        const responseClone = response.clone();
+        caches.open(CACHE_NAME).then(cache => {
+          cache.put(event.request, responseClone);
+        });
+        return response;
+      })
+      .catch(() => {
+        return caches.match(event.request)
+          .then(response => {
+            return response || caches.match('/offline.html');
+          });
+      })
+  );
+});
+```
+
+#### 3. Offline Fallback Page
+**Location**: `/[domain]/public/offline.html`
+
+```html
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Offline - BabixGo</title>
+    <link rel="stylesheet" href="/shared/assets/css/main.css">
+</head>
+<body>
+    <div class="offline-container">
+        <h1>Sie sind offline</h1>
+        <p>Diese Seite benötigt eine Internetverbindung.</p>
+        <button onclick="location.reload()">Erneut versuchen</button>
+    </div>
+</body>
+</html>
+```
+
+### Required Meta Tags (In Every Page `<head>`)
+
+```html
+<!-- PWA Meta Tags -->
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="BabixGo">
+
+<!-- Manifest Link -->
+<link rel="manifest" href="/manifest.json">
+
+<!-- Theme Color -->
+<meta name="theme-color" content="#6366f1">
+
+<!-- Apple Touch Icons -->
+<link rel="apple-touch-icon" sizes="180x180" href="/shared/assets/icons/apple-touch-icon.png">
+
+<!-- Favicon -->
+<link rel="icon" type="image/png" sizes="32x32" href="/shared/assets/icons/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/shared/assets/icons/favicon-16x16.png">
+```
+
+### Service Worker Registration (In Every Page)
+
+**Add to `/shared/assets/js/main.js`:**
+
+```javascript
+// Service Worker Registration
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js')
+      .then(registration => {
+        console.log('ServiceWorker registered:', registration.scope);
+      })
+      .catch(error => {
+        console.log('ServiceWorker registration failed:', error);
+      });
+  });
+}
+```
+
+### PWA Icon Requirements
+
+**Location**: `/shared/assets/icons/`
+
+Required icon sizes (PNG format):
+- favicon-16x16.png
+- favicon-32x32.png
+- icon-72x72.png
+- icon-96x96.png
+- icon-128x128.png
+- icon-144x144.png
+- icon-152x152.png
+- icon-192x192.png (required for Android)
+- icon-384x384.png
+- icon-512x512.png (required for Android)
+- apple-touch-icon.png (180x180)
+
+**Design Requirements**:
+- Transparent background OR solid brand color
+- Maskable safe zone (80% of canvas)
+- Recognizable at all sizes
+- High contrast for visibility
+
+### PWA Testing Checklist
+
+Before deployment, verify:
+
+- [ ] Manifest.json validates at https://manifest-validator.appspot.com/
+- [ ] Service Worker registers without errors
+- [ ] Offline page loads when network disconnected
+- [ ] "Add to Home Screen" prompt appears on mobile
+- [ ] Icons display correctly in installed app
+- [ ] Theme color applies to browser UI
+- [ ] Lighthouse PWA score > 90
+- [ ] Works on iOS Safari (apple-mobile-web-app meta tags)
+- [ ] Works on Android Chrome (manifest + service worker)
+- [ ] App installs and launches in standalone mode
+- [ ] All cached resources load offline
+
+### Lighthouse PWA Audit Requirements
+
+**Must pass all Lighthouse PWA checks:**
+- ✅ Registers a service worker
+- ✅ Responds with 200 when offline
+- ✅ Has a web app manifest
+- ✅ Configured for a custom splash screen
+- ✅ Sets a theme color
+- ✅ Content sized correctly for viewport
+- ✅ Displays correctly on mobile
+- ✅ Page load is fast on mobile networks
+- ✅ Site works cross-browser
+- ✅ Page transitions don't feel like blocking the network
+- ✅ Each page has a URL
+
+### Manual Setup Steps for PWA
+
+**Step 1: Generate PWA Icons**
+**Action**: Use online tool or script to generate all icon sizes
+
+**Option A - Online Tool**:
+1. Go to https://realfavicongenerator.net/
+2. Upload your logo (minimum 512x512px)
+3. Configure maskable safe zone
+4. Generate and download icons
+5. Upload to `/shared/assets/icons/`
+
+**Option B - ImageMagick Script** (if available on server):
+```bash
+# Convert single source image to all sizes
+convert logo.png -resize 16x16 favicon-16x16.png
+convert logo.png -resize 32x32 favicon-32x32.png
+convert logo.png -resize 72x72 icon-72x72.png
+convert logo.png -resize 96x96 icon-96x96.png
+convert logo.png -resize 128x128 icon-128x128.png
+convert logo.png -resize 144x144 icon-144x144.png
+convert logo.png -resize 152x152 icon-152x152.png
+convert logo.png -resize 192x192 icon-192x192.png
+convert logo.png -resize 384x384 icon-384x384.png
+convert logo.png -resize 512x512 icon-512x512.png
+convert logo.png -resize 180x180 apple-touch-icon.png
+```
+
+**Step 2: Test PWA Installation**
+
+**On Android Chrome**:
+1. Open https://[domain].babixgo.de
+2. Tap menu (3 dots) → "Add to Home screen"
+3. App icon should appear on home screen
+4. Launch app → opens in standalone mode (no browser UI)
+
+**On iOS Safari**:
+1. Open https://[domain].babixgo.de
+2. Tap Share button → "Add to Home Screen"
+3. App icon should appear on home screen
+4. Launch app → opens with splash screen
+
+**On Desktop Chrome**:
+1. Open https://[domain].babixgo.de
+2. Look for install icon in address bar
+3. Click install button
+4. App opens in separate window
+
+**Expected Result**: 
+- App installs successfully on all platforms
+- Offline functionality works
+- App updates automatically when service worker updates
+
+### PWA Debugging
+
+**Chrome DevTools**:
+1. Open DevTools → Application tab
+2. Check "Manifest" section for errors
+3. Check "Service Workers" section for registration status
+4. Test "Offline" mode in Network tab
+5. Use Lighthouse audit for PWA score
+
+**Common Issues**:
+- "Manifest not found": Check path and MIME type
+- "Service Worker not registering": Check HTTPS requirement
+- "Icons not displaying": Verify sizes and paths in manifest
+- "Offline not working": Check service worker cache strategy
