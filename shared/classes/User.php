@@ -89,7 +89,7 @@ class User {
      * @param int $userId The user ID to retrieve
      * @return array|false User data array or false if not found
      */
-    public function getUserById($userId) {
+    public function getUserById(int $userId) {
         $query = "SELECT id, username, email, role, is_verified, description, friendship_link, created_at 
                   FROM " . $this->table_name . " 
                   WHERE id = :id 
@@ -108,7 +108,7 @@ class User {
      * @param int $userId The user ID
      * @return int The number of comments
      */
-    public function getUserCommentCount($userId) {
+    public function getUserCommentCount(int $userId): int {
         $query = "SELECT COUNT(*) as count 
                   FROM comments 
                   WHERE user_id = :user_id";
@@ -118,7 +118,7 @@ class User {
         $stmt->execute();
 
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
-        return $result['count'];
+        return (int)$result['count'];
     }
 
     /**
@@ -128,9 +128,9 @@ class User {
      * @param int $limit Maximum number of comments to retrieve (1-100)
      * @return array Array of comment data
      */
-    public function getUserComments($userId, $limit = 10) {
+    public function getUserComments(int $userId, int $limit = 10): array {
         // Validate and sanitize limit
-        $limit = max(1, min(100, (int)$limit));
+        $limit = max(1, min(100, $limit));
         
         $query = "SELECT id, domain, content_id, comment, status, created_at 
                   FROM comments 
