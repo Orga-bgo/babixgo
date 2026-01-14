@@ -115,13 +115,42 @@ mysql -u babixgo_user -p babixgo_db < shared/create-tables.sql
 
 ### 2. Configuration
 
-1. Update database credentials in `shared/config/database.php`:
-```php
-define('DB_HOST', 'localhost');
-define('DB_NAME', 'babixgo_db');
-define('DB_USER', 'babixgo_user');
-define('DB_PASS', 'your_secure_password');
-```
+1. Configure database credentials using environment variables (recommended):
+
+   **Method 1: Using .env file (recommended for local development)**
+   ```bash
+   cp .env.example .env
+   # Edit .env and set your database credentials
+   ```
+   
+   Example `.env` file:
+   ```bash
+   DB_HOST=localhost
+   DB_NAME=babixgo_db
+   DB_USER=babixgo_user
+   DB_PASSWORT=your_secure_password
+   ```
+   
+   **Method 2: Set environment variables directly (recommended for production)**
+   ```bash
+   export DB_HOST=localhost
+   export DB_NAME=babixgo_db
+   export DB_USER=babixgo_user
+   export DB_PASSWORT=your_secure_password
+   ```
+   
+   **Method 3: Update defaults in `shared/config/database.php`** (legacy method)
+   ```php
+   return [
+       'host' => 'localhost',
+       'database' => 'babixgo_db',
+       'username' => 'babixgo_user',
+       'password' => 'your_secure_password',
+       'charset' => 'utf8mb4'
+   ];
+   ```
+   
+   > **Note:** Environment variables (DB_HOST, DB_NAME, DB_USER, DB_PASSWORT/DB_PASSWORD) take precedence over hardcoded values.
 
 2. Update session domain in `shared/config/session.php`:
 ```php
