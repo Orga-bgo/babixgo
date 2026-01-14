@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <?php require $_SERVER['DOCUMENT_ROOT'] . '/partials/head-meta.php'; ?>
+  <?php require dirname($_SERVER['DOCUMENT_ROOT']) . '/shared/partials/head-meta.php'; ?>
 
   <title>Freundschaftsbalken automatisch füllen – Anleitung | babixGO</title>
   <meta name="description" content="Hol dir über 2.500 Würfel: So füllst du den Freundschaftsbalken in Monopoly GO automatisch mit der babixGO App. Schritt-für-Schritt Anleitung." />
@@ -15,19 +15,19 @@
   <meta name="twitter:title" content="Freundschaftsbalken automatisch füllen – Anleitung | babixGO" />
   <meta name="twitter:description" content="Hol dir über 2.500 Würfel: So füllst du den Freundschaftsbalken in Monopoly GO automatisch mit der babixGO App. Schritt-für-Schritt Anleitung." />
 
-  <?php require $_SERVER['DOCUMENT_ROOT'] . '/partials/head-links.php'; ?>
+  <?php require dirname($_SERVER['DOCUMENT_ROOT']) . '/shared/partials/head-links.php'; ?>
 
   <!-- Structured Data (page-specific) -->
   <?php
     $structured_data_files = ['howto-freundschaftsbalken.json'];
-    require $_SERVER['DOCUMENT_ROOT'] . '/partials/structured-data.php';
+    require dirname($_SERVER['DOCUMENT_ROOT']) . '/shared/partials/structured-data.php';
   ?>
 </head>
 
 <body>
-  <?php require $_SERVER['DOCUMENT_ROOT'] . '/partials/tracking.php'; ?>
-  <?php require $_SERVER['DOCUMENT_ROOT'] . '/partials/cookie-banner.php'; ?>
-  <?php require $_SERVER['DOCUMENT_ROOT'] . '/partials/header.php'; ?>
+  <?php require dirname($_SERVER['DOCUMENT_ROOT']) . '/shared/partials/tracking.php'; ?>
+  <?php require dirname($_SERVER['DOCUMENT_ROOT']) . '/shared/partials/cookie-banner.php'; ?>
+  <?php require dirname($_SERVER['DOCUMENT_ROOT']) . '/shared/partials/header.php'; ?>
 
   <main id="main-content">
     <div class="box">
@@ -367,7 +367,7 @@
     </div>
   </main>
 
-  <?php require $_SERVER['DOCUMENT_ROOT'] . '/partials/footer.php'; ?>
-  <?php require $_SERVER['DOCUMENT_ROOT'] . '/partials/footer-scripts.php'; ?>
+  <?php require dirname($_SERVER['DOCUMENT_ROOT']) . '/shared/partials/footer.php'; ?>
+  <?php require dirname($_SERVER['DOCUMENT_ROOT']) . '/shared/partials/footer-scripts.php'; ?>
 </body>
 </html>

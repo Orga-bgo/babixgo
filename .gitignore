@@ -2,6 +2,23 @@
 
 # Environment configuration (should be configured per environment)
 .env
+.env.local
+.env.*.local
+
+# Email credentials (NEVER commit these!)
+/shared/config/email.local.php
+/shared/config/database.local.php
+/shared/config/*.local.php
+
+# Sensitive configuration
+**/config/local.php
+**/config/*.local.php
+
+# SMTP test files (temporary)
+**/test-email.php
+**/email-test.php
+**/verify-smtp-config.php
+**/test-smtp-send.php
 
 # Uncomment these if you want to exclude them:
 # shared/config/database.php

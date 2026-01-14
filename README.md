@@ -39,62 +39,151 @@ Complete authentication and administration system for babixgo.de multi-domain se
 ## Directory Structure
 
 ```
-babixgo/
-├── shared/                          # Shared resources across domains
+babixgo/                             # Monorepo root
+├── shared/                          # Shared resources across ALL domains
+│   ├── assets/
+│   │   ├── css/
+│   │   │   ├── main.css            # Global styles (v1.0.15)
+│   │   │   ├── style.css           # Additional styles
+│   │   │   └── admin.css           # Admin panel styles
+│   │   ├── js/
+│   │   │   └── main.js             # Global JavaScript
+│   │   ├── icons/                  # SVG icons
+│   │   ├── images/                 # Shared images
+│   │   └── logo/                   # Logo assets
+│   │
+│   ├── classes/
+│   │   ├── Database.php            # Database wrapper
+│   │   ├── User.php                # User management
+│   │   ├── Session.php             # Session handling
+│   │   ├── Download.php            # Download management
+│   │   └── Comment.php             # Comment management
+│   │
 │   ├── config/
 │   │   ├── database.php            # Database configuration
 │   │   ├── session.php             # Session management
 │   │   └── autoload.php            # Class autoloader
-│   ├── classes/
-│   │   ├── Database.php            # Database wrapper
-│   │   ├── User.php                # User management
-│   │   ├── Download.php            # Download management
-│   │   └── Comment.php             # Comment management
+│   │
+│   ├── partials/                   # Shared PHP partials
+│   │   ├── header.php              # Site header
+│   │   ├── footer.php              # Site footer
+│   │   ├── nav.php                 # Navigation
+│   │   ├── head-meta.php           # Meta tags
+│   │   ├── head-links.php          # CSS/Font links
+│   │   ├── critical-css.php        # Critical CSS
+│   │   ├── version.php             # Version constant
+│   │   └── [other partials]
+│   │
 │   └── create-tables.sql           # Database schema
 │
-├── auth/public/                     # Authentication system (auth.babixgo.de)
-│   ├── index.php                   # User dashboard/profile
-│   ├── login.php                   # Login page
-│   ├── register.php                # Registration page
-│   ├── logout.php                  # Logout handler
-│   ├── verify-email.php            # Email verification
-│   ├── forgot-password.php         # Password reset request
-│   ├── reset-password.php          # Password reset form
-│   ├── edit-profile.php            # Edit profile page
-│   ├── .htaccess                   # Security configuration
-│   │
-│   ├── admin/                      # Admin panel
-│   │   ├── index.php              # Admin dashboard
-│   │   ├── users.php              # User management
-│   │   ├── user-edit.php          # Edit user
-│   │   ├── downloads.php          # Download management
-│   │   ├── download-edit.php      # Edit download
-│   │   ├── comments.php           # Comment moderation
-│   │   └── .htaccess              # Admin protection
-│   │
-│   ├── assets/
-│   │   ├── css/
-│   │   │   ├── auth.css           # Authentication styling
-│   │   │   └── admin.css          # Admin panel styling
-│   │   └── js/
-│   │       ├── form-validation.js # Form validation
-│   │       └── admin.js           # Admin interactions
-│   │
-│   └── includes/
-│       ├── auth-check.php         # Authentication guard
-│       ├── admin-check.php        # Admin authorization
-│       ├── mail-helper.php        # Email functions
-│       └── form-handlers/
-│           ├── register-handler.php
-│           ├── login-handler.php
-│           ├── profile-handler.php
-│           └── admin-handlers.php
+├── downloads/                       # Secure file storage (NOT web-accessible)
+│   ├── .htaccess                   # Deny direct access
+│   ├── apk/                        # Android APK files
+│   ├── exe/                        # Windows executables
+│   └── scripts/                    # Script files
+│       ├── bash/
+│       ├── python/
+│       └── powershell/
 │
-└── downloads/                       # File storage
-    ├── apk/                        # Android APK files
-    ├── exe/                        # Windows executables
-    └── scripts/                    # Script files
+├── babixgo.de/                      # Main website (babixgo.de)
+│   ├── index.php                   # Homepage
+│   ├── about.php                   # About page
+│   ├── 404.php                     # Error page
+│   ├── .htaccess                   # Web server config
+│   │
+│   ├── assets/                     # Domain-specific assets
+│   │   ├── css/
+│   │   │   └── style.css           # Main site styles
+│   │   ├── js/
+│   │   ├── icons/
+│   │   ├── img/
+│   │   └── logo/
+│   │
+│   ├── public/                     # PWA assets
+│   │   ├── manifest.json
+│   │   ├── sw.js
+│   │   └── offline.html
+│   │
+│   └── [content directories]/      # sticker/, wuerfel/, etc.
+│
+├── auth/                            # Authentication system (auth.babixgo.de)
+│   ├── .htaccess                   # Root config
+│   │
+│   └── public/                     # Document root for auth.babixgo.de
+│       ├── index.php               # User dashboard/profile
+│       ├── login.php               # Login page
+│       ├── register.php            # Registration page
+│       ├── logout.php              # Logout handler
+│       ├── verify-email.php        # Email verification
+│       ├── forgot-password.php     # Password reset request
+│       ├── reset-password.php      # Password reset form
+│       ├── edit-profile.php        # Edit profile page
+│       ├── .htaccess               # Security configuration
+│       ├── manifest.json           # PWA manifest
+│       ├── sw.js                   # Service worker
+│       ├── offline.html            # Offline fallback
+│       │
+│       ├── admin/                  # Admin panel
+│       │   ├── index.php           # Admin dashboard
+│       │   ├── users.php           # User management
+│       │   ├── user-edit.php       # Edit user
+│       │   ├── downloads.php       # Download management
+│       │   ├── download-edit.php   # Edit download
+│       │   ├── comments.php        # Comment moderation
+│       │   └── .htaccess           # Admin protection
+│       │
+│       ├── assets/
+│       │   ├── css/
+│       │   │   ├── auth.css        # Authentication styling
+│       │   │   └── admin.css       # Admin panel styling
+│       │   └── js/
+│       │       ├── form-validation.js
+│       │       └── admin.js
+│       │
+│       └── includes/
+│           ├── auth-check.php      # Authentication guard
+│           ├── admin-check.php     # Admin authorization
+│           ├── mail-helper.php     # Email functions
+│           └── form-handlers/
+│
+└── files.babixgo.de/                # Download portal (files.babixgo.de)
+    ├── .htaccess                   # Root config
+    │
+    └── public/                     # Document root for files.babixgo.de
+        ├── index.php               # Download listing
+        ├── download.php            # Download handler
+        ├── category.php            # Category view
+        ├── .htaccess               # Security configuration
+        ├── manifest.json           # PWA manifest
+        ├── sw.js                   # Service worker
+        ├── offline.html            # Offline fallback
+        │
+        ├── admin/                  # Admin panel
+        │   ├── dashboard.php
+        │   ├── manage-downloads.php
+        │   └── manage-users.php
+        │
+        ├── assets/                 # Domain-specific assets
+        │   ├── css/
+        │   │   └── style.css       # Files portal styles
+        │   └── js/
+        │
+        └── includes/               # Domain-specific includes
+            ├── config.php
+            ├── db.php
+            ├── auth.php
+            └── functions.php
 ```
+
+### Domain to Directory Mapping
+
+| Domain | Document Root | Purpose |
+|--------|--------------|---------|
+| **babixgo.de** | `/babixgo.de/` | Main website |
+| **auth.babixgo.de** | `/auth/public/` | Authentication & Admin |
+| **files.babixgo.de** | `/files.babixgo.de/public/` | Download portal |
+
+All domains access shared resources via: `dirname($_SERVER['DOCUMENT_ROOT']) . '/shared/'`
 
 ## Installation
 
