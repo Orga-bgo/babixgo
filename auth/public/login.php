@@ -5,6 +5,7 @@
 
 define('BASE_PATH', dirname(__DIR__, 2) . '/');
 define('SHARED_PATH', BASE_PATH . 'shared/');
+define('SHARED_ASSETS_PATH', '../../shared/assets/');
 
 require_once SHARED_PATH . 'config/database.php';
 require_once SHARED_PATH . 'config/session.php';
@@ -19,112 +20,114 @@ if (User::isLoggedIn()) {
 // Get message from query string
 $message = $_GET['message'] ?? '';
 $messageType = $_GET['type'] ?? 'info';
+
+// Page configuration for header partial
+$pageTitle = 'Login - babixgo.de';
+$currentPage = 'login';
+
+// Include header
+require_once SHARED_PATH . 'assets/partials/header.php';
+require_once SHARED_PATH . 'assets/partials/nav.php';
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - babixgo.de</title>
-    <link rel="stylesheet" href="/assets/css/auth.css">
-</head>
-<body>
-    <div class="auth-container">
-        <div class="auth-box">
-            <h1>Welcome Back</h1>
-            <p class="subtitle">Login to your babixgo.de account</p>
+<div class="auth-container">
+    <div class="auth-box">
+        <h1>Welcome Back</h1>
+        <p class="subtitle">Login to your babixgo.de account</p>
+        
+        <div id="message-container">
+            <?php if ($message): ?>
+                <div class="message message-<?= htmlspecialchars($messageType, ENT_QUOTES) ?>">
+                    <?= htmlspecialchars($message, ENT_QUOTES) ?>
+                </div>
+            <?php endif; ?>
+        </div>
+        
+        <form id="login-form" method="POST" novalidate>
+            <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(getCsrfToken(), ENT_QUOTES) ?>">
             
-            <div id="message-container">
-                <?php if ($message): ?>
-                    <div class="message message-<?= htmlspecialchars($messageType, ENT_QUOTES) ?>">
-                        <?= htmlspecialchars($message, ENT_QUOTES) ?>
-                    </div>
-                <?php endif; ?>
+            <div class="form-group">
+                <label for="identifier">Username or Email</label>
+                <input 
+                    type="text" 
+                    id="identifier" 
+                    name="identifier" 
+                    required
+                    autocomplete="username"
+                >
+                <span class="error-message" id="identifier-error"></span>
             </div>
             
-            <form id="login-form" method="POST" novalidate>
-                <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(getCsrfToken(), ENT_QUOTES) ?>">
-                
-                <div class="form-group">
-                    <label for="identifier">Username or Email</label>
-                    <input 
-                        type="text" 
-                        id="identifier" 
-                        name="identifier" 
-                        required
-                        autocomplete="username"
-                    >
-                    <span class="error-message" id="identifier-error"></span>
-                </div>
-                
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <input 
-                        type="password" 
-                        id="password" 
-                        name="password" 
-                        required
-                        autocomplete="current-password"
-                    >
-                    <span class="error-message" id="password-error"></span>
-                </div>
-                
-                <div class="form-group checkbox-group">
-                    <label>
-                        <input type="checkbox" name="remember_me" value="1">
-                        Remember me for 30 days
-                    </label>
-                </div>
-                
-                <button type="submit" class="btn btn-primary">Login</button>
-            </form>
-            
-            <div class="auth-footer">
-                <a href="/forgot-password.php">Forgot password?</a>
-                <span>|</span>
-                <a href="/register.php">Create account</a>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input 
+                    type="password" 
+                    id="password" 
+                    name="password" 
+                    required
+                    autocomplete="current-password"
+                >
+                <span class="error-message" id="password-error"></span>
             </div>
+            
+            <div class="form-group checkbox-group">
+                <label>
+                    <input type="checkbox" name="remember_me" value="1">
+                    Remember me for 30 days
+                </label>
+            </div>
+            
+            <button type="submit" class="btn btn-primary">Login</button>
+        </form>
+        
+        <div class="auth-footer">
+            <a href="/forgot-password.php">Forgot password?</a>
+            <span>|</span>
+            <a href="/register.php">Create account</a>
         </div>
     </div>
-    
-    <script src="/assets/js/form-validation.js"></script>
-    <script>
-        document.getElementById('login-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            const form = e.target;
-            const formData = new FormData(form);
-            const messageContainer = document.getElementById('message-container');
-            
-            // Clear previous messages
-            messageContainer.innerHTML = '';
-            document.querySelectorAll('.error-message').forEach(el => el.textContent = '');
-            
-            try {
-                const response = await fetch('/includes/form-handlers/login-handler.php', {
-                    method: 'POST',
-                    body: formData
-                });
-                
-                const result = await response.json();
-                
-                if (result.success) {
-                    showMessage(result.message, 'success');
-                    setTimeout(() => {
-                        window.location.href = result.redirect || '/index.php';
-                    }, 1000);
-                } else {
-                    showMessage(result.error, 'error');
-                }
-            } catch (error) {
-                showMessage('An error occurred. Please try again.', 'error');
-            }
-        });
+</div>
+
+<script>
+    document.getElementById('login-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
         
-        function showMessage(message, type) {
-            const messageContainer = document.getElementById('message-container');
-            messageContainer.innerHTML = `<div class="message message-${type}">${message}</div>`;
+        const form = e.target;
+        const formData = new FormData(form);
+        const messageContainer = document.getElementById('message-container');
+        
+        // Clear previous messages
+        messageContainer.innerHTML = '';
+        document.querySelectorAll('.error-message').forEach(el => el.textContent = '');
+        
+        try {
+            const response = await fetch('/includes/form-handlers/login-handler.php', {
+                method: 'POST',
+                body: formData
+            });
+            
+            const result = await response.json();
+            
+            if (result.success) {
+                showMessage(result.message, 'success');
+                setTimeout(() => {
+                    window.location.href = result.redirect || '/index.php';
+                }, 1000);
+            } else {
+                showMessage(result.error, 'error');
+            }
+        } catch (error) {
+            showMessage('An error occurred. Please try again.', 'error');
         }
-    </script>
-</body>
-</html>
+    });
+    
+    function showMessage(message, type) {
+        const messageContainer = document.getElementById('message-container');
+        messageContainer.innerHTML = `<div class="message message-${type}">${message}</div>`;
+    }
+</script>
+
+<?php
+// Include footer with validation JS
+$includeValidationJS = true;
+require_once SHARED_PATH . 'assets/partials/footer.php';
+?>
