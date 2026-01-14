@@ -28,6 +28,12 @@ if (file_exists($envFile)) {
         $key = trim($key);
         $value = trim($value);
         
+        // Only allow whitelisted database configuration variables
+        $allowedKeys = ['DB_HOST', 'DB_NAME', 'DB_USER', 'DB_PASSWORT', 'DB_PASSWORD'];
+        if (!in_array($key, $allowedKeys)) {
+            continue;
+        }
+        
         // Remove quotes if present
         $value = trim($value, '"\'');
         
