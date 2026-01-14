@@ -3,6 +3,7 @@
 /**
  * Session management class
  */
+ini_set('session.cookie_domain', '.babixgo.de');
 class Session {
     public function __construct() {
         if (session_status() == PHP_SESSION_NONE) {
