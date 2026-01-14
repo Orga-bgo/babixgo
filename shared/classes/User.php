@@ -61,6 +61,8 @@ class User {
 
     /**
      * Check if a user is currently logged in
+     * 
+     * @return bool True if user is logged in, false otherwise
      */
     public static function isLoggedIn() {
         if (session_status() === PHP_SESSION_NONE) {
@@ -71,6 +73,8 @@ class User {
 
     /**
      * Check if the current user is an admin
+     * 
+     * @return bool True if user is admin, false otherwise
      */
     public static function isAdmin() {
         if (session_status() === PHP_SESSION_NONE) {
@@ -100,6 +104,9 @@ class User {
 
     /**
      * Get user comment count
+     * 
+     * @param int $userId The user ID
+     * @return int The number of comments
      */
     public function getUserCommentCount($userId) {
         $query = "SELECT COUNT(*) as count 
