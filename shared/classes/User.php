@@ -13,8 +13,13 @@ class User {
     public $password;
     public $created_at;
 
-    public function __construct($db) {
-        $this->conn = $db;
+    public function __construct($db = null) {
+        if ($db === null) {
+            $database = new Database();
+            $this->conn = $database->getConnection();
+        } else {
+            $this->conn = $db;
+        }
     }
 
     public function create() {
@@ -52,5 +57,75 @@ class User {
         }
 
         return false;
+    }
+
+    /**
+     * Check if a user is currently logged in
+     */
+    public static function isLoggedIn() {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+        return isset($_SESSION['user_id']) && !empty($_SESSION['user_id']);
+    }
+
+    /**
+     * Check if the current user is an admin
+     */
+    public static function isAdmin() {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+        return isset($_SESSION['role']) && $_SESSION['role'] === 'admin';
+    }
+
+    /**
+     * Get user data by ID
+     */
+    public function getUserById($userId) {
+        $query = "SELECT id, username, email, role, is_verified, description, friendship_link, created_at 
+                  FROM " . $this->table_name . " 
+                  WHERE id = :id 
+                  LIMIT 1";
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(":id", $userId);
+        $stmt->execute();
+
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * Get user comment count
+     */
+    public function getUserCommentCount($userId) {
+        $query = "SELECT COUNT(*) as count 
+                  FROM comments 
+                  WHERE user_id = :user_id";
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(":user_id", $userId);
+        $stmt->execute();
+
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result['count'];
+    }
+
+    /**
+     * Get user comments
+     */
+    public function getUserComments($userId, $limit = 10) {
+        $query = "SELECT id, domain, content_id, comment, status, created_at 
+                  FROM comments 
+                  WHERE user_id = :user_id 
+                  ORDER BY created_at DESC 
+                  LIMIT :limit";
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(":user_id", $userId);
+        $stmt->bindParam(":limit", $limit, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }
