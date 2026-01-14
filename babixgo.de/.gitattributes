@@ -1,0 +1,5 @@
+
+*.psd !text !filter !merge !diff
+*.zip !text !filter !merge !diff
+*.mp4 !text !filter !merge !diff
+*.png !text !filter !merge !diff

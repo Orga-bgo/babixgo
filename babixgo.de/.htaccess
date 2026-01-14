@@ -1,9 +1,157 @@
-# .htaccess for babixgo.de
+# .htaccess für babixgo.de (Eleventy v2)
+# Auto-generiert - NICHT MANUELL BEARBEITEN
+# Letzte Aktualisierung: 2026-01-05
 
-RewriteEngine On
-RewriteBase /
+# ==========================================
+# FEHLERSEITEN
+# ==========================================
 
-# Remove .php extension
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteCond %{REQUEST_FILENAME}\.php -f
-RewriteRule ^(.*)$ $1.php [L]
+ErrorDocument 404 /404.php
+
+# ==========================================
+# URL REDIRECTS (301 - Permanent)
+# ==========================================
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  
+  # Legacy v1 URLs → v2 Clean URLs
+  RewriteRule ^impressum_page\.html$ /impressum/ [R=301,L]
+  RewriteRule ^datenschutz_page\.html$ /datenschutz/ [R=301,L]
+  
+  # Clean URLs: /page/index.php → /page/
+  RewriteCond %{THE_REQUEST} ^.*/index\.php
+  RewriteRule ^(.*)index\.php$ /$1 [R=301,L]
+  
+  # Serve index.php for directory requests
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteCond %{REQUEST_FILENAME}/index.php -f
+  RewriteRule ^(.*)$ $1/index.php [L]
+</IfModule>
+
+# ==========================================
+# KOMPRESSION (mod_deflate)
+# ==========================================
+
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html
+  AddOutputFilterByType DEFLATE text/css
+  AddOutputFilterByType DEFLATE text/javascript
+  AddOutputFilterByType DEFLATE text/xml
+  AddOutputFilterByType DEFLATE text/plain
+  AddOutputFilterByType DEFLATE application/xml
+  AddOutputFilterByType DEFLATE application/xhtml+xml
+  AddOutputFilterByType DEFLATE application/javascript
+  AddOutputFilterByType DEFLATE application/x-javascript
+  AddOutputFilterByType DEFLATE application/json
+  AddOutputFilterByType DEFLATE image/svg+xml
+</IfModule>
+
+# ==========================================
+# BROWSER CACHING
+# ==========================================
+
+<IfModule mod_expires.c>
+  ExpiresActive On
+  
+  # HTML: Kein Cache (immer frisch laden)
+  ExpiresByType text/html "access plus 0 seconds"
+  
+  # CSS & JavaScript: 1 Monat
+  ExpiresByType text/css "access plus 1 month"
+  ExpiresByType text/javascript "access plus 1 month"
+  ExpiresByType application/javascript "access plus 1 month"
+  
+  # Bilder: 3 Monate (moderate cache)
+  ExpiresByType image/jpg "access plus 3 months"
+  ExpiresByType image/jpeg "access plus 3 months"
+  ExpiresByType image/png "access plus 3 months"
+  ExpiresByType image/gif "access plus 3 months"
+  ExpiresByType image/svg+xml "access plus 3 months"
+  ExpiresByType image/webp "access plus 3 months"
+  ExpiresByType image/x-icon "access plus 3 months"
+  
+  # Fonts: 3 Monate
+  ExpiresByType font/ttf "access plus 3 months"
+  ExpiresByType font/woff "access plus 3 months"
+  ExpiresByType font/woff2 "access plus 3 months"
+  
+  # XML/JSON: Kein Cache
+  ExpiresByType application/xml "access plus 0 seconds"
+  ExpiresByType application/json "access plus 0 seconds"
+  ExpiresByType text/xml "access plus 0 seconds"
+</IfModule>
+
+# Alternative Cache-Kontrolle (falls mod_expires nicht verfügbar)
+<IfModule mod_headers.c>
+  # Statische Assets: 3 Monate Cache
+  <FilesMatch "\.(jpg|jpeg|png|gif|svg|webp|css|js|woff|woff2|ttf)$">
+    Header set Cache-Control "max-age=7776000, public"
+  </FilesMatch>
+  
+  # HTML: Kein Cache
+  <FilesMatch "\.(html|htm|xml)$">
+    Header set Cache-Control "no-cache, no-store, must-revalidate"
+    Header set Pragma "no-cache"
+    Header set Expires 0
+  </FilesMatch>
+</IfModule>
+
+# ==========================================
+# SICHERHEITS-HEADER
+# ==========================================
+
+<IfModule mod_headers.c>
+  # Verhindert MIME-Type Sniffing
+  Header set X-Content-Type-Options "nosniff"
+  
+  # Clickjacking Protection
+  Header set X-Frame-Options "SAMEORIGIN"
+  
+  # Referrer Policy
+  Header set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
+
+# ==========================================
+# CHARSET & MIME TYPES
+# ==========================================
+
+AddDefaultCharset UTF-8
+
+<IfModule mod_mime.c>
+  AddType text/html .html .htm
+  AddType text/css .css
+  AddType text/javascript .js
+  AddType application/json .json
+  AddType application/xml .xml
+  AddType image/svg+xml .svg
+  AddType image/webp .webp
+</IfModule>
+
+# ==========================================
+# VERZEICHNISSCHUTZ
+# ==========================================
+
+# Verzeichnis-Listing deaktivieren
+Options -Indexes
+
+# Sensible Dateien schützen
+<FilesMatch "^\.">
+  <IfModule mod_authz_core.c>
+    Require all denied
+  </IfModule>
+  <IfModule !mod_authz_core.c>
+    Order allow,deny
+    Deny from all
+  </IfModule>
+</FilesMatch>
+
+# ==========================================
+# /public/ VERZEICHNIS
+# ==========================================
+
+# Downloads erlaubt, aber nicht indexiert (funktional für Shared-Hosts)
+<IfModule mod_headers.c>
+  SetEnvIf Request_URI "^/public/.*\.(apk|sh)$" NOINDEX_DOWNLOAD
+  Header set X-Robots-Tag "noindex, nofollow, nosnippet" env=NOINDEX_DOWNLOAD
+</IfModule>

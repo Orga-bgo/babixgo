@@ -1,0 +1,5 @@
+Options -Indexes
+
+<FilesMatch "\.(apk|sh)$">
+  Header set X-Robots-Tag "noindex, nofollow, nosnippet"
+</FilesMatch>

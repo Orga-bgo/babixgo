@@ -1,0 +1,30 @@
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Wie funktioniert das Partnerevent bei babixGO?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Du buchst einen oder mehrere Slots bei uns. Wir stellen dir zuverlässige Partner, die den Turm bis 80.000 Punkte abschließen. Du sparst Würfel und bekommst trotzdem die vollen Belohnungen."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Wie viel kostet ein Partnerevent-Slot?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Ein Slot kostet 8€. Bei 4 Slots zahlst du 28€ (statt 32€). Der Hauptpreis enthält 5.000 Würfel im Wert von ca. 50€."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Was bekomme ich beim Partnerevent als Belohnung?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Der Hauptpreis beinhaltet: 5.000 Würfel, exklusive Sticker, Spielmarken und weitere In-Game-Belohnungen."
+      }
+    }
+  ]
+}

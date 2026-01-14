@@ -1,0 +1,30 @@
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Wie bekomme ich mehr Würfel in Monopoly GO?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Es gibt zwei Methoden: Den 48h Boost für sicheres, natürliches Spielverhalten oder den Schnellen Boost für größere Mengen in kurzer Zeit."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Ist der Würfel-Service sicher?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Der 48h Boost simuliert natürliches Spielverhalten und ist sehr sicher. Der Schnelle Boost birgt ein höheres Risiko und ist nur für bereits vorbelastete Accounts empfehlenswert."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Was kostet der Würfel-Service?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Der Preis liegt zwischen 1,17€ und 2,00€ pro 1.000 Würfel beim 48h Boost. Der Schnelle Boost kostet 1,50€ pro 1.000 Würfel."
+      }
+    }
+  ]
+}

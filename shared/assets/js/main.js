@@ -405,13 +405,19 @@
         if (toggle.dataset.listenerAttached === 'true') return;
         toggle.dataset.listenerAttached = 'true';
         
-        toggle.addEventListener('click', (event) => {
+        const handleDropdownToggle = (event) => {
           event.preventDefault();
           event.stopPropagation();
           const dropdown = toggle.closest('.menu-dropdown');
           const isActive = dropdown.classList.toggle('active');
           toggle.setAttribute('aria-expanded', isActive ? 'true' : 'false');
-        });
+        };
+        
+        toggle.addEventListener('click', handleDropdownToggle);
+        toggle.addEventListener('touchend', (event) => {
+          event.preventDefault();
+          handleDropdownToggle(event);
+        }, { passive: false });
       });
     }
   }
@@ -832,4 +838,62 @@
   } else {
     initGallery();
   }
+
+  // Service Worker Registrierung für PWA
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/public/sw.js')
+        .then((registration) => {
+          console.log('Service Worker registriert:', registration.scope);
+        })
+        .catch((error) => {
+          console.log('Service Worker Registrierung fehlgeschlagen:', error);
+        });
+    });
+  }
+
+  // PWA Install Prompt
+  let deferredPrompt;
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    
+    // Optional: Zeige Custom Install Button
+    const installButton = document.getElementById('pwa-install-button');
+    if (installButton) {
+      installButton.style.display = 'block';
+      installButton.addEventListener('click', async () => {
+        if (!deferredPrompt) return;
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        console.log(`PWA Install: ${outcome}`);
+        deferredPrompt = null;
+        installButton.style.display = 'none';
+      });
+    }
+  });
+
+  // PWA Installation erfolgreich
+  window.addEventListener('appinstalled', () => {
+    console.log('PWA erfolgreich installiert');
+    deferredPrompt = null;
+  });
+
+  // Online/Offline Status
+  const updateOnlineStatus = () => {
+    const statusIndicator = document.getElementById('online-status');
+    if (statusIndicator) {
+      if (navigator.onLine) {
+        statusIndicator.classList.remove('offline');
+        statusIndicator.classList.add('online');
+      } else {
+        statusIndicator.classList.remove('online');
+        statusIndicator.classList.add('offline');
+      }
+    }
+  };
+
+  window.addEventListener('online', updateOnlineStatus);
+  window.addEventListener('offline', updateOnlineStatus);
+  updateOnlineStatus();
 })();

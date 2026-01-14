@@ -1,0 +1,17 @@
+node_modules/
+dist/
+.DS_Store
+*.log
+.cache/
+*.apk
+
+# PHP
+vendor/
+composer.lock
+*.phar
+.phpunit.result.cache
+
+# Replit
+.replit
+replit.nix
+tmp/

@@ -1,0 +1,1 @@
+{"@context":"https://schema.org","@type":"WebSite","name":"babixGO","url":"https://babixgo.de","description":"Monopoly GO Services und Anleitungen","publisher":{"@type":"Organization","name":"babixGO"},"potentialAction":{"@type":"SearchAction","target":"https://babixgo.de/?s={search_term_string}","query-input":"required name=search_term_string"}}

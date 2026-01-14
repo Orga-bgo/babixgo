@@ -1,0 +1,53 @@
+name: Deploy via SFTP
+
+on:
+  # Automatisches Deployment bei Push auf main Branch
+  push:
+    branches:
+      - main
+  
+  # Manuelles Deployment über GitHub Actions UI
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    name: Deploy to Server
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+      
+      - name: Create .env file
+        run: |
+          cat > ./.env << EOF
+          # Database Configuration
+          DB_HOST=${{ secrets.DB_HOST }}
+          DB_NAME=${{ secrets.DB_NAME }}
+          DB_USER=${{ secrets.DB_USER }}
+          DB_PASSWORD=${{ secrets.DB_PASSWORD }}
+          
+          # SMTP Configuration
+          SMTP_HOST=${{ secrets.SMTP_HOST }}
+          SMTP_PORT=${{ secrets.SMTP_PORT }}
+          SMTP_USER=${{ secrets.SMTP_USER }}
+          SMTP_KEY=${{ secrets.SMTP_KEY }}
+          
+          # Site Configuration
+          SITE_URL=${{ secrets.SITE_URL }}
+          
+          # Debug Mode (disabled in production)
+          DEBUG_MODE=false
+          EOF
+      
+      - name: Deploy via SFTP
+        uses: wlixcc/SFTP-Deploy-Action@v1.2.4
+        with:
+          server: ${{ secrets.SFTP_SERVER }}
+          username: ${{ secrets.SFTP_USERNAME }}
+          password: ${{ secrets.SFTP_PASSWORD }}
+          port: 22
+          local_path: ./*
+          remote_path: ${{ secrets.SFTP_REMOTE_DIR }}
+          sftp_only: true
+          rsyncArgs: '--exclude=.git* --exclude=node_modules'
