@@ -17,6 +17,270 @@ Before making any changes, **read these files**:
 - **Deployment**: Direct FTP/SFTP upload to Strato webhosting
 - **Architecture**: Multi-domain setup with shared resources
 
+---
+
+## Monorepo Cleanup Status (COMPLETED)
+
+**Last Cleanup**: January 14, 2026  
+**Current Version**: 1.0.15  
+**Status**: ✅ PRODUCTION READY
+
+### Cleanup Summary
+
+The monorepo underwent a comprehensive cleanup to eliminate duplicates, standardize structure, and establish single sources of truth. **All future development must follow this clean structure.**
+
+### What Was Cleaned
+
+✅ **Partials Consolidation**:
+- Removed 13 duplicate partial files from `babixgo.de/partials/`
+- Consolidated all partials into `/shared/partials/` (v1.0.15)
+- Updated 124 references across 16 page files
+- Fixed internal partial references to use `__DIR__` instead of `DOCUMENT_ROOT`
+
+✅ **Auth Structure**:
+- Removed 4 redundant wrapper files from `/auth/` root
+- Clean structure with only `.htaccess` in root, all functionality in `/auth/public/`
+- Added complete PWA support (manifest.json, sw.js, offline.html)
+
+✅ **Files Domain**:
+- Renamed `/files/` → `/files.babixgo.de/` for clarity (40 files)
+- Added missing offline.html for PWA compliance
+- Maintained functional independent system
+
+✅ **Documentation**:
+- Created `CLEANUP_REPORT.md` (11KB detailed change log)
+- Created `DEPLOYMENT_GUIDE.md` (12KB deployment instructions)
+- Updated `README.md` with complete structure
+- Added SMTP configuration to copilot-instructions.md
+
+### Critical Rules (Post-Cleanup)
+
+**DO NOT**:
+- ❌ Create duplicate partials in domain directories
+- ❌ Use `$_SERVER['DOCUMENT_ROOT'] . '/partials/'` (old pattern)
+- ❌ Add files to `/auth/` root (except .htaccess)
+- ❌ Create `/files/` directory (use `/files.babixgo.de/`)
+- ❌ Duplicate shared resources in domain folders
+
+**DO**:
+- ✅ Use `dirname($_SERVER['DOCUMENT_ROOT']) . '/shared/partials/'` for partials
+- ✅ Add new partials only to `/shared/partials/`
+- ✅ Reference shared assets from `/shared/assets/`
+- ✅ Keep domain-specific files minimal
+- ✅ Follow the structure below exactly
+
+### Current Clean Structure (Post-Cleanup)
+
+**Use this structure as the authoritative reference:**
+
+```
+/
+├── shared/                      # ✅ Single source of truth (v1.0.15)
+│   ├── assets/
+│   │   ├── css/
+│   │   │   ├── main.css        # Global styles
+│   │   │   ├── style.css       # Additional styles
+│   │   │   └── admin.css       # Admin panel styles
+│   │   ├── js/
+│   │   │   └── main.js         # Global scripts
+│   │   ├── icons/              # Shared icons
+│   │   ├── images/             # Shared images
+│   │   └── logo/               # Logo assets
+│   │
+│   ├── classes/                 # PHP classes
+│   │   ├── Database.php        # Database wrapper
+│   │   ├── User.php            # User management
+│   │   ├── Session.php         # Session handling
+│   │   ├── Download.php        # Download management
+│   │   └── Comment.php         # Comment management
+│   │
+│   ├── config/                  # Configuration files
+│   │   ├── database.php        # Database config
+│   │   ├── session.php         # Session config
+│   │   ├── autoload.php        # Class autoloader
+│   │   └── email.php           # Email config (references email.local.php)
+│   │
+│   └── partials/                # ✅ Consolidated partials (v1.0.15)
+│       ├── head-meta.php       # Uses __DIR__ references
+│       ├── head-links.php      # PWA manifests included
+│       ├── header.php          # Site header
+│       ├── footer.php          # Site footer
+│       ├── footer-scripts.php  # Footer scripts
+│       ├── nav.php             # Navigation
+│       ├── tracking.php        # Analytics
+│       ├── cookie-banner.php   # Cookie consent
+│       ├── critical-css.php    # Critical CSS
+│       ├── csrf.php            # CSRF protection
+│       ├── structured-data.php # Schema.org data
+│       ├── brute-force-protection.php
+│       └── version.php         # BABIXGO_VERSION = '1.0.15'
+│
+├── downloads/                   # ✅ Protected download storage
+│   ├── .htaccess               # Access denied (CRITICAL)
+│   ├── apk/                    # Android APK files
+│   ├── exe/                    # Windows executables
+│   └── scripts/                # Script files
+│       ├── bash/
+│       ├── python/
+│       └── powershell/
+│
+├── babixgo.de/                  # ✅ Main website
+│   ├── index.php               # Homepage
+│   ├── about.php               # About page
+│   ├── contact.php             # Contact page
+│   ├── 404.php                 # Error page
+│   ├── .htaccess               # Web server config
+│   │
+│   ├── assets/                 # Domain-specific assets
+│   │   ├── css/
+│   │   │   └── style.css       # Main site styles
+│   │   ├── js/
+│   │   ├── icons/
+│   │   ├── img/
+│   │   └── logo/
+│   │
+│   ├── public/                 # PWA assets
+│   │   ├── manifest.json
+│   │   ├── sw.js
+│   │   └── [apk, scripts subdirs]
+│   │
+│   └── [content directories]/  # sticker/, wuerfel/, accounts/, etc.
+│
+├── auth/                        # ✅ Clean structure (NO redundant files)
+│   ├── .htaccess               # Root routing config only
+│   │
+│   └── public/                 # Document root for auth.babixgo.de
+│       ├── index.php           # Dashboard/profile
+│       ├── login.php           # Login page
+│       ├── register.php        # Registration
+│       ├── logout.php          # Logout handler
+│       ├── verify-email.php    # Email verification
+│       ├── forgot-password.php # Password reset request
+│       ├── reset-password.php  # Password reset form
+│       ├── edit-profile.php    # Profile editing
+│       ├── setup-check.php     # Setup verification
+│       ├── .htaccess           # Security config
+│       ├── manifest.json       # PWA manifest
+│       ├── sw.js               # Service worker
+│       ├── offline.html        # Offline fallback
+│       │
+│       ├── admin/              # Admin panel
+│       │   ├── index.php       # Admin dashboard
+│       │   ├── users.php       # User management
+│       │   ├── user-edit.php   # Edit user
+│       │   ├── downloads.php   # Download management
+│       │   ├── download-edit.php # Edit download
+│       │   ├── comments.php    # Comment moderation
+│       │   └── .htaccess       # Admin protection
+│       │
+│       ├── assets/
+│       │   ├── css/
+│       │   │   ├── auth.css    # Auth styling
+│       │   │   └── admin.css   # Admin styling
+│       │   └── js/
+│       │       ├── form-validation.js
+│       │       └── admin.js
+│       │
+│       └── includes/
+│           ├── auth-check.php  # Authentication guard
+│           ├── admin-check.php # Admin authorization
+│           └── form-handlers/
+│
+└── files.babixgo.de/            # ✅ Renamed for clarity
+    ├── .htaccess               # Root config
+    │
+    └── public/                 # Document root for files.babixgo.de
+        ├── index.php           # Download listing
+        ├── download.php        # Download handler
+        ├── category.php        # Category view
+        ├── .htaccess           # Security config
+        ├── manifest.json       # PWA manifest
+        ├── sw.js               # Service worker
+        ├── offline.html        # Offline fallback
+        │
+        ├── admin/              # Admin panel
+        │   ├── dashboard.php
+        │   ├── manage-downloads.php
+        │   └── manage-users.php
+        │
+        ├── assets/             # Domain-specific assets
+        │   ├── css/
+        │   │   └── style.css   # Files portal styles
+        │   └── js/
+        │
+        └── includes/           # Domain-specific includes
+            ├── config.php
+            ├── db.php
+            ├── auth.php
+            └── functions.php
+```
+
+### Domain to Directory Mapping (Post-Cleanup)
+
+| Domain | Document Root | Status |
+|--------|--------------|--------|
+| **babixgo.de** | `/babixgo.de/` | ✅ Clean |
+| **auth.babixgo.de** | `/auth/public/` | ✅ Clean |
+| **files.babixgo.de** | `/files.babixgo.de/public/` | ✅ Renamed |
+
+### File Reference Patterns (Post-Cleanup)
+
+**Correct patterns to use:**
+
+```php
+// Shared partials (use this pattern)
+<?php require dirname($_SERVER['DOCUMENT_ROOT']) . '/shared/partials/header.php'; ?>
+
+// Shared assets in HTML
+<link rel="stylesheet" href="/shared/assets/css/main.css">
+<script src="/shared/assets/js/main.js"></script>
+
+// Shared classes
+require_once dirname($_SERVER['DOCUMENT_ROOT']) . '/shared/classes/Database.php';
+
+// Path constants (recommended)
+define('BASE_PATH', dirname(__DIR__, 2) . '/');
+define('SHARED_PATH', BASE_PATH . 'shared/');
+require_once SHARED_PATH . 'config/database.php';
+```
+
+**Deprecated patterns (DO NOT USE):**
+
+```php
+// ❌ OLD - Do not use
+<?php require $_SERVER['DOCUMENT_ROOT'] . '/partials/header.php'; ?>
+
+// ❌ OLD - babixgo.de/partials/ no longer exists
+<?php require __DIR__ . '/partials/header.php'; ?>
+
+// ❌ OLD - /files/ renamed to /files.babixgo.de/
+<?php require '/files/public/index.php'; ?>
+```
+
+### Verification Checklist
+
+Use this checklist when reviewing code or making changes:
+
+- [ ] No duplicate partials in domain directories
+- [ ] All partials referenced from `/shared/partials/`
+- [ ] Using `dirname($_SERVER['DOCUMENT_ROOT'])` for shared access
+- [ ] No files in `/auth/` root except `.htaccess`
+- [ ] PWA files present in all domain `public/` directories
+- [ ] Domain-specific assets minimal (extend shared, don't duplicate)
+- [ ] SMTP credentials not committed (use email.local.php)
+- [ ] Download files in `/downloads/` with `.htaccess` protection
+
+### Cleanup Documentation Reference
+
+For detailed information about the cleanup:
+
+- **CLEANUP_REPORT.md**: Complete change log with before/after comparison
+- **DEPLOYMENT_GUIDE.md**: Step-by-step deployment instructions
+- **README.md**: Updated structure documentation
+- **Git commits**: 8e17664 (partials), c9c6d47 (auth), f11619f (files), 384aeef (SMTP)
+
+---
+
 ## Repository Structure
 
 ```
