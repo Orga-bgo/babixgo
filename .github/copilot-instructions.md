@@ -1347,6 +1347,214 @@ When deploying email functionality:
 
 ---
 
+## SMTP Configuration Status
+
+**Last Updated**: January 15, 2026  
+**Commit**: 384aeef  
+**Status**: ✅ DOCUMENTED - Ready for Implementation
+
+### GitHub Secrets Configuration (Verified)
+
+The following secrets are configured in the repository and documented:
+
+| Secret Name | Purpose | Status | Location in Code |
+|-------------|---------|--------|------------------|
+| `SMTP_HOST` | Brevo SMTP server | ✅ Documented | `email.local.php` or env |
+| `SMTP_PORT` | SMTP port (587/465) | ✅ Documented | `email.local.php` or env |
+| `SMTP_USER` | Brevo account email | ✅ Documented | `email.local.php` or env |
+| `SMTP_KEY` | Brevo SMTP API key | ✅ Documented | `email.local.php` or env |
+| `SMTP_SENDER_REGISTRATION` | Registration sender email | ✅ Documented | `email.local.php` or env |
+
+### Implementation Checklist
+
+When implementing email functionality (e.g., in auth.babixgo.de), follow this checklist:
+
+#### Pre-Implementation (Planning)
+- [ ] Read SMTP section in copilot-instructions.md completely
+- [ ] Verify GitHub Secrets are still valid
+- [ ] Confirm Brevo account is active
+- [ ] Check Brevo free tier limits (300 emails/day)
+
+#### Code Implementation
+- [ ] Create `/shared/config/email.php` (config loader)
+- [ ] Create `/shared/config/email.local.php.example` (template for deployment)
+- [ ] Create `/shared/classes/Email.php` (email handler class)
+- [ ] Add email-related methods to User class (if applicable)
+- [ ] Create email templates in `/shared/email-templates/`:
+  - [ ] verification.html
+  - [ ] password-reset.html
+  - [ ] welcome.html
+- [ ] Create email_logs table in database
+- [ ] Integrate email sending in registration flow
+- [ ] Integrate email sending in password reset flow
+- [ ] Add rate limiting checks
+
+#### Security Implementation
+- [ ] Add `/shared/config/email.local.php` to `.gitignore` (already done)
+- [ ] Add `/shared/config/*.local.php` to `.gitignore` (already done)
+- [ ] Implement credential validation in email.php
+- [ ] Add error handling that doesn't expose credentials
+- [ ] Set up email logging without password exposure
+- [ ] Configure rate limiting (300 emails/day for Brevo free tier)
+- [ ] Add CSRF protection to email-triggering forms
+- [ ] Validate email addresses before sending
+
+#### Deployment Steps
+- [ ] Upload `/shared/config/email.php` to server
+- [ ] Create `/shared/config/email.local.php` on server (manual step)
+- [ ] Copy values from GitHub Secrets to email.local.php
+- [ ] Set file permissions to 640 for email.local.php
+- [ ] Upload Email class to `/shared/classes/`
+- [ ] Upload email templates to `/shared/email-templates/`
+- [ ] Run database migration for email_logs table
+- [ ] Test with verify-smtp-config.php (then delete)
+- [ ] Test with test-smtp-send.php (then delete)
+- [ ] Monitor first 10 emails for delivery
+
+#### Testing & Verification
+- [ ] Unit test Email class methods
+- [ ] Test registration email sending
+- [ ] Test password reset email sending
+- [ ] Test welcome email sending
+- [ ] Verify emails don't go to spam folder
+- [ ] Test rate limiting functionality
+- [ ] Test error handling (invalid credentials, network failure)
+- [ ] Verify email_logs table updates correctly
+- [ ] Test on multiple email providers (Gmail, Outlook, etc.)
+- [ ] Check email HTML rendering in different clients
+
+#### Monitoring & Maintenance
+- [ ] Set up email_logs monitoring dashboard
+- [ ] Create alerts for email sending failures
+- [ ] Monitor Brevo account usage (daily limit)
+- [ ] Check spam folder placement rate
+- [ ] Review email delivery success rate weekly
+- [ ] Update email templates based on user feedback
+- [ ] Rotate SMTP credentials periodically
+- [ ] Document any email-related issues in issue tracker
+
+### Current Implementation Status
+
+**Files to Create:**
+
+| File | Purpose | Status |
+|------|---------|--------|
+| `/shared/config/email.php` | Email configuration loader | ⏳ Not created |
+| `/shared/config/email.local.php.example` | Template for deployment | ⏳ Not created |
+| `/shared/classes/Email.php` | Email handler class | ⏳ Not created |
+| `/shared/email-templates/verification.html` | Email verification template | ⏳ Not created |
+| `/shared/email-templates/password-reset.html` | Password reset template | ⏳ Not created |
+| `/shared/email-templates/welcome.html` | Welcome email template | ⏳ Not created |
+
+**Database Changes:**
+
+```sql
+-- Email logs table (to be created)
+CREATE TABLE IF NOT EXISTS email_logs (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT,
+    recipient_email VARCHAR(255) NOT NULL,
+    subject VARCHAR(500) NOT NULL,
+    email_type ENUM('verification', 'password_reset', 'welcome', 'custom') NOT NULL,
+    status ENUM('sent', 'failed', 'pending') NOT NULL,
+    error_message TEXT,
+    sent_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL,
+    INDEX idx_user_id (user_id),
+    INDEX idx_recipient (recipient_email),
+    INDEX idx_status (status),
+    INDEX idx_sent_at (sent_at)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+```
+
+**Integration Points:**
+
+| Feature | File | Integration Status |
+|---------|------|-------------------|
+| User Registration | `/auth/public/register.php` | ⏳ Not integrated |
+| Email Verification | `/auth/public/verify-email.php` | ⏳ Not integrated |
+| Password Reset Request | `/auth/public/forgot-password.php` | ⏳ Not integrated |
+| Password Reset Confirm | `/auth/public/reset-password.php` | ⏳ Not integrated |
+
+### Quick Reference
+
+**When you need to implement email sending:**
+
+1. **Check this status section** - Review current implementation status
+2. **Follow the checklist** - Complete items in order (Pre-Implementation → Code → Security → Deployment)
+3. **Use the code examples** - From the SMTP Configuration section above
+4. **Test thoroughly** - Use the testing checklist before deployment
+5. **Monitor actively** - Check email_logs and Brevo dashboard after deployment
+
+**Common Implementation Pattern:**
+
+```php
+<?php
+// In any file that needs to send email
+
+// Load email configuration
+require_once SHARED_PATH . 'config/email.php';
+require_once SHARED_PATH . 'classes/Email.php';
+
+// Initialize email handler
+$emailHandler = new Email($db);
+
+// Send email
+try {
+    $success = $emailHandler->sendVerificationEmail(
+        $userEmail,
+        $username,
+        $verificationToken
+    );
+    
+    if ($success) {
+        // Email sent successfully
+        $_SESSION['success'] = 'Verification email sent!';
+    } else {
+        // Email failed to send
+        error_log('Email sending failed for user: ' . $userId);
+        $_SESSION['error'] = 'Could not send email. Please contact support.';
+    }
+} catch (Exception $e) {
+    // Handle exception
+    error_log('Email exception: ' . $e->getMessage());
+    $_SESSION['error'] = 'An error occurred. Please try again later.';
+}
+```
+
+### Next Steps for Implementation
+
+1. **Create Email class** (`/shared/classes/Email.php`) with methods:
+   - `send($to, $subject, $htmlBody, $textBody)`
+   - `sendVerificationEmail($email, $username, $token)`
+   - `sendPasswordResetEmail($email, $username, $token)`
+   - `sendWelcomeEmail($email, $username)`
+   - `logEmail($userId, $recipient, $subject, $type, $status, $error)`
+
+2. **Create email configuration** (`/shared/config/email.php`) that:
+   - Loads from email.local.php if exists
+   - Falls back to environment variables
+   - Validates required credentials
+   - Defines rate limiting constants
+
+3. **Create email templates** in `/shared/email-templates/` with:
+   - Professional HTML design
+   - Plain text fallback
+   - Proper variable substitution
+   - Mobile-responsive layout
+
+4. **Update .gitignore** (already done) to exclude:
+   - `/shared/config/email.local.php`
+   - Test files: `**/verify-smtp-config.php`, `**/test-smtp-send.php`
+
+5. **Document in DEPLOYMENT_GUIDE.md** the manual steps for:
+   - Creating email.local.php on server
+   - Setting file permissions
+   - Testing configuration
+   - Monitoring email delivery
+
+---
+
 ### Example: Database Setup
 
 ```markdown
