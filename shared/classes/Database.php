@@ -11,7 +11,7 @@ class Database {
     private $conn;
 
     public function __construct() {
-        $config = require_once(__DIR__ . '/../config/database.php');
+        $config = require(__DIR__ . '/../config/database.php');
         $this->host = $config['host'];
         $this->db_name = $config['database'];
         $this->username = $config['username'];
