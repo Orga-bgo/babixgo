@@ -115,13 +115,29 @@ mysql -u babixgo_user -p babixgo_db < shared/create-tables.sql
 
 ### 2. Configuration
 
-1. Update database credentials in `shared/config/database.php`:
-```php
-define('DB_HOST', 'localhost');
-define('DB_NAME', 'babixgo_db');
-define('DB_USER', 'babixgo_user');
-define('DB_PASS', 'your_secure_password');
-```
+1. Configure database credentials using environment variables (recommended for production):
+
+   **Option A: Using Environment Variables (Production/GitHub Secrets)**
+   
+   Set the following environment variables:
+   ```bash
+   DB_HOST=your_database_host
+   DB_NAME=babixgo_db
+   DB_USER=babixgo_user
+   DB_PASS=your_secure_password
+   DB_CHARSET=utf8mb4  # optional, defaults to utf8mb4
+   ```
+   
+   For GitHub Actions/deployment, add these as repository secrets.
+
+   **Option B: Local Development (uses defaults from `shared/config/database.php`)**
+   
+   If no environment variables are set, the system uses these defaults:
+   - Host: `localhost`
+   - Database: `babixgo`
+   - User: `root`
+   - Password: (empty)
+   - Charset: `utf8mb4`
 
 2. Update session domain in `shared/config/session.php`:
 ```php
