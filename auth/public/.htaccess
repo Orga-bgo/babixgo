@@ -2,6 +2,7 @@
 # Security and routing configuration
 
 # Enable RewriteEngine
+php_value error_log ./error_log.txt
 <IfModule mod_rewrite.c>
     RewriteEngine On
     RewriteBase /
