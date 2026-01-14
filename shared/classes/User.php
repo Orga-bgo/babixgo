@@ -81,6 +81,9 @@ class User {
 
     /**
      * Get user data by ID
+     * 
+     * @param int $userId The user ID to retrieve
+     * @return array|false User data array or false if not found
      */
     public function getUserById($userId) {
         $query = "SELECT id, username, email, role, is_verified, description, friendship_link, created_at 
@@ -113,8 +116,15 @@ class User {
 
     /**
      * Get user comments
+     * 
+     * @param int $userId The user ID
+     * @param int $limit Maximum number of comments to retrieve (1-100)
+     * @return array Array of comment data
      */
     public function getUserComments($userId, $limit = 10) {
+        // Validate and sanitize limit
+        $limit = max(1, min(100, (int)$limit));
+        
         $query = "SELECT id, domain, content_id, comment, status, created_at 
                   FROM comments 
                   WHERE user_id = :user_id 
