@@ -1,0 +1,54 @@
+# babixgo.de .gitignore
+
+# Environment configuration (should be configured per environment)
+# Uncomment these if you want to exclude them:
+# shared/config/database.php
+
+# Uploaded files (should be backed up separately)
+downloads/apk/*
+downloads/exe/*
+downloads/scripts/*
+
+# Keep directory structure but ignore files
+!downloads/apk/.gitkeep
+!downloads/exe/.gitkeep
+!downloads/scripts/.gitkeep
+
+# Log files
+*.log
+error_log.txt
+
+# Temporary files
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# PHP cache
+*.cache
+
+# Backup files
+*.bak
+*.backup
+*.old
+
+# Session files (if using file-based sessions)
+sessions/
+
+# Development files
+test.php
+debug.php
+phpinfo.php
+setup-check.php
