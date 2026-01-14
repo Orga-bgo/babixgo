@@ -5,4 +5,5 @@
   resources: NANO
   events:
   - type: WEBHOOK
+  - type: PUSH
   arch: ARM64
