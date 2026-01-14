@@ -1,6 +1,8 @@
 # babixgo.de .gitignore
 
 # Environment configuration (should be configured per environment)
+.env
+
 # Uncomment these if you want to exclude them:
 # shared/config/database.php
 
