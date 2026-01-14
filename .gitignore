@@ -51,4 +51,4 @@ sessions/
 test.php
 debug.php
 phpinfo.php
-setup-check.php
+# setup-check.php - Included in repo but should be deleted after setup verification
