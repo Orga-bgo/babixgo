@@ -26,8 +26,10 @@ $recentComments = $db->fetchAll("SELECT c.*, u.username FROM comments c JOIN use
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard - babixgo.de</title>
-    <link rel="stylesheet" href="/assets/css/auth.css">
-    <link rel="stylesheet" href="/assets/css/admin.css">
+    <link rel="stylesheet" href="/shared/assets/css/style.css">
+    <link rel="stylesheet" href="/shared/assets/css/admin.css">
+    <link rel="stylesheet" href="/shared/assets/css/style.css">
+    <link rel="stylesheet" href="/shared/assets/css/admin.css">
 </head>
 <body>
     <nav class="main-nav">

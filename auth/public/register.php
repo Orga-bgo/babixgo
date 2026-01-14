@@ -15,16 +15,23 @@ if (User::isLoggedIn()) {
     header('Location: /index.php');
     exit;
 }
+
+// Page configuration
+$pageTitle = 'Register - babixgo.de';
+$currentPage = 'register';
+$includeValidationJS = true;
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register - babixgo.de</title>
-    <link rel="stylesheet" href="/assets/css/auth.css">
+    <title><?= htmlspecialchars($pageTitle, ENT_QUOTES) ?></title>
+    <link rel="stylesheet" href="/shared/assets/css/style.css">
+    <link rel="stylesheet" href="/shared/assets/css/main.css">
 </head>
 <body>
+    <?php require_once SHARED_PATH . 'assets/partials/header.php'; ?>
     <div class="auth-container">
         <div class="auth-box">
             <h1>Create Account</h1>
@@ -92,7 +99,9 @@ if (User::isLoggedIn()) {
         </div>
     </div>
     
-    <script src="/assets/js/form-validation.js"></script>
+    <?php require_once SHARED_PATH . 'assets/partials/footer.php'; ?>
+    <script src="/shared/assets/js/main.js"></script>
+    <script src="/shared/assets/js/form-validation.js"></script>
     <script>
         document.getElementById('register-form').addEventListener('submit', async (e) => {
             e.preventDefault();

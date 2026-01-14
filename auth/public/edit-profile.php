@@ -7,28 +7,22 @@ require_once __DIR__ . '/includes/auth-check.php';
 
 $user = new User();
 $userData = $user->getUserById($_SESSION['user_id']);
+
+// Page configuration
+$pageTitle = 'Edit Profile - babixgo.de';
+$currentPage = 'edit-profile';
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Profile - babixgo.de</title>
-    <link rel="stylesheet" href="/assets/css/auth.css">
+    <title><?= htmlspecialchars($pageTitle, ENT_QUOTES) ?></title>
+    <link rel="stylesheet" href="/shared/assets/css/style.css">
+    <link rel="stylesheet" href="/shared/assets/css/main.css">
 </head>
 <body>
-    <nav class="main-nav">
-        <div class="nav-container">
-            <a href="/" class="logo">babixgo.de</a>
-            <ul class="nav-menu">
-                <li><a href="/">Profile</a></li>
-                <?php if (User::isAdmin()): ?>
-                    <li><a href="/admin/">Admin Panel</a></li>
-                <?php endif; ?>
-                <li><a href="/logout.php">Logout</a></li>
-            </ul>
-        </div>
-    </nav>
+    <?php require_once SHARED_PATH . 'assets/partials/header.php'; ?>
     
     <div class="container">
         <h1>Edit Profile</h1>
@@ -113,7 +107,8 @@ $userData = $user->getUserById($_SESSION['user_id']);
         </div>
     </div>
     
-    <script src="/assets/js/form-validation.js"></script>
+    <script src="/shared/assets/js/main.js"></script>
+    <script src="/shared/assets/js/form-validation.js"></script>
     <script>
         async function handleFormSubmit(form, endpoint) {
             const formData = new FormData(form);
@@ -171,5 +166,8 @@ $userData = $user->getUserById($_SESSION['user_id']);
             }
         }
     </script>
+    
+    <?php require_once SHARED_PATH . 'assets/partials/footer.php'; ?>
+    <script src="/shared/assets/js/main.js"></script>
 </body>
 </html>

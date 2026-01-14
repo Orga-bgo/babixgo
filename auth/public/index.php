@@ -16,28 +16,22 @@ $comments = $user->getUserComments($_SESSION['user_id'], 5);
 
 // Generate friendship link URL
 $friendshipUrl = 'https://babixgo.de/friend/' . $userData['friendship_link'];
+
+// Page configuration
+$pageTitle = 'My Profile - babixgo.de';
+$currentPage = 'profile';
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Profile - babixgo.de</title>
-    <link rel="stylesheet" href="/assets/css/auth.css">
+    <title><?= htmlspecialchars($pageTitle, ENT_QUOTES) ?></title>
+    <link rel="stylesheet" href="/shared/assets/css/style.css">
+    <link rel="stylesheet" href="/shared/assets/css/main.css">
 </head>
 <body>
-    <nav class="main-nav">
-        <div class="nav-container">
-            <a href="/" class="logo">babixgo.de</a>
-            <ul class="nav-menu">
-                <li><a href="/" class="active">Profile</a></li>
-                <?php if (User::isAdmin()): ?>
-                    <li><a href="/admin/">Admin Panel</a></li>
-                <?php endif; ?>
-                <li><a href="/logout.php">Logout</a></li>
-            </ul>
-        </div>
-    </nav>
+    <?php require_once SHARED_PATH . 'assets/partials/header.php'; ?>
     
     <div class="container">
         <div class="profile-header">
@@ -113,6 +107,8 @@ $friendshipUrl = 'https://babixgo.de/friend/' . $userData['friendship_link'];
         </div>
     </div>
     
+    <?php require_once SHARED_PATH . 'assets/partials/footer.php'; ?>
+    <script src="/shared/assets/js/main.js"></script>
     <script>
         function copyFriendshipLink() {
             const input = document.getElementById('friendship-link');

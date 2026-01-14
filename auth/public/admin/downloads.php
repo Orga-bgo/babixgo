@@ -114,8 +114,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file']) && verifyCsr
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Download Management - babixgo.de</title>
-    <link rel="stylesheet" href="/assets/css/auth.css">
-    <link rel="stylesheet" href="/assets/css/admin.css">
+    <link rel="stylesheet" href="/shared/assets/css/style.css">
+    <link rel="stylesheet" href="/shared/assets/css/admin.css">
+    <link rel="stylesheet" href="/shared/assets/css/style.css">
+    <link rel="stylesheet" href="/shared/assets/css/admin.css">
 </head>
 <body>
     <nav class="main-nav">
@@ -254,7 +256,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file']) && verifyCsr
         <?php endif; ?>
     </div>
     
-    <script src="/assets/js/admin.js"></script>
+    <script src="/shared/assets/js/main.js"></script>
+    <script src="/shared/assets/js/admin.js"></script>
     <script>
         async function deleteDownload(downloadId) {
             if (!confirm('Are you sure you want to delete this download? The file will be permanently deleted.')) {
