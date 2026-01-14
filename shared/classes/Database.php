@@ -1,101 +1,37 @@
 <?php
-/**
- * Database Class
- * Singleton PDO wrapper for database operations
- */
 
+/**
+ * Database connection class
+ */
 class Database {
-    private static $instance = null;
-    private $pdo;
-    
-    private function __construct() {
-        try {
-            $dsn = "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=" . DB_CHARSET;
-            $this->pdo = new PDO($dsn, DB_USER, DB_PASS, PDO_OPTIONS);
-        } catch (PDOException $e) {
-            if (DB_DEBUG) {
-                die("Database connection failed: " . $e->getMessage());
-            } else {
-                error_log("Database connection error: " . $e->getMessage());
-                die("Database connection failed. Please try again later.");
-            }
-        }
+    private $host;
+    private $db_name;
+    private $username;
+    private $password;
+    private $conn;
+
+    public function __construct() {
+        $config = require_once(__DIR__ . '/../config/database.php');
+        $this->host = $config['host'];
+        $this->db_name = $config['database'];
+        $this->username = $config['username'];
+        $this->password = $config['password'];
     }
-    
-    /**
-     * Get singleton instance
-     */
-    public static function getInstance() {
-        if (self::$instance === null) {
-            self::$instance = new self();
-        }
-        return self::$instance;
-    }
-    
-    /**
-     * Get PDO connection
-     */
+
     public function getConnection() {
-        return $this->pdo;
-    }
-    
-    /**
-     * Execute a query with parameters
-     */
-    public function query($sql, $params = []) {
+        $this->conn = null;
+
         try {
-            $stmt = $this->pdo->prepare($sql);
-            $stmt->execute($params);
-            return $stmt;
-        } catch (PDOException $e) {
-            if (DB_DEBUG) {
-                error_log("Query error: " . $e->getMessage() . " SQL: " . $sql);
-            }
-            throw $e;
+            $this->conn = new PDO(
+                "mysql:host=" . $this->host . ";dbname=" . $this->db_name . ";charset=utf8mb4",
+                $this->username,
+                $this->password
+            );
+            $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        } catch(PDOException $e) {
+            echo "Connection Error: " . $e->getMessage();
         }
-    }
-    
-    /**
-     * Fetch single row
-     */
-    public function fetchOne($sql, $params = []) {
-        $stmt = $this->query($sql, $params);
-        return $stmt->fetch();
-    }
-    
-    /**
-     * Fetch all rows
-     */
-    public function fetchAll($sql, $params = []) {
-        $stmt = $this->query($sql, $params);
-        return $stmt->fetchAll();
-    }
-    
-    /**
-     * Get last insert ID
-     */
-    public function lastInsertId() {
-        return $this->pdo->lastInsertId();
-    }
-    
-    /**
-     * Begin transaction
-     */
-    public function beginTransaction() {
-        return $this->pdo->beginTransaction();
-    }
-    
-    /**
-     * Commit transaction
-     */
-    public function commit() {
-        return $this->pdo->commit();
-    }
-    
-    /**
-     * Rollback transaction
-     */
-    public function rollback() {
-        return $this->pdo->rollBack();
+
+        return $this->conn;
     }
 }

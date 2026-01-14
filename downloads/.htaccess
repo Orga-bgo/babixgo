@@ -1,0 +1,5 @@
+# Block all direct access to downloads directory
+# Files should only be served through download.php
+
+Order Deny,Allow
+Deny from all

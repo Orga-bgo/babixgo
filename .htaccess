@@ -1,0 +1,11 @@
+# Main .htaccess file
+# General security and rewrite rules
+
+# Enable RewriteEngine
+RewriteEngine On
+
+# Prevent directory browsing
+Options -Indexes
+
+# Set default charset
+AddDefaultCharset UTF-8
