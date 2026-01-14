@@ -4,6 +4,42 @@
   fail_on_prepare_env_warning: true
   resources: NANO
   events:
-  - type: WEBHOOK
   - type: PUSH
+  targets:
+  - target: t_5019307924_ssh_w2_strato_hosting_2
+    type: SSH
+    name: 5019307924.ssh.w2.strato.hosting 2
+    host: 5019307924.ssh.w2.strato.hosting
+    path: /BGO
+    auth:
+      username: su39316
+      password: '!encrypted Dw1ldsHIRfGjfecaoNkwIcVEEARsCcDFLCaCdCkxaBA=.8E78I4J8YoQmnROVLjW4Fg=='
+  - target: strato
+    type: SSH
+    name: strato
+    host: 5019307924.ssh.w2.strato.hosting
+    path: ./BGO
+    auth:
+      username: su39316
+      password: '!encrypted Dw1ldsHIRfGjfecaoNkwIcVEEARsCcDFLCaCdCkxaBA=.8E78I4J8YoQmnROVLjW4Fg=='
+  - target: t_5019307924_ssh_w2_strato_hosting
+    type: SSH
+    name: 5019307924.ssh.w2.strato.hosting 2
+    host: 5019307924.ssh.w2.strato.hosting
+    auth:
+      username: su301142
+      password: '!encrypted rEBS6zhLYqOIH2v9wj6FAw==.8BEGIhXDEAKwoS/PQJlkDw=='
+  - target: t_5019307924_ssh_w2_strato_hosting_3
+    type: SSH
+    name: 5019307924.ssh.w2.strato.hosting 3
+    host: 5019307924.ssh.w2.strato.hosting
+    auth:
+      username: su301142
+      password: '!encrypted rEBS6zhLYqOIH2v9wj6FAw==.8BEGIhXDEAKwoS/PQJlkDw=='
   arch: ARM64
+  actions:
+  - action: Transfer files
+    type: TRANSFER
+    local_path: /
+    targets:
+    - strato
