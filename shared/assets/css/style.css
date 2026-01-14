@@ -238,7 +238,7 @@ h2:hover img.icon {
   h2 {
     gap: calc(8px * var(--zoom-scale));
   }
-
+  
   h2 img.icon {
     width: calc(24px * var(--zoom-scale));
     height: calc(24px * var(--zoom-scale));
@@ -562,10 +562,6 @@ small {
   cursor: pointer;
   transition: all .2s;
   font-family: inherit;
-  -webkit-tap-highlight-color: transparent;
-  touch-action: manipulation;
-  user-select: none;
-  -webkit-user-select: none;
 }
 
 .menu-dropdown-toggle:hover {
@@ -1068,7 +1064,7 @@ small {
     --font-size-h2: 1.35rem;
     --font-size-h3: 1.1rem;
   }
-
+  
   .header-logo {
     font-size: 20px;
   }
@@ -2920,11 +2916,11 @@ dialog::backdrop {
   .cookie-consent {
     padding: 16px;
   }
-
+  
   .cookie-buttons {
     flex-direction: column;
   }
-
+  
   .cookie-btn {
     width: 100%;
   }
@@ -3064,21 +3060,21 @@ dialog::backdrop {
     flex-direction: row;
     gap: 10px;
   }
-
+  
   .gallery__main {
     flex: 1;
     min-width: 0;
   }
-
+  
   .gallery__main-img {
     max-height: 180px;
   }
-
+  
   .gallery__thumbs-wrapper {
     width: 60px;
     flex-shrink: 0;
   }
-
+  
   .gallery__thumbs {
     display: flex;
     flex-direction: column;
@@ -3087,19 +3083,19 @@ dialog::backdrop {
     max-height: 150px;
     overflow: hidden;
   }
-
+  
   .gallery__thumb {
     width: 50px;
     height: 50px;
     flex-shrink: 0;
   }
-
+  
   .gallery__nav {
     display: flex;
     justify-content: center;
     gap: 8px;
   }
-
+  
   .gallery__nav-btn {
     background: var(--surface-2);
     border: 1px solid var(--stroke);
@@ -3113,12 +3109,12 @@ dialog::backdrop {
     color: var(--text-secondary);
     transition: background 0.2s, color 0.2s;
   }
-
+  
   .gallery__nav-btn:hover {
     background: var(--primary);
     color: var(--text-primary);
   }
-
+  
   .gallery__nav-btn svg {
     width: 12px;
     height: 12px;
@@ -3491,22 +3487,22 @@ dialog::backdrop {
     height: 40px;
     font-size: 18px;
   }
-
+  
   .slider-btn-prev {
     left: 8px;
   }
-
+  
   .slider-btn-next {
     right: 8px;
   }
-
+  
   .slider-counter {
     top: 8px;
     right: 8px;
     font-size: 11px;
     padding: 4px 10px;
   }
-
+  
   .slider-thumbnails {
     display: none;
   }
@@ -3685,7 +3681,7 @@ details[open] summary {
     font-size: 1.5rem;
     padding: 0.3rem 0.6rem;
   }
-
+  
 
   .reward-level {
     padding: 0.75rem;
