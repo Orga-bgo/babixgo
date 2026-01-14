@@ -89,7 +89,7 @@ class User {
      * @param int $userId The user ID to retrieve
      * @return array|false User data array or false if not found
      */
-    public function getUserById(int $userId) {
+    public function getUserById(int $userId): array|false {
         $query = "SELECT id, username, email, role, is_verified, description, friendship_link, created_at 
                   FROM " . $this->table_name . " 
                   WHERE id = :id 
