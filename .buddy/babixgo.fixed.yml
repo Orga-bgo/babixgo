@@ -1,0 +1,8 @@
+- pipeline: babixgo
+  refs:
+  - refs/heads/main
+  fail_on_prepare_env_warning: true
+  resources: NANO
+  events:
+  - type: WEBHOOK
+  arch: ARM64
