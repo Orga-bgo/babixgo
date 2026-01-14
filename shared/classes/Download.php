@@ -51,8 +51,11 @@ class Download {
             return false;
         }
 
+        $filename = basename($fullpath);
+        $filename = str_replace('"', '', $filename); // Remove quotes to prevent header injection
+        
         header('Content-Type: application/octet-stream');
-        header('Content-Disposition: attachment; filename="' . basename($fullpath) . '"');
+        header('Content-Disposition: attachment; filename="' . $filename . '"');
         header('Content-Length: ' . filesize($fullpath));
         readfile($fullpath);
         return true;
