@@ -11,8 +11,12 @@ require_once SHARED_PATH . 'config/database.php';
 require_once SHARED_PATH . 'config/session.php';
 require_once SHARED_PATH . 'config/autoload.php';
 
-// Get redirect parameter
+// Get redirect parameter and validate it (prevent open redirect vulnerability)
 $redirect = $_GET['redirect'] ?? '/user/';
+// Only allow internal paths (starting with / but not //)
+if (!str_starts_with($redirect, '/') || str_starts_with($redirect, '//') || str_contains($redirect, '://')) {
+    $redirect = '/user/';
+}
 
 // Redirect if already logged in
 if (User::isLoggedIn()) {

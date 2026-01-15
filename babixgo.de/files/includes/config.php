@@ -113,7 +113,9 @@ loadEnvFile();
 define('DB_HOST', getenv('DB_HOST') ?: 'localhost');
 define('DB_NAME', getenv('DB_NAME') ?: 'babixgo_files');
 define('DB_USER', getenv('DB_USER') ?: 'root');
-define('DB_PASS', getenv('DB_PASSWORT') ?: (getenv('DB_PASSWORD') ?: ''));
+// Support both DB_PASSWORT (German) and DB_PASSWORD (English)
+$dbPassword = getenv('DB_PASSWORT') ?: getenv('DB_PASSWORD') ?: '';
+define('DB_PASS', $dbPassword);
 define('DB_CHARSET', 'utf8mb4');
 
 // SMTP Configuration (Brevo) - Use environment variables

@@ -31,6 +31,12 @@ $password = $_POST['password'] ?? '';
 $rememberMe = isset($_POST['remember_me']) && $_POST['remember_me'] === '1';
 $redirect = $_POST['redirect'] ?? '/user/';
 
+// Validate redirect parameter (prevent open redirect vulnerability)
+// Only allow internal paths (starting with / but not //)
+if (!str_starts_with($redirect, '/') || str_starts_with($redirect, '//') || str_contains($redirect, '://')) {
+    $redirect = '/user/';
+}
+
 // Validation
 if (empty($identifier)) {
     echo json_encode(['success' => false, 'error' => 'Username or email is required']);
