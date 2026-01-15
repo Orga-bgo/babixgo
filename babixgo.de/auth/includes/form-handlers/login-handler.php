@@ -10,6 +10,7 @@ define('SHARED_PATH', BASE_PATH . 'shared/');
 require_once SHARED_PATH . 'config/database.php';
 require_once SHARED_PATH . 'config/session.php';
 require_once SHARED_PATH . 'config/autoload.php';
+require_once SHARED_PATH . 'partials/security.php';
 
 header('Content-Type: application/json');
 
@@ -29,6 +30,10 @@ if (!verifyCsrfToken($_POST['csrf_token'] ?? '')) {
 $identifier = trim($_POST['identifier'] ?? '');
 $password = $_POST['password'] ?? '';
 $rememberMe = isset($_POST['remember_me']) && $_POST['remember_me'] === '1';
+
+// Validate redirect parameter (prevent open redirect vulnerability)
+// Default to /index.php to preserve original behavior when no redirect is specified
+$redirect = validateRedirectUrl($_POST['redirect'] ?? '', '/index.php');
 
 // Validation
 if (empty($identifier)) {
@@ -68,7 +73,7 @@ try {
         echo json_encode([
             'success' => true,
             'message' => 'Login successful!',
-            'redirect' => '/index.php'
+            'redirect' => $redirect
         ]);
     } else {
         echo json_encode(['success' => false, 'error' => $result['error']]);
