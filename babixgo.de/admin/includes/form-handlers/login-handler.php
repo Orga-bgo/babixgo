@@ -4,7 +4,7 @@
  * Processes user login form submissions
  */
 
-define('BASE_PATH', dirname(__DIR__, 5) . '/');
+define('BASE_PATH', dirname(__DIR__, 3) . '/');
 define('SHARED_PATH', BASE_PATH . 'shared/');
 
 require_once SHARED_PATH . 'config/database.php';

@@ -3,12 +3,13 @@
  * Registration Page
  */
 
-define('BASE_PATH', dirname(__DIR__, 2) . '/');
+define('BASE_PATH', dirname(__DIR__) . '/');
 define('SHARED_PATH', BASE_PATH . 'shared/');
 
 require_once SHARED_PATH . 'config/database.php';
 require_once SHARED_PATH . 'config/session.php';
 require_once SHARED_PATH . 'config/autoload.php';
+require_once SHARED_PATH . 'partials/security.php';
 
 // Redirect if already logged in
 if (User::isLoggedIn()) {
@@ -24,14 +25,14 @@ $includeValidationJS = true;
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <?php require_once SHARED_PATH . 'partials/head-meta.php'; ?>
     <title><?= htmlspecialchars($pageTitle, ENT_QUOTES) ?></title>
-    <link rel="stylesheet" href="/shared/assets/css/style.css">
-    <link rel="stylesheet" href="/shared/assets/css/main.css">
+    <?php require_once SHARED_PATH . 'partials/head-links.php'; ?>
 </head>
 <body>
-    <?php require_once SHARED_PATH . 'partials/header.php'; ?>
+    <?php
+    require_once SHARED_PATH . 'partials/header.php';
+    ?>
     <div class="auth-container">
         <div class="auth-box">
             <h1>Create Account</h1>

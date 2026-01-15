@@ -3,7 +3,7 @@
  * Login Page
  */
 
-define('BASE_PATH', dirname(__DIR__, 2) . '/');
+define('BASE_PATH', dirname(__DIR__) . '/');
 define('SHARED_PATH', BASE_PATH . 'shared/');
 
 require_once SHARED_PATH . 'config/database.php';
@@ -27,6 +27,17 @@ $messageType = $_GET['type'] ?? 'info';
 // Page configuration
 $pageTitle = 'Login - babixgo.de';
 $currentPage = 'login';
+?>
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <?php require_once SHARED_PATH . 'partials/head-meta.php'; ?>
+  <title><?= htmlspecialchars($pageTitle) ?></title>
+  <?php require_once SHARED_PATH . 'partials/head-links.php'; ?>
+</head>
+<body>
+<?php
+require_once SHARED_PATH . 'partials/header.php';
 ?>
 <!DOCTYPE html>
 <html lang="de">
@@ -137,8 +148,10 @@ $currentPage = 'login';
     }
 </script>
 
-<?php require_once SHARED_PATH . 'partials/footer.php'; ?>
-
-<script src="/shared/assets/js/main.js"></script>
+<?php
+// Include footer with validation JS
+$includeValidationJS = true;
+require_once SHARED_PATH . 'partials/footer.php';
+?>
 </body>
 </html>
