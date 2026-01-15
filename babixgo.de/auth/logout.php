@@ -19,5 +19,5 @@ if (isset($_COOKIE['remember_me'])) {
 }
 
 // Redirect to login page
-header('Location: /auth/login?message=' . urlencode('You have been logged out successfully') . '&type=success');
+header('Location: /auth/login?message=' . urlencode('Du wurdest erfolgreich abgemeldet') . '&type=success');
 exit;
