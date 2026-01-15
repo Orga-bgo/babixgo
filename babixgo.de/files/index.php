@@ -10,122 +10,89 @@ initSession();
 
 // Get all categories with download count
 $categories = getCategories();
-$pageTitle = 'Home';
 ?>
 <!DOCTYPE html>
 <html lang="de">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Download-Portal der BabixGO Community - Kostenlose Downloads und Tools">
-    <meta name="theme-color" content="#A0D8FA">
-    
-    <!-- Open Graph -->
-    <meta property="og:title" content="<?php echo e(SITE_NAME); ?> - Download Portal">
-    <meta property="og:description" content="Download-Portal der BabixGO Community">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="<?php echo e(SITE_URL); ?>">
-    
-    <title><?php echo e($pageTitle); ?> - <?php echo e(SITE_NAME); ?></title>
-    
-    <!-- PWA -->
-    <link rel="manifest" href="/manifest.json">
-    <link rel="apple-touch-icon" href="/assets/icons/icon-192.png">
-    
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
-    
-    <!-- Styles -->
-    <link rel="stylesheet" href="/assets/css/style.css">
-    <link rel="stylesheet" href="/assets/css/header-simple.css">
-    <link rel="stylesheet" href="/assets/css/cookie-banner.css">
-    
-    <!-- Google Analytics Tracking Configuration -->
-    <?php include SHARED_PATH . 'partials/tracking.php'; ?>
+  <?php require $_SERVER['DOCUMENT_ROOT'] . '/shared/partials/head-meta.php'; ?>
+
+  <title>Downloads - babixGO Files</title>
+  <meta name="description" content="Download-Portal der BabixGO Community - Kostenlose Downloads, Apps und Tools für Monopoly GO." />
+  <link rel="canonical" href="https://babixgo.de/files/" />
+
+  <meta property="og:title" content="Downloads - babixGO Files" />
+  <meta property="og:description" content="Download-Portal der BabixGO Community - Kostenlose Downloads, Apps und Tools für Monopoly GO." />
+  <meta property="og:url" content="https://babixgo.de/files/" />
+
+  <meta name="twitter:title" content="Downloads - babixGO Files" />
+  <meta name="twitter:description" content="Download-Portal der BabixGO Community - Kostenlose Downloads, Apps und Tools für Monopoly GO." />
+
+  <?php require $_SERVER['DOCUMENT_ROOT'] . '/shared/partials/head-links.php'; ?>
 </head>
+
 <body>
-    <?php include SHARED_PATH . 'partials/header.php'; ?>
+  <?php require $_SERVER['DOCUMENT_ROOT'] . '/shared/partials/tracking.php'; ?>
+  <?php require $_SERVER['DOCUMENT_ROOT'] . '/shared/partials/cookie-banner.php'; ?>
+  <?php require $_SERVER['DOCUMENT_ROOT'] . '/shared/partials/header.php'; ?>
 
-    <!-- Main Content -->
-    <main class="main-content">
-        <div class="container">
-            
-            <!-- Hero Section -->
-            <section class="hero-section">
-                <h1>BabixGO <span class="logo-go">Files</span></h1>
-                <p class="hero-description">Download-Portal für die BabixGO Community</p>
-            </section>
+  <main id="main-content">
+    <div class="box">
 
-            <!-- Kategorien Grid -->
-            <section class="categories-section">
-                <h2>
-                    📁 Kategorien
-                </h2>
-                
-                <?php if (isset($_GET['success'])): ?>
-                    <div class="alert alert-success" data-dismiss="5000">
-                        <?php echo e($_GET['success']); ?>
-                    </div>
-                <?php endif; ?>
-                
-                <?php if (isset($_GET['error'])): ?>
-                    <div class="alert alert-error" data-dismiss="5000">
-                        <?php echo e($_GET['error']); ?>
-                    </div>
-                <?php endif; ?>
-                
-                <div class="categories-grid">
-                    <?php foreach($categories as $category): ?>
-                    <div class="category-card">
-                        <div class="category-icon">
-                            <?php if($category['icon']): ?>
-                                <img src="<?= e($category['icon']) ?>" alt="">
-                            <?php else: ?>
-                                📁
-                            <?php endif; ?>
-                        </div>
-                        
-                        <h3><?= e($category['name']) ?></h3>
-                        
-                        <p class="category-description">
-                            <?= e($category['description']) ?>
-                        </p>
-                        
-                        <div class="category-meta">
-                            <span><?= $category['download_count'] ?> Download<?= $category['download_count'] != 1 ? 's' : '' ?></span>
-                        </div>
-                        
-                        <a href="/kategorie/<?= e($category['slug']) ?>" class="btn btn-primary btn-category">
-                            Zu den Downloads
-                        </a>
-                    </div>
-                    <?php endforeach; ?>
-                </div>
-            </section>
+      <!-- Hero Section -->
+      <div class="section-card">
+        <h1 class="welcome-title">babixGO <span class="logo-go">Files</span></h1>
+        <p class="intro-text">
+          Download-Portal für die BabixGO Community. Hier findest du alle Apps, Tools und Scripts.
+        </p>
+      </div>
 
+      <?php if (isset($_GET['success'])): ?>
+        <div class="notice-box notice-box--success u-mt-16">
+          <span class="notice-box__icon">✓</span>
+          <p class="notice-box__text"><?php echo e($_GET['success']); ?></p>
         </div>
-    </main>
+      <?php endif; ?>
+      
+      <?php if (isset($_GET['error'])): ?>
+        <div class="notice-box notice-box--error u-mt-16">
+          <span class="notice-box__icon">!</span>
+          <p class="notice-box__text"><?php echo e($_GET['error']); ?></p>
+        </div>
+      <?php endif; ?>
 
-    <!-- Footer -->
-    <footer class="site-footer">
-        <div class="footer-inner">
-            <div class="footer-links">
-                <a href="/">BabixGO</a>
-                <a href="/impressum">Impressum</a>
-                <a href="/datenschutz">Datenschutz</a>
+      <!-- Kategorien Section -->
+      <div class="section-header">
+        <h2><img src="/assets/material-symbols/download.svg" class="icon icon-service" alt="" width="48" height="48">Kategorien</h2>
+      </div>
+
+      <?php if (empty($categories)): ?>
+        <div class="section-card">
+          <p class="text-muted">Noch keine Kategorien vorhanden.</p>
+        </div>
+      <?php else: ?>
+        <?php foreach($categories as $category): ?>
+        <div class="content-card">
+          <div class="content-card-header">
+            <div class="content-card-title">
+              <h3><?php if($category['icon']): ?><?= $category['icon'] ?> <?php endif; ?><?= e($category['name']) ?></h3>
             </div>
-            <p>&copy; <?php echo date('Y'); ?> <?php echo e(SITE_NAME); ?>. Alle Rechte vorbehalten.</p>
+            <a href="/files/kategorie/<?= e($category['slug']) ?>/" class="btn btn-link">Öffnen</a>
+          </div>
+          <p class="content-card-description">
+            <?= e($category['description']) ?>
+          </p>
+          <div class="info-line">
+            <span class="info-line-label">Downloads</span>
+            <span class="info-line-value"><?= $category['download_count'] ?></span>
+          </div>
         </div>
-    </footer>
+        <?php endforeach; ?>
+      <?php endif; ?>
 
-    <!-- Cookie Consent Banner -->
-    <?php include SHARED_PATH . 'partials/cookie-banner.php'; ?>
+    </div>
+  </main>
 
-    <!-- Scripts -->
-    <script src="/assets/js/header.js"></script>
-    <script src="/assets/js/app.js"></script>
-    <script src="/assets/js/cookie-consent.js"></script>
+  <?php require $_SERVER['DOCUMENT_ROOT'] . '/shared/partials/footer.php'; ?>
+  <?php require $_SERVER['DOCUMENT_ROOT'] . '/shared/partials/scripts.php'; ?>
 </body>
 </html>
