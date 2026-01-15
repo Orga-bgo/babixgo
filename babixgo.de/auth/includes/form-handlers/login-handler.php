@@ -29,6 +29,7 @@ if (!verifyCsrfToken($_POST['csrf_token'] ?? '')) {
 $identifier = trim($_POST['identifier'] ?? '');
 $password = $_POST['password'] ?? '';
 $rememberMe = isset($_POST['remember_me']) && $_POST['remember_me'] === '1';
+$redirect = $_POST['redirect'] ?? '/user/';
 
 // Validation
 if (empty($identifier)) {
@@ -68,7 +69,7 @@ try {
         echo json_encode([
             'success' => true,
             'message' => 'Login successful!',
-            'redirect' => '/index.php'
+            'redirect' => $redirect
         ]);
     } else {
         echo json_encode(['success' => false, 'error' => $result['error']]);

@@ -11,9 +11,12 @@ require_once SHARED_PATH . 'config/database.php';
 require_once SHARED_PATH . 'config/session.php';
 require_once SHARED_PATH . 'config/autoload.php';
 
+// Get redirect parameter
+$redirect = $_GET['redirect'] ?? '/user/';
+
 // Redirect if already logged in
 if (User::isLoggedIn()) {
-    header('Location: /user/');
+    header('Location: ' . $redirect);
     exit;
 }
 
@@ -44,6 +47,7 @@ require_once SHARED_PATH . 'partials/nav.php';
         
         <form id="login-form" method="POST" novalidate>
             <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(getCsrfToken(), ENT_QUOTES) ?>">
+            <input type="hidden" name="redirect" value="<?= htmlspecialchars($redirect, ENT_QUOTES) ?>">
             
             <div class="form-group">
                 <label for="identifier">Username or Email</label>

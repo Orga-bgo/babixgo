@@ -51,7 +51,7 @@ function loadEnvFile() {
     // Allowlist of expected environment variable keys for security
     // Only includes variables that are set by the deployment workflow
     $allowedKeys = [
-        'DB_HOST', 'DB_NAME', 'DB_USER', 'DB_PASSWORD',
+        'DB_HOST', 'DB_NAME', 'DB_USER', 'DB_PASSWORD', 'DB_PASSWORT',
         'SMTP_HOST', 'SMTP_PORT', 'SMTP_USER', 'SMTP_KEY'
     ];
     
@@ -112,7 +112,7 @@ loadEnvFile();
 define('DB_HOST', getenv('DB_HOST') ?: 'localhost');
 define('DB_NAME', getenv('DB_NAME') ?: 'babixgo_files');
 define('DB_USER', getenv('DB_USER') ?: 'root');
-define('DB_PASS', getenv('DB_PASSWORD') ?: '');
+define('DB_PASS', getenv('DB_PASSWORT') ?: (getenv('DB_PASSWORD') ?: ''));
 define('DB_CHARSET', 'utf8mb4');
 
 // SMTP Configuration (Brevo) - Use environment variables
