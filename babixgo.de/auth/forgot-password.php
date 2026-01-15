@@ -9,6 +9,7 @@ define('SHARED_PATH', BASE_PATH . 'shared/');
 require_once SHARED_PATH . 'config/database.php';
 require_once SHARED_PATH . 'config/session.php';
 require_once SHARED_PATH . 'config/autoload.php';
+require_once SHARED_PATH . 'partials/security.php';
 require_once __DIR__ . '/includes/mail-helper.php';
 
 // Handle form submission

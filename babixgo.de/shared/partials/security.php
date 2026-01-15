@@ -23,4 +23,26 @@ function validateRedirectUrl($redirect, $default = '/user/') {
     
     return $redirect;
 }
+
+/**
+ * Generate a CSRF token for forms
+ * 
+ * @return string The CSRF token
+ */
+function getCsrfToken() {
+    if (!isset($_SESSION['csrf_token'])) {
+        $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+    }
+    return $_SESSION['csrf_token'];
+}
+
+/**
+ * Verify a CSRF token
+ * 
+ * @param string $token The token to verify
+ * @return bool True if valid, false otherwise
+ */
+function verifyCsrfToken($token) {
+    return isset($_SESSION['csrf_token']) && hash_equals($_SESSION['csrf_token'], $token);
+}
 ?>
