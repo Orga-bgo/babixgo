@@ -32,8 +32,11 @@ $rememberMe = isset($_POST['remember_me']) && $_POST['remember_me'] === '1';
 $redirect = $_POST['redirect'] ?? '/user/';
 
 // Validate redirect parameter (prevent open redirect vulnerability)
-// Only allow internal paths (starting with / but not //)
-if (!str_starts_with($redirect, '/') || str_starts_with($redirect, '//') || str_contains($redirect, '://')) {
+// Only allow internal paths: must start with / (but not //), and contain only safe characters
+if (!str_starts_with($redirect, '/') || 
+    str_starts_with($redirect, '//') || 
+    str_contains($redirect, '://') ||
+    !preg_match('#^/[a-zA-Z0-9/_\-\.?&=]*$#', $redirect)) {
     $redirect = '/user/';
 }
 

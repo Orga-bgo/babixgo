@@ -13,8 +13,11 @@ require_once SHARED_PATH . 'config/autoload.php';
 
 // Get redirect parameter and validate it (prevent open redirect vulnerability)
 $redirect = $_GET['redirect'] ?? '/user/';
-// Only allow internal paths (starting with / but not //)
-if (!str_starts_with($redirect, '/') || str_starts_with($redirect, '//') || str_contains($redirect, '://')) {
+// Only allow internal paths: must start with / (but not //), and contain only safe characters
+if (!str_starts_with($redirect, '/') || 
+    str_starts_with($redirect, '//') || 
+    str_contains($redirect, '://') ||
+    !preg_match('#^/[a-zA-Z0-9/_\-\.?&=]*$#', $redirect)) {
     $redirect = '/user/';
 }
 

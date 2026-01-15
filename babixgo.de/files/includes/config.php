@@ -19,7 +19,7 @@ if (!defined('SITE_ROOT')) {
 function loadEnvFile() {
     // Check both possible locations
     $envPaths = [
-        dirname(__DIR__, 3) . '/.env',  // Repository root (../../.env from files/includes)
+        dirname(__DIR__, 3) . '/.env',  // Repository root (3 levels up from files/includes)
         dirname(__DIR__) . '/.env',     // Parent directory (production: web root)
         __DIR__ . '/.env'               // includes/.env (alternative location)
     ];
