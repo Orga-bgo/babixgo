@@ -11,33 +11,40 @@ if ($uri === '/') {
 }
 
 if (is_file($file)) {
-    $ext = pathinfo($file, PATHINFO_EXTENSION);
+    $ext = strtolower(pathinfo($file, PATHINFO_EXTENSION));
     
     $mimeTypes = [
-        'css'  => 'text/css',
-        'js'   => 'application/javascript',
-        'json' => 'application/json',
-        'png'  => 'image/png',
-        'jpg'  => 'image/jpeg',
-        'jpeg' => 'image/jpeg',
-        'gif'  => 'image/gif',
-        'svg'  => 'image/svg+xml',
-        'webp' => 'image/webp',
-        'ico'  => 'image/x-icon',
-        'woff' => 'font/woff',
+        'css'   => 'text/css',
+        'js'    => 'application/javascript',
+        'json'  => 'application/json',
+        'png'   => 'image/png',
+        'jpg'   => 'image/jpeg',
+        'jpeg'  => 'image/jpeg',
+        'gif'   => 'image/gif',
+        'svg'   => 'image/svg+xml',
+        'webp'  => 'image/webp',
+        'ico'   => 'image/x-icon',
+        'woff'  => 'font/woff',
         'woff2' => 'font/woff2',
-        'ttf'  => 'font/ttf',
-        'eot'  => 'application/vnd.ms-fontobject',
+        'ttf'   => 'font/ttf',
+        'eot'   => 'application/vnd.ms-fontobject',
+        'html'  => 'text/html',
+        'htm'   => 'text/html',
+        'xml'   => 'application/xml',
+        'txt'   => 'text/plain',
+        'mp4'   => 'video/mp4',
+        'webm'  => 'video/webm',
+        'pdf'   => 'application/pdf',
     ];
+    
+    if ($ext === 'php') {
+        include $file;
+        return true;
+    }
     
     if (isset($mimeTypes[$ext])) {
         header('Content-Type: ' . $mimeTypes[$ext]);
         readfile($file);
-        return true;
-    }
-    
-    if ($ext === 'php') {
-        include $file;
         return true;
     }
     
@@ -52,12 +59,14 @@ if (is_dir($file)) {
     }
     $indexHtml = rtrim($file, '/') . '/index.html';
     if (file_exists($indexHtml)) {
+        header('Content-Type: text/html');
         readfile($indexHtml);
         return true;
     }
 }
 
 http_response_code(404);
+error_log("404 Not Found: " . $uri);
 $notFoundFile = __DIR__ . '/404.php';
 if (file_exists($notFoundFile)) {
     include $notFoundFile;
