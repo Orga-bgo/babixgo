@@ -38,6 +38,11 @@
     <a href="/downloads/">Downloads</a>
     <a href="/kontakt/">Kontakt</a>
     
+    <div class="menu-auth">
+      <a href="/auth/login" class="btn-auth btn-login">Login</a>
+      <a href="/auth/register" class="btn-auth btn-register">Registrieren</a>
+    </div>
+    
     <div class="menu-social">
       <a href="https://wa.me/4915223842897" target="_blank" rel="noopener" class="whatsapp">
         <img src="/assets/icons/whatsapp_schriftzug.svg" class="menu-social-icon" alt="Kontakt via WhatsApp" width="150" height="35">

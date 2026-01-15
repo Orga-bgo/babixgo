@@ -541,6 +541,50 @@ small {
   color: var(--brand-facebook);
 }
 
+/* ===== AUTH BUTTONS ===== */
+.menu-auth {
+  display: flex;
+  gap: 12px;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--stroke);
+}
+
+.btn-auth {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 20px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all .2s;
+}
+
+.btn-login {
+  background: var(--surface-1);
+  color: var(--text);
+  border: 1px solid var(--stroke);
+}
+
+.btn-login:hover {
+  background: var(--card);
+  color: var(--primary);
+  transform: translateY(-2px);
+}
+
+.btn-register {
+  background: var(--primary);
+  color: #fff;
+}
+
+.btn-register:hover {
+  background: var(--primary-hover);
+  transform: translateY(-2px);
+}
+
 /* ===== DROPDOWN MENU ===== */
 .menu-dropdown {
   position: relative;
