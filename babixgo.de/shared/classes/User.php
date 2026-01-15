@@ -38,25 +38,54 @@ class User {
         return $stmt->execute();
     }
 
-    public function login() {
-        $query = "SELECT id, username, email, password 
+    public function login($identifier = null, $password = null) {
+        if ($identifier !== null) {
+            $this->email = $identifier;
+        }
+        if ($password !== null) {
+            $this->password = $password;
+        }
+        
+        $query = "SELECT id, username, email, password_hash, role, is_verified 
                   FROM " . $this->table_name . " 
-                  WHERE email = :email 
+                  WHERE email = :email OR username = :username
                   LIMIT 1";
 
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(":email", $this->email);
+        $stmt->bindParam(":username", $this->email);
         $stmt->execute();
 
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        if($row && password_verify($this->password, $row['password'])) {
-            $this->id = $row['id'];
-            $this->username = $row['username'];
-            return true;
+        if (!$row) {
+            return ['success' => false, 'error' => 'User not found'];
         }
 
-        return false;
+        if (!password_verify($this->password, $row['password_hash'])) {
+            return ['success' => false, 'error' => 'Invalid password'];
+        }
+
+        $this->id = $row['id'];
+        $this->username = $row['username'];
+        
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+        $_SESSION['user_id'] = $row['id'];
+        $_SESSION['username'] = $row['username'];
+        $_SESSION['email'] = $row['email'];
+        $_SESSION['role'] = $row['role'];
+        
+        return [
+            'success' => true,
+            'user' => [
+                'id' => $row['id'],
+                'username' => $row['username'],
+                'email' => $row['email'],
+                'role' => $row['role']
+            ]
+        ];
     }
 
     /**
