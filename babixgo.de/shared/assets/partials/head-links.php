@@ -1,4 +1,4 @@
-<?php require_once $_SERVER['DOCUMENT_ROOT'] . '/partials/version.php'; ?>
+<?php require_once __DIR__ . '/version.php'; ?>
 <link rel="dns-prefetch" href="//fonts.googleapis.com" />
 <link rel="dns-prefetch" href="//fonts.gstatic.com" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
