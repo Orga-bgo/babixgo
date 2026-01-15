@@ -65,6 +65,24 @@ if (is_dir($file)) {
     }
 }
 
+$uriWithoutSlash = rtrim($uri, '/');
+$phpFile = __DIR__ . $uriWithoutSlash . '.php';
+if (is_file($phpFile)) {
+    include $phpFile;
+    return true;
+}
+
+$parts = explode('/', trim($uri, '/'));
+if (count($parts) >= 2) {
+    $dir = __DIR__ . '/' . $parts[0];
+    $subFile = $parts[1];
+    $phpPath = $dir . '/' . $subFile . '.php';
+    if (is_file($phpPath)) {
+        include $phpPath;
+        return true;
+    }
+}
+
 http_response_code(404);
 error_log("404 Not Found: " . $uri);
 $notFoundFile = __DIR__ . '/404.php';
