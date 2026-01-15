@@ -1,37 +1,91 @@
 <?php
 
 /**
- * Database connection class
+ * Database connection class (Singleton)
  */
 class Database {
-    private $host;
-    private $db_name;
-    private $username;
-    private $password;
+    private static $instance = null;
     private $conn;
 
-    public function __construct() {
+    private function __construct() {
         $config = require(__DIR__ . '/../config/database.php');
-        $this->host = $config['host'];
-        $this->db_name = $config['database'];
-        $this->username = $config['username'];
-        $this->password = $config['password'];
-    }
-
-    public function getConnection() {
-        $this->conn = null;
-
+        
         try {
             $this->conn = new PDO(
-                "mysql:host=" . $this->host . ";dbname=" . $this->db_name . ";charset=utf8mb4",
-                $this->username,
-                $this->password
+                "mysql:host=" . $config['host'] . ";dbname=" . $config['database'] . ";charset=utf8mb4",
+                $config['username'],
+                $config['password']
             );
             $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch(PDOException $e) {
-            echo "Connection Error: " . $e->getMessage();
+            error_log("Database Connection Error: " . $e->getMessage());
+            throw new Exception("Database connection failed");
         }
+    }
 
+    /**
+     * Get singleton instance
+     */
+    public static function getInstance() {
+        if (self::$instance === null) {
+            self::$instance = new self();
+        }
+        return self::$instance;
+    }
+
+    /**
+     * Get PDO connection
+     */
+    public function getConnection() {
         return $this->conn;
+    }
+
+    /**
+     * Execute a query with parameters
+     */
+    public function query($sql, $params = []) {
+        try {
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute($params);
+            return $stmt;
+        } catch (PDOException $e) {
+            error_log("Database query error: " . $e->getMessage() . " | SQL: " . $sql);
+            throw new Exception("Database query failed: " . $e->getMessage());
+        }
+    }
+
+    /**
+     * Fetch a single row
+     */
+    public function fetchOne($sql, $params = []) {
+        $stmt = $this->query($sql, $params);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * Fetch all rows
+     */
+    public function fetchAll($sql, $params = []) {
+        $stmt = $this->query($sql, $params);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * Get last insert ID
+     */
+    public function lastInsertId() {
+        return $this->conn->lastInsertId();
+    }
+
+    /**
+     * Prevent cloning of the instance
+     */
+    private function __clone() {}
+
+    /**
+     * Prevent unserializing of the instance
+     */
+    public function __wakeup() {
+        throw new Exception("Cannot unserialize singleton");
     }
 }

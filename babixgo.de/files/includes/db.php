@@ -13,17 +13,23 @@ function getDB(): mysqli {
     static $db = null;
     
     if ($db === null) {
-        $db = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
-        
-        if ($db->connect_error) {
+        try {
+            $db = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
+            
+            if ($db->connect_error) {
+                throw new Exception('Database connection failed: ' . $db->connect_error);
+            }
+            
+            $db->set_charset(DB_CHARSET);
+        } catch (Exception $e) {
             if (DEBUG_MODE) {
-                die('Database connection failed: ' . $db->connect_error);
+                die('Database connection failed: ' . $e->getMessage());
             } else {
+                // Log the error but show user-friendly message
+                error_log('Database connection error: ' . $e->getMessage());
                 die('Database connection failed. Please try again later.');
             }
         }
-        
-        $db->set_charset(DB_CHARSET);
     }
     
     return $db;
