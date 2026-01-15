@@ -225,11 +225,12 @@ define('SHARED_ASSETS_PATH', '../../../shared/assets/');
 
 ### Main.css includes:
 - Navigation (`.main-nav`, `.nav-menu`, `.logo`)
-- Forms (`.form-group`, `.btn`, `.form-control`)
-- Messages (`.message`, `.message-success`, `.message-error`)
-- Containers (`.container`, `.auth-container`, `.auth-box`)
-- Cards (`.profile-card`, `.profile-grid`, `.profile-header`)
-- Badges (`.badge`, `.badge-admin`, `.badge-success`, etc.)
+- Forms (`.form-group`, `.btn`, `.form-control`, `.form-input`, `.form-textarea`)
+- Auth Pages (`.auth-container`, `.auth-box`, `.auth-footer`, `.subtitle`, `.error-message`, `.hint`, `.checkbox-group`)
+- Messages (`.message`, `.message-success`, `.message-error`, `.message-info`, `.message-warning`)
+- Containers (`.container`, `.box`, `.section-card`)
+- Cards (`.profile-card`, `.profile-grid`, `.profile-header`, `.content-card`)
+- Badges (`.badge`, `.badge-admin`, `.badge-success`, `.badge-warning`)
 - Responsive utilities
 
 ### Admin.css includes:
