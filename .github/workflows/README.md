@@ -29,7 +29,7 @@ Die folgenden Secrets müssen in den GitHub Repository Settings konfiguriert wer
 - `DB_HOST` - Datenbank Host
 - `DB_NAME` - Datenbank Name
 - `DB_USER` - Datenbank Benutzer
-- `DB_PASSWORD` - Datenbank Passwort
+- `DB_PASSWORD` - Datenbank Passwort (wird als DB_PASSWORT in .env gespeichert)
 
 #### SMTP Konfiguration
 - `SMTP_HOST` - SMTP Server
