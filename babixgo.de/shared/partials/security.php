@@ -5,6 +5,41 @@
  */
 
 /**
+ * Generate or retrieve CSRF token
+ * 
+ * @return string The CSRF token
+ */
+function getCsrfToken() {
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+    
+    if (empty($_SESSION['csrf_token'])) {
+        $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+    }
+    
+    return $_SESSION['csrf_token'];
+}
+
+/**
+ * Validate CSRF token
+ * 
+ * @param string $token The token to validate
+ * @return bool True if valid, false otherwise
+ */
+function validateCsrfToken($token) {
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+    
+    if (empty($_SESSION['csrf_token']) || empty($token)) {
+        return false;
+    }
+    
+    return hash_equals($_SESSION['csrf_token'], $token);
+}
+
+/**
  * Validate and sanitize a redirect URL to prevent open redirect vulnerabilities
  * 
  * @param string $redirect The redirect URL to validate
