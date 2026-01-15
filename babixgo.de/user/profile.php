@@ -31,7 +31,7 @@ $currentPage = 'profile';
     <link rel="stylesheet" href="/shared/assets/css/main.css">
 </head>
 <body>
-    <?php require_once SHARED_PATH . 'assets/partials/header.php'; ?>
+    <?php require_once SHARED_PATH . 'partials/header.php'; ?>
     
     <div class="container">
         <div class="profile-header">
@@ -64,7 +64,7 @@ $currentPage = 'profile';
                     <label>Description:</label>
                     <p><?= $userData['description'] ? htmlspecialchars($userData['description'], ENT_QUOTES) : '<em>No description set</em>' ?></p>
                 </div>
-                <a href="/edit-profile.php" class="btn btn-primary">Edit Profile</a>
+                <a href="/user/edit-profile" class="btn btn-primary">Edit Profile</a>
             </div>
             
             <div class="profile-card">
@@ -107,7 +107,7 @@ $currentPage = 'profile';
         </div>
     </div>
     
-    <?php require_once SHARED_PATH . 'assets/partials/footer.php'; ?>
+    <?php require_once SHARED_PATH . 'partials/footer.php'; ?>
     <script src="/shared/assets/js/main.js"></script>
     <script>
         function copyFriendshipLink() {

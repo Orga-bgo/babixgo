@@ -323,7 +323,7 @@ function clearFailedLogins(): void {
  */
 function requireLogin(): void {
     if (!isLoggedIn()) {
-        header('Location: /login.php?redirect=' . urlencode($_SERVER['REQUEST_URI']));
+        header('Location: /auth/login?redirect=' . urlencode($_SERVER['REQUEST_URI']));
         exit;
     }
 }

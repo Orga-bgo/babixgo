@@ -154,7 +154,7 @@ $comments = $comment->getAll($statusFilter, null, $perPage, $offset);
             formData.append('status', status);
             
             try {
-                const response = await fetch('/includes/form-handlers/admin-handlers.php', {
+                const response = await fetch('/admin/includes/form-handlers/admin-handlers.php', {
                     method: 'POST',
                     body: formData
                 });
@@ -183,7 +183,7 @@ $comments = $comment->getAll($statusFilter, null, $perPage, $offset);
             formData.append('comment_id', commentId);
             
             try {
-                const response = await fetch('/includes/form-handlers/admin-handlers.php', {
+                const response = await fetch('/admin/includes/form-handlers/admin-handlers.php', {
                     method: 'POST',
                     body: formData
                 });
@@ -214,7 +214,7 @@ $comments = $comment->getAll($statusFilter, null, $perPage, $offset);
             formData.append('comment_ids', JSON.stringify(selected));
             
             try {
-                const response = await fetch('/includes/form-handlers/admin-handlers.php', {
+                const response = await fetch('/admin/includes/form-handlers/admin-handlers.php', {
                     method: 'POST',
                     body: formData
                 });
@@ -249,7 +249,7 @@ $comments = $comment->getAll($statusFilter, null, $perPage, $offset);
             formData.append('comment_ids', JSON.stringify(selected));
             
             try {
-                const response = await fetch('/includes/form-handlers/admin-handlers.php', {
+                const response = await fetch('/admin/includes/form-handlers/admin-handlers.php', {
                     method: 'POST',
                     body: formData
                 });

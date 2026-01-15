@@ -22,7 +22,7 @@ $currentPage = 'edit-profile';
     <link rel="stylesheet" href="/shared/assets/css/main.css">
 </head>
 <body>
-    <?php require_once SHARED_PATH . 'assets/partials/header.php'; ?>
+    <?php require_once SHARED_PATH . 'partials/header.php'; ?>
     
     <div class="container">
         <h1>Edit Profile</h1>
@@ -130,7 +130,7 @@ $currentPage = 'edit-profile';
                         form.reset();
                     }
                     if (form.id === 'profile-form') {
-                        setTimeout(() => window.location.href = '/', 2000);
+                        setTimeout(() => window.location.href = '/user/', 2000);
                     }
                 } else {
                     if (result.errors) {
@@ -146,12 +146,12 @@ $currentPage = 'edit-profile';
         
         document.getElementById('profile-form').addEventListener('submit', async (e) => {
             e.preventDefault();
-            await handleFormSubmit(e.target, '/includes/form-handlers/profile-handler.php');
+            await handleFormSubmit(e.target, '/auth/includes/form-handlers/profile-handler.php');
         });
         
         document.getElementById('password-form').addEventListener('submit', async (e) => {
             e.preventDefault();
-            await handleFormSubmit(e.target, '/includes/form-handlers/profile-handler.php');
+            await handleFormSubmit(e.target, '/auth/includes/form-handlers/profile-handler.php');
         });
         
         function showMessage(message, type) {
@@ -167,7 +167,7 @@ $currentPage = 'edit-profile';
         }
     </script>
     
-    <?php require_once SHARED_PATH . 'assets/partials/footer.php'; ?>
+    <?php require_once SHARED_PATH . 'partials/footer.php'; ?>
     <script src="/shared/assets/js/main.js"></script>
 </body>
 </html>
