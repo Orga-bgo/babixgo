@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <?php require $_SERVER['DOCUMENT_ROOT'] . '/shared/partials/head-meta.php'; ?>
+  <?php require dirname($_SERVER['DOCUMENT_ROOT']) . '/shared/partials/head-meta.php'; ?>
 
   <title>Würfel für deinen Monopoly GO-Account | BabixGO</title>
   <meta name="description" content="So bekommst du mehr Würfel in Monopoly GO: Voraussetzungen, Ablauf, sichere Methoden und Preise auf einen Blick." />
@@ -14,19 +14,19 @@
   <meta name="twitter:title" content="Würfel für deinen Monopoly GO-Account | BabixGO" />
   <meta name="twitter:description" content="So bekommst du mehr Würfel in Monopoly GO: Voraussetzungen, Ablauf, sichere Methoden und Preise auf einen Blick." />
 
-  <?php require $_SERVER['DOCUMENT_ROOT'] . '/shared/partials/head-links.php'; ?>
+  <?php require dirname($_SERVER['DOCUMENT_ROOT']) . '/shared/partials/head-links.php'; ?>
 
   <!-- Structured Data -->
   <?php
     $structured_data_files = ['organization.json', 'website.json', 'faq-wuerfel.json'];
-    require $_SERVER['DOCUMENT_ROOT'] . '/shared/partials/structured-data.php';
+    require dirname($_SERVER['DOCUMENT_ROOT']) . '/shared/partials/structured-data.php';
   ?>
 </head>
 
 <body>
-  <?php require $_SERVER['DOCUMENT_ROOT'] . '/shared/partials/tracking.php'; ?>
-  <?php require $_SERVER['DOCUMENT_ROOT'] . '/shared/partials/cookie-banner.php'; ?>
-  <?php require $_SERVER['DOCUMENT_ROOT'] . '/shared/partials/header.php'; ?>
+  <?php require dirname($_SERVER['DOCUMENT_ROOT']) . '/shared/partials/tracking.php'; ?>
+  <?php require dirname($_SERVER['DOCUMENT_ROOT']) . '/shared/partials/cookie-banner.php'; ?>
+  <?php require dirname($_SERVER['DOCUMENT_ROOT']) . '/shared/partials/header.php'; ?>
 
   <main id="main-content">
     <div class="box">
@@ -292,7 +292,7 @@
     </div>
   </main>
 
-  <?php require $_SERVER['DOCUMENT_ROOT'] . '/shared/partials/footer.php'; ?>
-  <?php require $_SERVER['DOCUMENT_ROOT'] . '/shared/partials/footer-scripts.php'; ?>
+  <?php require dirname($_SERVER['DOCUMENT_ROOT']) . '/shared/partials/footer.php'; ?>
+  <?php require dirname($_SERVER['DOCUMENT_ROOT']) . '/shared/partials/footer-scripts.php'; ?>
 </body>
 </html>

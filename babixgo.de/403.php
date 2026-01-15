@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
   <?php define('BABIXGO_ROBOTS_OVERRIDE', true); ?>
-  <?php require $_SERVER['DOCUMENT_ROOT'] . '/shared/partials/head-meta.php'; ?>
+  <?php require dirname($_SERVER['DOCUMENT_ROOT']) . '/shared/partials/head-meta.php'; ?>
 
   <title>403 - Zugriff verweigert | babixGO</title>
   <meta name="description" content="Zugriff auf diese Ressource nicht erlaubt. Zurück zur babixGO Startseite." />
@@ -13,13 +13,13 @@
   <meta property="og:description" content="Zugriff auf diese Ressource nicht erlaubt." />
   <meta property="og:url" content="https://babixgo.de/403.php" />
 
-  <?php require $_SERVER['DOCUMENT_ROOT'] . '/shared/partials/head-links.php'; ?>
+  <?php require dirname($_SERVER['DOCUMENT_ROOT']) . '/shared/partials/head-links.php'; ?>
 </head>
 
 <body>
-  <?php require $_SERVER['DOCUMENT_ROOT'] . '/shared/partials/tracking.php'; ?>
-  <?php require $_SERVER['DOCUMENT_ROOT'] . '/shared/partials/cookie-banner.php'; ?>
-  <?php require $_SERVER['DOCUMENT_ROOT'] . '/shared/partials/header.php'; ?>
+  <?php require dirname($_SERVER['DOCUMENT_ROOT']) . '/shared/partials/tracking.php'; ?>
+  <?php require dirname($_SERVER['DOCUMENT_ROOT']) . '/shared/partials/cookie-banner.php'; ?>
+  <?php require dirname($_SERVER['DOCUMENT_ROOT']) . '/shared/partials/header.php'; ?>
 
   <main id="main-content" style="min-height: 60vh; display: flex; align-items: center; justify-content: center;">
     <div style="text-align: center; max-width: 600px; padding: 2rem;">
@@ -39,7 +39,7 @@
     </div>
   </main>
 
-  <?php require $_SERVER['DOCUMENT_ROOT'] . '/shared/partials/footer.php'; ?>
-  <?php require $_SERVER['DOCUMENT_ROOT'] . '/shared/partials/footer-scripts.php'; ?>
+  <?php require dirname($_SERVER['DOCUMENT_ROOT']) . '/shared/partials/footer.php'; ?>
+  <?php require dirname($_SERVER['DOCUMENT_ROOT']) . '/shared/partials/footer-scripts.php'; ?>
 </body>
 </html>
