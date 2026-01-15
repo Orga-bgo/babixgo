@@ -67,6 +67,9 @@ CREATE TABLE IF NOT EXISTS downloads (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Create comments table
+-- NOTE: This table has both 'comment' and 'comment_text' fields for backwards compatibility.
+-- The admin section uses 'comment' while the files section uses 'comment_text'.
+-- In application code, populate both fields with the same value to ensure compatibility.
 CREATE TABLE IF NOT EXISTS comments (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,

@@ -85,6 +85,13 @@
 + comment_text  - Alternativer Feldname (wird vom files-Bereich verwendet)
 ```
 
+**Wichtiger Hinweis:** Die comments-Tabelle hat sowohl `comment` als auch `comment_text` Felder für Rückwärtskompatibilität:
+- Der Admin-Bereich nutzt das Feld `comment`
+- Der Files-Bereich (`/babixgo.de/files/`) nutzt das Feld `comment_text`
+- Beide Felder sollten im Anwendungscode mit dem gleichen Wert befüllt werden
+- Die Felder `domain` und `content_id` werden für allgemeine Kommentare verwendet (z.B. auf Seiten)
+- Das Feld `download_id` wird speziell für Kommentare zu Downloads verwendet
+
 ### Indizes:
 ```
 ✓ idx_user_id         - Index auf user_id

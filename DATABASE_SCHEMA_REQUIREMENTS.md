@@ -96,6 +96,13 @@ download_id INT,                         -- Direct reference to downloads (inste
 comment_text TEXT,                       -- Field name used in code (instead of 'comment')
 ```
 
+**Important Note:** The comments table has both `comment` and `comment_text` fields for backwards compatibility:
+- The admin section uses the `comment` field
+- The files section (`/babixgo.de/files/`) uses the `comment_text` field
+- Both fields should be populated with the same value in application code
+- The `domain` and `content_id` fields are used for general comments (e.g., on pages)
+- The `download_id` field is used specifically for comments on downloads
+
 ### Code References:
 - `/babixgo.de/files/includes/functions.php:87` - `WHERE c.download_id = d.id`
 - `/babixgo.de/files/includes/functions.php:142` - `WHERE c.download_id = ?`

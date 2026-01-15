@@ -68,6 +68,9 @@ CREATE INDEX IF NOT EXISTS idx_downloads_created_by ON downloads(created_by);
 CREATE INDEX IF NOT EXISTS idx_downloads_active ON downloads(active);
 
 -- Create comments table
+-- NOTE: This table has both 'comment' and 'comment_text' fields for backwards compatibility.
+-- The admin section uses 'comment' while the files section uses 'comment_text'.
+-- In application code, populate both fields with the same value to ensure compatibility.
 CREATE TABLE IF NOT EXISTS comments (
     id SERIAL PRIMARY KEY,
     user_id INT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
