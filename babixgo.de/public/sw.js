@@ -1,9 +1,10 @@
 /**
- * Service Worker für babixGO.de PWA
+ * Service Worker für babixGO.de PWA - Unified Single-Domain
  * Caching-Strategie: Cache-First für statische Assets, Network-First für HTML
+ * Supports: Main site, /auth/, /user/, /files/, /admin/
  */
 
-const CACHE_NAME = 'babixgo-v1';
+const CACHE_NAME = 'babixgo-unified-v1';
 const OFFLINE_URL = '/offline.html';
 
 // Assets die beim Installation gecacht werden sollen
@@ -11,8 +12,11 @@ const PRECACHE_ASSETS = [
   '/',
   '/offline.html',
   '/assets/css/style.css',
+  '/assets/css/user.css',
   '/assets/js/main.js',
-  '/assets/logo/babixGO-logo-hell.png'
+  '/assets/logo/babixGO-logo-hell.png',
+  '/shared/assets/css/main.css',
+  '/shared/assets/js/main.js'
 ];
 
 // Installation: Precache kritische Assets
@@ -20,7 +24,10 @@ self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then((cache) => {
-        return cache.addAll(PRECACHE_ASSETS);
+        return cache.addAll(PRECACHE_ASSETS).catch(err => {
+          console.warn('Some precache assets failed:', err);
+          // Continue anyway - non-critical
+        });
       })
       .then(() => self.skipWaiting())
   );
@@ -49,6 +56,18 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
+  // Keine Caching für Admin-Bereich (immer frische Daten)
+  if (url.pathname.startsWith('/admin/')) {
+    event.respondWith(fetch(request));
+    return;
+  }
+
+  // Keine Caching für Auth-Actions (Login/Logout/etc.)
+  if (url.pathname.startsWith('/auth/') && request.method === 'POST') {
+    event.respondWith(fetch(request));
+    return;
+  }
+
   // Strategie basierend auf Dateityp
   if (request.method === 'GET') {
     if (
@@ -66,7 +85,10 @@ self.addEventListener('fetch', (event) => {
     } else if (
       url.pathname.endsWith('.php') ||
       url.pathname.endsWith('/') ||
-      url.pathname === '/'
+      url.pathname === '/' ||
+      url.pathname.startsWith('/user/') ||
+      url.pathname.startsWith('/files/') ||
+      url.pathname.startsWith('/auth/')
     ) {
       // Network-First für HTML/PHP mit Offline-Fallback
       event.respondWith(networkFirst(request));
