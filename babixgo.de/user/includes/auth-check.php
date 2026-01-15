@@ -19,6 +19,11 @@ if (!class_exists('User')) {
     require_once SHARED_PATH . 'config/autoload.php';
 }
 
+// Load security helpers for CSRF tokens
+if (!function_exists('getCsrfToken')) {
+    require_once SHARED_PATH . 'partials/security.php';
+}
+
 // Check if user is logged in
 if (!User::isLoggedIn()) {
     // Redirect to login with return URL
