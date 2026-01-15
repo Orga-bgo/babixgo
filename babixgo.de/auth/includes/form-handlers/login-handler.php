@@ -10,6 +10,7 @@ define('SHARED_PATH', BASE_PATH . 'shared/');
 require_once SHARED_PATH . 'config/database.php';
 require_once SHARED_PATH . 'config/session.php';
 require_once SHARED_PATH . 'config/autoload.php';
+require_once SHARED_PATH . 'partials/security.php';
 
 header('Content-Type: application/json');
 
@@ -29,16 +30,10 @@ if (!verifyCsrfToken($_POST['csrf_token'] ?? '')) {
 $identifier = trim($_POST['identifier'] ?? '');
 $password = $_POST['password'] ?? '';
 $rememberMe = isset($_POST['remember_me']) && $_POST['remember_me'] === '1';
-$redirect = $_POST['redirect'] ?? '/user/';
 
 // Validate redirect parameter (prevent open redirect vulnerability)
-// Only allow internal paths: must start with / (but not //), safe chars, optional query params
-if (!str_starts_with($redirect, '/') || 
-    str_starts_with($redirect, '//') || 
-    str_contains($redirect, '://') ||
-    !preg_match('#^/[a-zA-Z0-9/_\-\.]+(?:\?[a-zA-Z0-9_=&\-]+)?$#', $redirect)) {
-    $redirect = '/user/';
-}
+// Default to /index.php to preserve original behavior when no redirect is specified
+$redirect = validateRedirectUrl($_POST['redirect'] ?? '', '/index.php');
 
 // Validation
 if (empty($identifier)) {

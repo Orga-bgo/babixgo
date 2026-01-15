@@ -10,16 +10,10 @@ define('SHARED_ASSETS_PATH', '../../shared/assets/');
 require_once SHARED_PATH . 'config/database.php';
 require_once SHARED_PATH . 'config/session.php';
 require_once SHARED_PATH . 'config/autoload.php';
+require_once SHARED_PATH . 'partials/security.php';
 
 // Get redirect parameter and validate it (prevent open redirect vulnerability)
-$redirect = $_GET['redirect'] ?? '/user/';
-// Only allow internal paths: must start with / (but not //), safe chars, optional query params
-if (!str_starts_with($redirect, '/') || 
-    str_starts_with($redirect, '//') || 
-    str_contains($redirect, '://') ||
-    !preg_match('#^/[a-zA-Z0-9/_\-\.]+(?:\?[a-zA-Z0-9_=&\-]+)?$#', $redirect)) {
-    $redirect = '/user/';
-}
+$redirect = validateRedirectUrl($_GET['redirect'] ?? '', '/user/');
 
 // Redirect if already logged in
 if (User::isLoggedIn()) {
