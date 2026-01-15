@@ -32,7 +32,6 @@ $includeValidationJS = true;
 <body>
     <?php
     require_once SHARED_PATH . 'partials/header.php';
-    require_once SHARED_PATH . 'partials/nav.php';
     ?>
     <div class="auth-container">
         <div class="auth-box">
