@@ -3,6 +3,219 @@
  * Additional styles for admin pages
  */
 
+/* Admin Body */
+body {
+    background: #1a1d21;
+    color: #e0e0e0;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+}
+
+/* Main Navigation */
+.main-nav {
+    background: linear-gradient(135deg, #2c3e50 0%, #1a252f 100%);
+    padding: 1rem 2rem;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.nav-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.main-nav .logo {
+    color: #3498db;
+    font-size: 1.4rem;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.nav-menu {
+    display: flex;
+    gap: 0.5rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    flex-wrap: wrap;
+}
+
+.nav-menu li a {
+    color: #b8c5d1;
+    text-decoration: none;
+    padding: 0.6rem 1rem;
+    border-radius: 6px;
+    transition: all 0.2s;
+    display: block;
+}
+
+.nav-menu li a:hover,
+.nav-menu li a.active {
+    background: rgba(52, 152, 219, 0.2);
+    color: #3498db;
+}
+
+/* Container */
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+/* Form Styles */
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #b8c5d1;
+    font-weight: 500;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 2px solid #3a4149;
+    border-radius: 6px;
+    background: #2a2f35;
+    color: #e0e0e0;
+    font-size: 1rem;
+    transition: border-color 0.2s;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #3498db;
+}
+
+/* Buttons */
+.btn {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s;
+}
+
+.btn-primary {
+    background: #3498db;
+    color: white;
+}
+
+.btn-primary:hover {
+    background: #2980b9;
+}
+
+.btn-secondary {
+    background: #3a4149;
+    color: #e0e0e0;
+}
+
+.btn-secondary:hover {
+    background: #4a5159;
+}
+
+.btn-danger {
+    background: #e74c3c;
+    color: white;
+}
+
+.btn-danger:hover {
+    background: #c0392b;
+}
+
+/* Profile Card */
+.profile-card {
+    background: #2a2f35;
+    border-radius: 12px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.profile-card h2 {
+    color: #3498db;
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+}
+
+/* Badge Styles */
+.badge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.badge-success {
+    background: rgba(39, 174, 96, 0.2);
+    color: #27ae60;
+}
+
+.badge-warning {
+    background: rgba(243, 156, 18, 0.2);
+    color: #f39c12;
+}
+
+.badge-pending {
+    background: rgba(243, 156, 18, 0.2);
+    color: #f39c12;
+}
+
+.badge-approved {
+    background: rgba(39, 174, 96, 0.2);
+    color: #27ae60;
+}
+
+.badge-spam {
+    background: rgba(231, 76, 60, 0.2);
+    color: #e74c3c;
+}
+
+/* Messages */
+.message {
+    padding: 1rem 1.5rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+.message-success {
+    background: rgba(39, 174, 96, 0.15);
+    border: 1px solid #27ae60;
+    color: #27ae60;
+}
+
+.message-error {
+    background: rgba(231, 76, 60, 0.15);
+    border: 1px solid #e74c3c;
+    color: #e74c3c;
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 3rem;
+    color: #7f8c8d;
+}
+
 /* Stats Grid */
 .stats-grid {
     display: grid;
