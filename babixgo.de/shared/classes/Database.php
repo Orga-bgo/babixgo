@@ -2,25 +2,37 @@
 
 /**
  * Database connection class (Singleton)
+ * Supports MySQL (Strato) and PostgreSQL (Supabase)
  */
 class Database {
     private static $instance = null;
     private $conn;
+    private $driver;
 
     private function __construct() {
-        $config = require(__DIR__ . '/../config/database.php');
+        $supabaseHost = getenv('SUPABASE_DB_HOST');
+        
+        if ($supabaseHost) {
+            $config = require(__DIR__ . '/../config/database-supabase.php');
+            $this->driver = 'pgsql';
+            $dsn = "pgsql:host=" . $config['host'] . ";port=" . $config['port'] . ";dbname=" . $config['database'];
+        } else {
+            $config = require(__DIR__ . '/../config/database.php');
+            $this->driver = 'mysql';
+            $dsn = "mysql:host=" . $config['host'] . ";dbname=" . $config['database'] . ";charset=utf8mb4";
+        }
         
         try {
-            $this->conn = new PDO(
-                "mysql:host=" . $config['host'] . ";dbname=" . $config['database'] . ";charset=utf8mb4",
-                $config['username'],
-                $config['password']
-            );
+            $this->conn = new PDO($dsn, $config['username'], $config['password']);
             $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch(PDOException $e) {
             error_log("Database Connection Error: " . $e->getMessage());
             throw new Exception("Database connection failed");
         }
+    }
+    
+    public function getDriver() {
+        return $this->driver;
     }
 
     /**

@@ -44,3 +44,7 @@ run = ["bash", "-c", "cd babixgo.de && php -S 0.0.0.0:5000 router.php"]
 DB_HOST = "database-5019397570.webspace-host.com"
 DB_NAME = "dbs15175022"
 DB_USER = "dbu1650980"
+SUPABASE_DB_HOST = "aws-1-eu-west-2.pooler.supabase.com"
+SUPABASE_DB_PORT = "5432"
+SUPABASE_DB_NAME = "postgres"
+SUPABASE_DB_USER = "postgres.vueogjskhetomwttgjpl"
