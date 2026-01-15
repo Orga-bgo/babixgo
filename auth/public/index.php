@@ -64,7 +64,7 @@ $currentPage = 'profile';
                     <label>Description:</label>
                     <p><?= $userData['description'] ? htmlspecialchars($userData['description'], ENT_QUOTES) : '<em>No description set</em>' ?></p>
                 </div>
-                <a href="/edit-profile.php" class="btn btn-primary">Edit Profile</a>
+                <a href="/user/edit-profile.php" class="btn btn-primary">Edit Profile</a>
             </div>
             
             <div class="profile-card">
