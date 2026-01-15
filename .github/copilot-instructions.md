@@ -15,7 +15,226 @@ Before making any changes, **read these files**:
 - **Technology**: Pure HTML, CSS, JavaScript with server-side PHP
 - **No Build Tools**: No npm, webpack, bundlers, or compilation steps
 - **Deployment**: Direct FTP/SFTP upload to Strato webhosting
-- **Architecture**: Multi-domain setup with shared resources
+- **Architecture**: Single-Domain with path-based routing (Updated 2026-01-15)
+
+---
+
+## CRITICAL: Single-Domain Architecture (Updated 2026-01-15)
+
+**babixGO now uses a SINGLE-DOMAIN architecture** where all functionality is accessible under `babixgo.de/*`:
+
+### Architecture Overview
+
+- ❌ **NO subdomains** (auth.babixgo.de, files.babixgo.de are OBSOLETE and redirect to new paths)
+- ✅ **All under babixgo.de** with path-based routing
+
+### URL Structure
+
+**Authentication:**
+```
+babixgo.de/auth/login         # Login page
+babixgo.de/auth/register      # Registration
+babixgo.de/auth/logout        # Logout
+babixgo.de/auth/verify-email  # Email verification
+babixgo.de/auth/forgot-password
+babixgo.de/auth/reset-password
+```
+
+**User Area (NEW):**
+```
+babixgo.de/user/              # User dashboard
+babixgo.de/user/profile       # Public profile
+babixgo.de/user/edit-profile  # Edit profile
+babixgo.de/user/settings      # Account settings
+babixgo.de/user/my-comments   # User's comments
+babixgo.de/user/my-downloads  # Download history
+```
+
+**Download Portal:**
+```
+babixgo.de/files/             # Download overview
+babixgo.de/files/browse       # Browse downloads
+babixgo.de/files/category/apk # Category view
+babixgo.de/files/download/123/apk # Download handler
+```
+
+**Admin Panel:**
+```
+babixgo.de/admin/             # Admin dashboard
+babixgo.de/admin/users        # User management
+babixgo.de/admin/downloads    # Download management
+babixgo.de/admin/comments     # Comment moderation
+```
+
+### Directory Structure
+
+```
+/babixgo.de/
+├── .htaccess                 # Unified routing configuration
+├── auth/                     # Authentication system
+│   ├── login.php
+│   ├── register.php
+│   └── includes/
+│       ├── auth-check.php
+│       └── form-handlers/
+├── user/                     # User area (NEW)
+│   ├── index.php            # Dashboard
+│   ├── profile.php
+│   ├── edit-profile.php
+│   └── includes/
+│       └── auth-check.php
+├── files/                    # Download portal
+│   ├── index.php
+│   ├── download.php
+│   └── includes/
+├── admin/                    # Admin panel
+│   ├── .htaccess            # Additional protection
+│   ├── index.php
+│   └── includes/
+│       └── admin-check.php
+└── assets/
+    └── css/
+        └── user.css         # User area styles
+```
+
+### Path Constants (MANDATORY)
+
+**All files MUST use:**
+
+```php
+define('BASE_PATH', dirname(__DIR__, 2) . '/');  // Points to /babixgo/
+define('SHARED_PATH', BASE_PATH . 'shared/');
+
+// Load shared resources
+require_once SHARED_PATH . 'config/database.php';
+require_once SHARED_PATH . 'config/session.php';
+require_once SHARED_PATH . 'config/autoload.php';
+
+// Include partials
+require_once SHARED_PATH . 'partials/header.php';
+require_once SHARED_PATH . 'partials/footer.php';
+```
+
+### Access Control
+
+**User Area Protection:**
+```php
+// At top of all /user/*.php files
+require_once __DIR__ . '/includes/auth-check.php';
+// Redirects to /auth/login if not logged in
+// Sets: $currentUserId, $currentUsername, $currentUserEmail, $currentUserRole
+```
+
+**Admin Area Protection:**
+```php
+// At top of all /admin/*.php files
+require_once __DIR__ . '/includes/admin-check.php';
+// Requires login AND admin role
+// Shows 403 if not admin
+```
+
+### Routing Rules (.htaccess)
+
+**Download Handler:**
+```apache
+# /files/download/123/apk → files/download.php?id=123&type=apk
+RewriteRule ^files/download/([0-9]+)/(apk|exe|scripts)$ files/download.php?id=$1&type=$2 [L,QSA]
+```
+
+**Category Routing:**
+```apache
+# /files/category/apk → files/category.php?type=apk
+RewriteRule ^files/category/(apk|exe|scripts)$ files/category.php?type=$1 [L,QSA]
+```
+
+**Clean URLs:**
+```apache
+# Remove .php extension for auth, user, files, admin
+RewriteCond %{REQUEST_URI} ^/(auth|user|files|admin)/
+RewriteRule ^(.+)$ $1.php [L]
+```
+
+### Migration from Multi-Domain
+
+**Old URLs (OBSOLETE):**
+- ❌ `auth.babixgo.de/login.php`
+- ❌ `files.babixgo.de/category.php?type=apk`
+
+**New URLs (CURRENT):**
+- ✅ `babixgo.de/auth/login`
+- ✅ `babixgo.de/files/category/apk`
+
+**Backward Compatibility:**
+- Old subdomains redirect with 301 to new paths
+- Session cookie domain unchanged (`.babixgo.de`)
+- Login state persists across migration
+
+### Critical Rules (Single-Domain)
+
+**DO NOT:**
+- ❌ Create subdomain-specific code (auth.babixgo.de, files.babixgo.de)
+- ❌ Use absolute domain URLs in internal links
+- ❌ Hardcode `/auth/public/` or `/files.babixgo.de/public/` paths
+- ❌ Create separate session systems per section
+
+**DO:**
+- ✅ Use path-based routing (`/auth/`, `/user/`, `/files/`, `/admin/`)
+- ✅ Use relative paths for internal navigation
+- ✅ Keep all sections under `/babixgo.de/`
+- ✅ Use shared session across all sections
+
+### Database Schema Updates
+
+**New tables added for single-domain:**
+
+```sql
+-- Email logging
+CREATE TABLE email_logs (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT,
+    recipient VARCHAR(255) NOT NULL,
+    subject VARCHAR(500) NOT NULL,
+    email_type ENUM('verification', 'password_reset', 'welcome', 'notification', 'custom'),
+    success BOOLEAN DEFAULT 0,
+    error_message TEXT,
+    sent_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    ...
+);
+
+-- Remember me sessions
+CREATE TABLE user_sessions (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT NOT NULL,
+    session_token VARCHAR(64) NOT NULL UNIQUE,
+    expires_at DATETIME NOT NULL,
+    ...
+);
+
+-- Activity tracking
+CREATE TABLE user_activity (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT,
+    activity_type ENUM('login', 'logout', 'register', 'profile_update', ...),
+    description TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    ...
+);
+```
+
+### PWA Configuration
+
+**Manifest updates:**
+- All icon paths use `/shared/assets/icons/`
+- Shortcuts point to `/files/`, `/user/`, `/auth/login`
+- Screenshots for app store listings
+- Categories: productivity, utilities, downloads
+
+**Service Worker:**
+- Unified caching for all sections
+- No cache for `/admin/` (fresh data)
+- No cache for auth POST requests
+- Cache-first for static assets
+- Network-first for HTML
 
 ---
 
@@ -29,7 +248,7 @@ Before making any changes, **read these files**:
 
 The monorepo underwent a comprehensive cleanup to eliminate duplicates, standardize structure, and establish single sources of truth. **All future development must follow this clean structure.**
 
-### What Was Cleaned
+### What Was Cleaned (Historical - v1.0.15)
 
 ✅ **Partials Consolidation**:
 - Removed 13 duplicate partial files from `babixgo.de/partials/`
@@ -37,45 +256,42 @@ The monorepo underwent a comprehensive cleanup to eliminate duplicates, standard
 - Updated 124 references across 16 page files
 - Fixed internal partial references to use `__DIR__` instead of `DOCUMENT_ROOT`
 
-✅ **Auth Structure**:
-- Removed 4 redundant wrapper files from `/auth/` root
-- Clean structure with only `.htaccess` in root, all functionality in `/auth/public/`
-- Added complete PWA support (manifest.json, sw.js, offline.html)
-
-✅ **Files Domain**:
-- Renamed `/files/` → `/files.babixgo.de/` for clarity (40 files)
-- Added missing offline.html for PWA compliance
-- Maintained functional independent system
+✅ **Single-Domain Migration (v2.0.0)**:
+- Migrated from multi-domain (auth.babixgo.de, files.babixgo.de) to single-domain
+- All functionality now under `/babixgo.de/` with path-based routing
+- Created `/auth/`, `/user/`, `/files/`, `/admin/` sections
+- Unified `.htaccess` with clean URL routing
+- Enhanced PWA with shortcuts and better caching
 
 ✅ **Documentation**:
-- Created `CLEANUP_REPORT.md` (11KB detailed change log)
-- Created `DEPLOYMENT_GUIDE.md` (12KB deployment instructions)
-- Updated `README.md` with complete structure
-- Added SMTP configuration to copilot-instructions.md
+- Created `MIGRATION_GUIDE.md` (13.7KB migration reference)
+- Created `DEPLOYMENT_CHECKLIST.md` (13.6KB deployment guide)
+- Updated `README.md` with single-domain structure
+- Added comprehensive documentation for v2.0.0
 
-### Critical Rules (Post-Cleanup)
+### Critical Rules (Current v2.0.0)
 
 **DO NOT**:
 - ❌ Create duplicate partials in domain directories
+- ❌ Use old subdomain references (auth.babixgo.de, files.babixgo.de)
 - ❌ Use `$_SERVER['DOCUMENT_ROOT'] . '/partials/'` (old pattern)
-- ❌ Add files to `/auth/` root (except .htaccess)
-- ❌ Create `/files/` directory (use `/files.babixgo.de/`)
-- ❌ Duplicate shared resources in domain folders
+- ❌ Create separate auth or files at domain root
+- ❌ Duplicate shared resources in section folders
 
 **DO**:
-- ✅ Use `dirname($_SERVER['DOCUMENT_ROOT']) . '/shared/partials/'` for partials
-- ✅ Add new partials only to `/shared/partials/`
+- ✅ Use `dirname(__DIR__, 2) . '/'` for BASE_PATH in all sections
+- ✅ Use `SHARED_PATH . 'partials/'` for partials
 - ✅ Reference shared assets from `/shared/assets/`
-- ✅ Keep domain-specific files minimal
+- ✅ Use path-based routing (/auth/, /user/, /files/, /admin/)
 - ✅ Follow the structure below exactly
 
-### Current Clean Structure (Post-Cleanup)
+### Current Structure (v2.0.0 - Single-Domain)
 
 **Use this structure as the authoritative reference:**
 
 ```
 /
-├── shared/                      # ✅ Single source of truth (v1.0.15)
+├── shared/                      # ✅ Single source of truth
 │   ├── assets/
 │   │   ├── css/
 │   │   │   ├── main.css        # Global styles
@@ -83,7 +299,7 @@ The monorepo underwent a comprehensive cleanup to eliminate duplicates, standard
 │   │   │   └── admin.css       # Admin panel styles
 │   │   ├── js/
 │   │   │   └── main.js         # Global scripts
-│   │   ├── icons/              # Shared icons
+│   │   ├── icons/              # Shared icons (PWA)
 │   │   ├── images/             # Shared images
 │   │   └── logo/               # Logo assets
 │   │
@@ -100,20 +316,22 @@ The monorepo underwent a comprehensive cleanup to eliminate duplicates, standard
 │   │   ├── autoload.php        # Class autoloader
 │   │   └── email.php           # Email config (references email.local.php)
 │   │
-│   └── partials/                # ✅ Consolidated partials (v1.0.15)
-│       ├── head-meta.php       # Uses __DIR__ references
-│       ├── head-links.php      # PWA manifests included
-│       ├── header.php          # Site header
-│       ├── footer.php          # Site footer
-│       ├── footer-scripts.php  # Footer scripts
-│       ├── nav.php             # Navigation
-│       ├── tracking.php        # Analytics
-│       ├── cookie-banner.php   # Cookie consent
-│       ├── critical-css.php    # Critical CSS
-│       ├── csrf.php            # CSRF protection
-│       ├── structured-data.php # Schema.org data
-│       ├── brute-force-protection.php
-│       └── version.php         # BABIXGO_VERSION = '1.0.15'
+│   ├── partials/                # ✅ Consolidated partials
+│   │   ├── head-meta.php       # Meta tags
+│   │   ├── head-links.php      # CSS/Font links
+│   │   ├── header.php          # Site header with user menu
+│   │   ├── footer.php          # Site footer
+│   │   ├── footer-scripts.php  # Footer scripts
+│   │   ├── nav.php             # Navigation
+│   │   ├── tracking.php        # Analytics
+│   │   ├── cookie-banner.php   # Cookie consent
+│   │   ├── critical-css.php    # Critical CSS
+│   │   ├── csrf.php            # CSRF protection
+│   │   ├── structured-data.php # Schema.org data
+│   │   ├── brute-force-protection.php
+│   │   └── version.php         # BABIXGO_VERSION
+│   │
+│   └── create-tables.sql        # Database schema with all tables
 │
 ├── downloads/                   # ✅ Protected download storage
 │   ├── .htaccess               # Access denied (CRITICAL)
@@ -124,112 +342,101 @@ The monorepo underwent a comprehensive cleanup to eliminate duplicates, standard
 │       ├── python/
 │       └── powershell/
 │
-├── babixgo.de/                  # ✅ Main website
-│   ├── index.php               # Homepage
-│   ├── about.php               # About page
-│   ├── contact.php             # Contact page
-│   ├── 404.php                 # Error page
+└── babixgo.de/                  # ✅ UNIFIED SINGLE DOMAIN
+    ├── .htaccess               # Unified routing configuration
+    ├── index.php               # Homepage
+    ├── 404.php, 403.php, 500.php # Error pages
 │   ├── .htaccess               # Web server config
-│   │
-│   ├── assets/                 # Domain-specific assets
-│   │   ├── css/
-│   │   │   └── style.css       # Main site styles
-│   │   ├── js/
-│   │   ├── icons/
-│   │   ├── img/
-│   │   └── logo/
-│   │
-│   ├── public/                 # PWA assets
-│   │   ├── manifest.json
-│   │   ├── sw.js
-│   │   └── [apk, scripts subdirs]
-│   │
-│   └── [content directories]/  # sticker/, wuerfel/, accounts/, etc.
-│
-├── auth/                        # ✅ Clean structure (NO redundant files)
-│   ├── .htaccess               # Root routing config only
-│   │
-│   └── public/                 # Document root for auth.babixgo.de
-│       ├── index.php           # Dashboard/profile
-│       ├── login.php           # Login page
-│       ├── register.php        # Registration
-│       ├── logout.php          # Logout handler
-│       ├── verify-email.php    # Email verification
-│       ├── forgot-password.php # Password reset request
-│       ├── reset-password.php  # Password reset form
-│       ├── edit-profile.php    # Profile editing
-│       ├── setup-check.php     # Setup verification
-│       ├── .htaccess           # Security config
-│       ├── manifest.json       # PWA manifest
-│       ├── sw.js               # Service worker
-│       ├── offline.html        # Offline fallback
-│       │
-│       ├── admin/              # Admin panel
-│       │   ├── index.php       # Admin dashboard
-│       │   ├── users.php       # User management
-│       │   ├── user-edit.php   # Edit user
-│       │   ├── downloads.php   # Download management
-│       │   ├── download-edit.php # Edit download
-│       │   ├── comments.php    # Comment moderation
-│       │   └── .htaccess       # Admin protection
-│       │
-│       ├── assets/
-│       │   ├── css/
-│       │   │   ├── auth.css    # Auth styling
-│       │   │   └── admin.css   # Admin styling
-│       │   └── js/
-│       │       ├── form-validation.js
-│       │       └── admin.js
-│       │
-│       └── includes/
-│           ├── auth-check.php  # Authentication guard
-│           ├── admin-check.php # Admin authorization
-│           └── form-handlers/
-│
-└── files.babixgo.de/            # ✅ Renamed for clarity
-    ├── .htaccess               # Root config
     │
-    └── public/                 # Document root for files.babixgo.de
-        ├── index.php           # Download listing
-        ├── download.php        # Download handler
-        ├── category.php        # Category view
-        ├── .htaccess           # Security config
-        ├── manifest.json       # PWA manifest
-        ├── sw.js               # Service worker
-        ├── offline.html        # Offline fallback
-        │
-        ├── admin/              # Admin panel
-        │   ├── dashboard.php
-        │   ├── manage-downloads.php
-        │   └── manage-users.php
-        │
-        ├── assets/             # Domain-specific assets
-        │   ├── css/
-        │   │   └── style.css   # Files portal styles
-        │   └── js/
-        │
-        └── includes/           # Domain-specific includes
-            ├── config.php
-            ├── db.php
-            ├── auth.php
-            └── functions.php
+    ├── assets/                 # Domain-specific assets
+    │   ├── css/
+    │   │   ├── style.css       # Main site styles
+    │   │   └── user.css        # User area styles (NEW)
+    │   ├── js/
+    │   ├── icons/
+    │   ├── img/
+    │   └── logo/
+    │
+    ├── public/                 # PWA assets
+    │   ├── manifest.json       # Updated with all icons & shortcuts
+    │   ├── sw.js               # Unified service worker
+    │   └── offline.html        # Offline fallback
+    │
+    ├── auth/                   # ✅ Authentication (babixgo.de/auth/*)
+    │   ├── login.php
+    │   ├── register.php
+    │   ├── logout.php
+    │   ├── verify-email.php
+    │   ├── forgot-password.php
+    │   ├── reset-password.php
+    │   └── includes/
+    │       ├── auth-check.php
+    │       ├── admin-check.php
+    │       └── form-handlers/
+    │
+    ├── user/                   # ✅ User Area (babixgo.de/user/*) - NEW
+    │   ├── index.php           # Dashboard
+    │   ├── profile.php         # Public profile
+    │   ├── edit-profile.php    # Edit profile
+    │   ├── settings.php        # Account settings
+    │   ├── my-comments.php     # User's comments
+    │   ├── my-downloads.php    # Download history
+    │   └── includes/
+    │       └── auth-check.php
+    │
+    ├── files/                  # ✅ Download Portal (babixgo.de/files/*)
+    │   ├── index.php           # Download listing
+    │   ├── browse.php          # Browse downloads
+    │   ├── category.php        # Category view
+    │   ├── download.php        # Secure download handler
+    │   └── includes/
+    │       └── [helper files]
+    │
+    ├── admin/                  # ✅ Admin Panel (babixgo.de/admin/*)
+    │   ├── .htaccess           # Additional protection
+    │   ├── index.php           # Admin dashboard
+    │   ├── users.php           # User management
+    │   ├── user-edit.php       # Edit user
+    │   ├── downloads.php       # Download management
+    │   ├── download-edit.php   # Edit download
+    │   ├── comments.php        # Comment moderation
+    │   └── includes/
+    │       ├── admin-check.php
+    │       └── handlers/
+    │
+    └── [existing content]/     # Existing site content
+        ├── accounts/
+        ├── anleitungen/
+        ├── wuerfel/
+        ├── sticker/
+        └── ...
 ```
 
-### Domain to Directory Mapping (Post-Cleanup)
+### URL Structure (Single-Domain v2.0.0)
 
-| Domain | Document Root | Status |
-|--------|--------------|--------|
-| **babixgo.de** | `/babixgo.de/` | ✅ Clean |
-| **auth.babixgo.de** | `/auth/public/` | ✅ Clean |
-| **files.babixgo.de** | `/files.babixgo.de/public/` | ✅ Renamed |
+| Section | URL Pattern | Status |
+|---------|-------------|--------|
+| **Main Site** | `babixgo.de/` | ✅ Active |
+| **Authentication** | `babixgo.de/auth/*` | ✅ Active |
+| **User Area** | `babixgo.de/user/*` | ✅ NEW |
+| **Download Portal** | `babixgo.de/files/*` | ✅ Active |
+| **Admin Panel** | `babixgo.de/admin/*` | ✅ Active |
 
-### File Reference Patterns (Post-Cleanup)
+**Old subdomains (OBSOLETE):**
+- ❌ `auth.babixgo.de` → 301 redirects to `babixgo.de/auth/`
+- ❌ `files.babixgo.de` → 301 redirects to `babixgo.de/files/`
+
+### File Reference Patterns (v2.0.0)
 
 **Correct patterns to use:**
 
 ```php
-// Shared partials (use this pattern)
-<?php require dirname($_SERVER['DOCUMENT_ROOT']) . '/shared/partials/header.php'; ?>
+// In /auth/*.php, /user/*.php, /files/*.php, /admin/*.php
+define('BASE_PATH', dirname(__DIR__, 2) . '/');  // Points to /babixgo/
+define('SHARED_PATH', BASE_PATH . 'shared/');
+
+// Shared partials
+<?php require SHARED_PATH . 'partials/header.php'; ?>
 
 // Shared assets in HTML
 <link rel="stylesheet" href="/shared/assets/css/main.css">

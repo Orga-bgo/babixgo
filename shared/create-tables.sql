@@ -70,6 +70,54 @@ CREATE TABLE IF NOT EXISTS download_logs (
     INDEX idx_downloaded_at (downloaded_at)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+-- Email Logs Table (for tracking sent emails)
+CREATE TABLE IF NOT EXISTS email_logs (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT,
+    recipient VARCHAR(255) NOT NULL,
+    subject VARCHAR(500) NOT NULL,
+    email_type ENUM('verification', 'password_reset', 'welcome', 'notification', 'custom') NOT NULL,
+    success BOOLEAN DEFAULT 0,
+    error_message TEXT,
+    sent_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL,
+    INDEX idx_user_id (user_id),
+    INDEX idx_recipient (recipient),
+    INDEX idx_email_type (email_type),
+    INDEX idx_sent_at (sent_at),
+    INDEX idx_success (success)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- User Sessions Table (for "remember me" functionality)
+CREATE TABLE IF NOT EXISTS user_sessions (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT NOT NULL,
+    session_token VARCHAR(64) NOT NULL UNIQUE,
+    expires_at DATETIME NOT NULL,
+    ip_address VARCHAR(45),
+    user_agent VARCHAR(500),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    INDEX idx_user_id (user_id),
+    INDEX idx_session_token (session_token),
+    INDEX idx_expires_at (expires_at)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- User Activity Log (for admin monitoring and security)
+CREATE TABLE IF NOT EXISTS user_activity (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT,
+    activity_type ENUM('login', 'logout', 'register', 'profile_update', 'password_change', 'download', 'comment', 'admin_action') NOT NULL,
+    description TEXT,
+    ip_address VARCHAR(45),
+    user_agent VARCHAR(500),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL,
+    INDEX idx_user_id (user_id),
+    INDEX idx_activity_type (activity_type),
+    INDEX idx_created_at (created_at)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 -- Create sample admin user
 -- Default password: Admin@123 (CHANGE THIS AFTER FIRST LOGIN!)
 INSERT INTO users (username, email, password_hash, role, is_verified, friendship_link) 
