@@ -36,3 +36,10 @@ externalPort = 80
 [deployment]
 deploymentTarget = "autoscale"
 run = ["bash", "-c", "cd babixgo.de && php -S 0.0.0.0:5000 router.php"]
+
+[userenv]
+
+[userenv.shared]
+DB_HOST = "database-5019397570.webspace-host.com"
+DB_NAME = "dbs15175022"
+DB_USER = "dbu1650980"
