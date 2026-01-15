@@ -15,7 +15,7 @@ class User {
 
     public function __construct($db = null) {
         if ($db === null) {
-            $database = new Database();
+            $database = Database::getInstance();
             $this->conn = $database->getConnection();
         } else {
             $this->conn = $db;
