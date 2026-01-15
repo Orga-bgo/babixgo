@@ -3,7 +3,7 @@
  * Login Page
  */
 
-define('BASE_PATH', dirname(__DIR__, 3) . '/');
+define('BASE_PATH', dirname(__DIR__, 2) . '/');
 define('SHARED_PATH', BASE_PATH . 'shared/');
 define('SHARED_ASSETS_PATH', '../../shared/assets/');
 
