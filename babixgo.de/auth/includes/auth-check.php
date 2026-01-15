@@ -5,7 +5,7 @@
  */
 
 // Define paths
-define('BASE_PATH', dirname(__DIR__, 3) . '/');
+define('BASE_PATH', dirname(__DIR__, 4) . '/');
 define('SHARED_PATH', BASE_PATH . 'shared/');
 
 // Load configuration

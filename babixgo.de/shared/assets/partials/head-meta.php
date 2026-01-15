@@ -3,7 +3,7 @@
 <?php if (!defined('BABIXGO_ROBOTS_OVERRIDE')): ?>
 <meta name="robots" content="index, follow" />
 <?php endif; ?>
-<?php require $_SERVER['DOCUMENT_ROOT'] . '/partials/critical-css.php'; ?>
+<?php require __DIR__ . '/critical-css.php'; ?>
 
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="babixGO" />

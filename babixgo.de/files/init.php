@@ -6,7 +6,7 @@
 
 // Define paths
 if (!defined('BASE_PATH')) {
-    define('BASE_PATH', dirname(__DIR__, 2) . '/');
+    define('BASE_PATH', dirname(__DIR__, 3) . '/');
 }
 if (!defined('SHARED_PATH')) {
     define('SHARED_PATH', BASE_PATH . 'shared/');
