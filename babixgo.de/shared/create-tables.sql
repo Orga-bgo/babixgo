@@ -14,6 +14,8 @@ CREATE TABLE IF NOT EXISTS users (
     reset_token VARCHAR(64) NULL,
     reset_token_expires DATETIME NULL,
     role ENUM('user', 'admin') DEFAULT 'user',
+    comment_count INT DEFAULT 0,
+    email_verified BOOLEAN DEFAULT 0,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     INDEX idx_email (email),
@@ -23,36 +25,64 @@ CREATE TABLE IF NOT EXISTS users (
     INDEX idx_friendship_link (friendship_link)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Create comments table
-CREATE TABLE IF NOT EXISTS comments (
+-- Create categories table
+CREATE TABLE IF NOT EXISTS categories (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT NOT NULL,
-    domain VARCHAR(50) NOT NULL,
-    content_id INT NOT NULL,
-    comment TEXT NOT NULL,
-    status ENUM('approved', 'pending', 'spam') DEFAULT 'pending',
+    name VARCHAR(255) NOT NULL,
+    slug VARCHAR(255) NOT NULL UNIQUE,
+    description TEXT NULL,
+    icon VARCHAR(500) NULL,
+    sort_order INT DEFAULT 0,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-    INDEX idx_user_id (user_id),
-    INDEX idx_domain_content (domain, content_id),
-    INDEX idx_status (status)
+    INDEX idx_slug (slug),
+    INDEX idx_sort_order (sort_order)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Create downloads table
 CREATE TABLE IF NOT EXISTS downloads (
     id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NULL,
     filename VARCHAR(255) NOT NULL,
     filepath VARCHAR(500) NOT NULL,
     filetype ENUM('apk', 'scripts', 'exe') NOT NULL,
     filesize BIGINT NOT NULL,
+    file_size VARCHAR(100) NULL,
+    file_type VARCHAR(100) NULL,
     version VARCHAR(50) NOT NULL,
     description TEXT NULL,
+    download_link VARCHAR(500) NULL,
+    alternative_link VARCHAR(500) NULL,
     download_count INT DEFAULT 0,
+    category_id INT NULL,
+    created_by INT NULL,
     active BOOLEAN DEFAULT 1,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE SET NULL,
+    FOREIGN KEY (created_by) REFERENCES users(id) ON DELETE SET NULL,
     INDEX idx_filetype (filetype),
+    INDEX idx_category_id (category_id),
+    INDEX idx_created_by (created_by),
     INDEX idx_active (active)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Create comments table
+CREATE TABLE IF NOT EXISTS comments (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    domain VARCHAR(50) NULL,
+    content_id INT NULL,
+    download_id INT NULL,
+    comment TEXT NOT NULL,
+    comment_text TEXT NULL,
+    status ENUM('approved', 'pending', 'spam') DEFAULT 'pending',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (download_id) REFERENCES downloads(id) ON DELETE CASCADE,
+    INDEX idx_user_id (user_id),
+    INDEX idx_domain_content (domain, content_id),
+    INDEX idx_download_id (download_id),
+    INDEX idx_status (status)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Create download_logs table
@@ -129,3 +159,10 @@ VALUES (
     1,
     'ADMIN001'
 ) ON DUPLICATE KEY UPDATE id=id;
+
+-- Insert sample categories
+INSERT INTO categories (name, slug, description, icon, sort_order) VALUES
+('Android Apps', 'android-apps', 'Android APK Downloads für BabixGO', '📱', 1),
+('Windows Tools', 'windows-tools', 'Windows EXE Programme und Tools', '💻', 2),
+('Scripts', 'scripts', 'Nützliche Scripts und Automatisierungen', '📜', 3)
+ON DUPLICATE KEY UPDATE name=name;
