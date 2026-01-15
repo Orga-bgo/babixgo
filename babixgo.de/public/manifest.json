@@ -1,16 +1,16 @@
 {
-  "name": "babixGO - Monopoly GO Services",
+  "name": "babixGO - Monopoly GO Services & Downloads",
   "short_name": "babixGO",
-  "description": "babixGO bietet Monopoly GO Services: Sticker, Partnerevents, Racers & Accounts. Direkt per WhatsApp erreichbar – schnell, zuverlässig, fair.",
+  "description": "babixGO bietet Monopoly GO Services: Sticker, Partnerevents, Racers, Accounts & Downloads. Direkt per WhatsApp erreichbar – schnell, zuverlässig, fair.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
   "orientation": "portrait-primary",
-  "theme_color": "#1a1a1a",
+  "theme_color": "#6366f1",
   "background_color": "#1a1a1a",
   "lang": "de",
   "dir": "ltr",
-  "categories": ["games", "entertainment"],
+  "categories": ["games", "entertainment", "productivity"],
   "icons": [
     {
       "src": "/assets/img/pwa/icon-192x192.png",
@@ -23,6 +23,44 @@
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Downloads",
+      "short_name": "Downloads",
+      "description": "Browse and download files",
+      "url": "/files/",
+      "icons": [
+        {
+          "src": "/assets/img/pwa/icon-192x192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "My Profile",
+      "short_name": "Profile",
+      "description": "View your profile",
+      "url": "/user/",
+      "icons": [
+        {
+          "src": "/assets/img/pwa/icon-192x192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Login",
+      "short_name": "Login",
+      "description": "Login to your account",
+      "url": "/auth/login",
+      "icons": [
+        {
+          "src": "/assets/img/pwa/icon-192x192.png",
+          "sizes": "192x192"
+        }
+      ]
     }
   ]
 }
