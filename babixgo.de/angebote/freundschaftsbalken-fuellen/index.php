@@ -136,7 +136,7 @@
           <strong class="notice-box__title">Download-Links</strong>
           <p class="notice-box__text">
             Die dazugehörigen Downloadlinks sowie weitere Infos zu den Apps findest du in unserem 
-            <a href="/downloads/" class="link-primary-underline">Downloadbereich</a>.
+            <a href="/files/" class="link-primary-underline">Downloadbereich</a>.
           </p>
         </div>
       </div>

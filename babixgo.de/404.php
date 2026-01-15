@@ -61,7 +61,7 @@
     <a href="/anleitungen/" class="error-btn error-btn-secondary">
       <span class="emoji" role="img" aria-label="Bücher">📚</span>Anleitungen
     </a>
-    <a href="/downloads/" class="error-btn error-btn-secondary">
+    <a href="/files/" class="error-btn error-btn-secondary">
       <span class="emoji" role="img" aria-label="Download">⬇️</span>Downloads
     </a>
   </div>

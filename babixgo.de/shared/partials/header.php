@@ -35,7 +35,7 @@
       </div>
     </div>
     <a href="/anleitungen/">Anleitungen</a>
-    <a href="/downloads/">Downloads</a>
+    <a href="/files/">Downloads</a>
     <a href="/kontakt/">Kontakt</a>
     
     <div class="menu-auth">
