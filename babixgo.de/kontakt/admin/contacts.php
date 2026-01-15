@@ -8,8 +8,8 @@
 session_start();
 
 // Load security utilities
-require_once dirname($_SERVER['DOCUMENT_ROOT']) . '/shared/partials/csrf.php';
-require_once dirname($_SERVER['DOCUMENT_ROOT']) . '/shared/partials/brute-force-protection.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/shared/partials/csrf.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/shared/partials/brute-force-protection.php';
 
 $dbHost = getenv('BABIXGO_DB_HOST');
 $dbName = getenv('BABIXGO_DB_NAME');
@@ -85,9 +85,9 @@ if (!isset($_SESSION['admin_logged_in'])) {
     <!DOCTYPE html>
     <html lang="de">
     <head>
-        <?php require dirname($_SERVER['DOCUMENT_ROOT']) . '/shared/partials/head-meta.php'; ?>
+        <?php require $_SERVER['DOCUMENT_ROOT'] . '/shared/partials/head-meta.php'; ?>
         <title>Admin Login - babixGO</title>
-        <?php require dirname($_SERVER['DOCUMENT_ROOT']) . '/shared/partials/head-links.php'; ?>
+        <?php require $_SERVER['DOCUMENT_ROOT'] . '/shared/partials/head-links.php'; ?>
     </head>
     <body class="admin-body admin-login">
         <div class="admin-login-box">
@@ -167,9 +167,9 @@ $counts = [
 <!DOCTYPE html>
 <html lang="de">
 <head>
-    <?php require dirname($_SERVER['DOCUMENT_ROOT']) . '/shared/partials/head-meta.php'; ?>
+    <?php require $_SERVER['DOCUMENT_ROOT'] . '/shared/partials/head-meta.php'; ?>
     <title>Kontaktanfragen - babixGO Admin</title>
-    <?php require dirname($_SERVER['DOCUMENT_ROOT']) . '/shared/partials/head-links.php'; ?>
+    <?php require $_SERVER['DOCUMENT_ROOT'] . '/shared/partials/head-links.php'; ?>
 </head>
 <body class="admin-body admin-contacts">
     <div class="admin-container">

@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
   <?php define('BABIXGO_ROBOTS_OVERRIDE', true); ?>
-  <?php require dirname($_SERVER['DOCUMENT_ROOT']) . '/shared/partials/head-meta.php'; ?>
+  <?php require $_SERVER['DOCUMENT_ROOT'] . '/shared/partials/head-meta.php'; ?>
 
   <title>500 - Interner Serverfehler | babixGO</title>
   <meta name="description" content="Ein Fehler ist aufgetreten. Bitte versuchen Sie es später erneut." />
@@ -13,13 +13,13 @@
   <meta property="og:description" content="Ein Fehler ist aufgetreten." />
   <meta property="og:url" content="https://babixgo.de/500.php" />
 
-  <?php require dirname($_SERVER['DOCUMENT_ROOT']) . '/shared/partials/head-links.php'; ?>
+  <?php require $_SERVER['DOCUMENT_ROOT'] . '/shared/partials/head-links.php'; ?>
 </head>
 
 <body>
-  <?php require dirname($_SERVER['DOCUMENT_ROOT']) . '/shared/partials/tracking.php'; ?>
-  <?php require dirname($_SERVER['DOCUMENT_ROOT']) . '/shared/partials/cookie-banner.php'; ?>
-  <?php require dirname($_SERVER['DOCUMENT_ROOT']) . '/shared/partials/header.php'; ?>
+  <?php require $_SERVER['DOCUMENT_ROOT'] . '/shared/partials/tracking.php'; ?>
+  <?php require $_SERVER['DOCUMENT_ROOT'] . '/shared/partials/cookie-banner.php'; ?>
+  <?php require $_SERVER['DOCUMENT_ROOT'] . '/shared/partials/header.php'; ?>
 
   <main id="main-content" style="min-height: 60vh; display: flex; align-items: center; justify-content: center;">
     <div style="text-align: center; max-width: 600px; padding: 2rem;">
@@ -39,7 +39,7 @@
     </div>
   </main>
 
-  <?php require dirname($_SERVER['DOCUMENT_ROOT']) . '/shared/partials/footer.php'; ?>
-  <?php require dirname($_SERVER['DOCUMENT_ROOT']) . '/shared/partials/footer-scripts.php'; ?>
+  <?php require $_SERVER['DOCUMENT_ROOT'] . '/shared/partials/footer.php'; ?>
+  <?php require $_SERVER['DOCUMENT_ROOT'] . '/shared/partials/footer-scripts.php'; ?>
 </body>
 </html>

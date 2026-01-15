@@ -31,6 +31,8 @@ Die Analyse ergab, dass die meisten Inhalte bereits korrekt in `/babixgo.de/` st
 - `/babixgo.de/datenschutz/` - Datenschutz-Seite
 - `/babixgo.de/impressum/` - Impressum-Seite
 - `/babixgo.de/kontakt/` - Kontakt-Seite
+- `/babixgo.de/shared/` - Geteilte Ressourcen (Classes, Config, Partials)
+- `/babixgo.de/file-storage/` - Geschützter Datei-Speicher
 
 ### 2. Finale Ziel-Struktur ✅
 
@@ -53,6 +55,19 @@ Die Analyse ergab, dass die meisten Inhalte bereits korrekt in `/babixgo.de/` st
 │   ├── img/                    # Bilder
 │   ├── logo/                   # Logos
 │   └── fonts/                  # Schriftarten
+│
+├── shared/                      # Geteilte Ressourcen
+│   ├── assets/                 # Globale Assets
+│   ├── classes/                # PHP-Klassen
+│   ├── config/                 # Konfigurationsdateien
+│   ├── partials/               # PHP-Partials
+│   └── create-tables.sql       # Datenbank-Schema
+│
+├── file-storage/                # Geschützter Datei-Speicher
+│   ├── .htaccess               # Verhindert direkten Zugriff
+│   ├── apk/                    # Android APKs
+│   ├── exe/                    # Windows Executables
+│   └── scripts/                # Scripts
 │
 ├── files/                       # Download-Portal
 │   ├── index.php
@@ -140,12 +155,8 @@ Das Root-Verzeichnis enthält nur noch:
 - `.github/` - GitHub Actions & Copilot
 - `.buddy/` - Buddy CI/CD
 
-**Shared Resources:**
-- `shared/` - Geteilte Ressourcen (Classes, Config, Partials)
-- `downloads/` - Geschützter Download-Speicher
-
 **Website:**
-- `babixgo.de/` - ✅ ALLE Website-Inhalte
+- `babixgo.de/` - ✅ ALLE Website-Inhalte (inkl. shared & file-storage)
 
 ### 4. Mapping: Alt → Neu
 
@@ -275,8 +286,8 @@ git commit -m "Move [datei] to babixgo.de structure"
 **Shared Resources einbinden:**
 ```php
 // Korrekt:
-require_once dirname($_SERVER['DOCUMENT_ROOT']) . '/shared/classes/Database.php';
-require_once dirname($_SERVER['DOCUMENT_ROOT']) . '/shared/partials/header.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/shared/classes/Database.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/shared/partials/header.php';
 
 // NICHT verwenden:
 require_once '../shared/classes/Database.php'; // Relativer Pfad kann brechen
