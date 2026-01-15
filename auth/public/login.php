@@ -24,10 +24,20 @@ $messageType = $_GET['type'] ?? 'info';
 // Page configuration for header partial
 $pageTitle = 'Login - babixgo.de';
 $currentPage = 'login';
-
-// Include header
-require_once SHARED_PATH . 'partials/header.php';
-require_once SHARED_PATH . 'partials/nav.php';
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><?= htmlspecialchars($pageTitle, ENT_QUOTES) ?></title>
+    <link rel="stylesheet" href="/shared/assets/css/style.css">
+    <link rel="stylesheet" href="/shared/assets/css/main.css">
+    <link rel="stylesheet" href="/assets/css/auth.css">
+</head>
+<body>
+    <?php require_once SHARED_PATH . 'partials/header.php'; ?>
+    <?php require_once SHARED_PATH . 'partials/nav.php'; ?>
 ?>
 <div class="auth-container">
     <div class="auth-box">
@@ -131,3 +141,5 @@ require_once SHARED_PATH . 'partials/nav.php';
 $includeValidationJS = true;
 require_once SHARED_PATH . 'partials/footer.php';
 ?>
+</body>
+</html>
