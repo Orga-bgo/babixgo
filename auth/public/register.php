@@ -31,7 +31,7 @@ $includeValidationJS = true;
     <link rel="stylesheet" href="/shared/assets/css/main.css">
 </head>
 <body>
-    <?php require_once SHARED_PATH . 'assets/partials/header.php'; ?>
+    <?php require_once SHARED_PATH . 'partials/header.php'; ?>
     <div class="auth-container">
         <div class="auth-box">
             <h1>Create Account</h1>
@@ -99,7 +99,7 @@ $includeValidationJS = true;
         </div>
     </div>
     
-    <?php require_once SHARED_PATH . 'assets/partials/footer.php'; ?>
+    <?php require_once SHARED_PATH . 'partials/footer.php'; ?>
     <script src="/shared/assets/js/main.js"></script>
     <script src="/shared/assets/js/form-validation.js"></script>
     <script>

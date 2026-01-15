@@ -26,8 +26,8 @@ $pageTitle = 'Login - babixgo.de';
 $currentPage = 'login';
 
 // Include header
-require_once SHARED_PATH . 'assets/partials/header.php';
-require_once SHARED_PATH . 'assets/partials/nav.php';
+require_once SHARED_PATH . 'partials/header.php';
+require_once SHARED_PATH . 'partials/nav.php';
 ?>
 <div class="auth-container">
     <div class="auth-box">
@@ -129,5 +129,5 @@ require_once SHARED_PATH . 'assets/partials/nav.php';
 <?php
 // Include footer with validation JS
 $includeValidationJS = true;
-require_once SHARED_PATH . 'assets/partials/footer.php';
+require_once SHARED_PATH . 'partials/footer.php';
 ?>
