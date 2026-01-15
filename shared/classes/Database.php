@@ -44,9 +44,14 @@ class Database {
      * Execute a query with parameters
      */
     public function query($sql, $params = []) {
-        $stmt = $this->conn->prepare($sql);
-        $stmt->execute($params);
-        return $stmt;
+        try {
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute($params);
+            return $stmt;
+        } catch (PDOException $e) {
+            error_log("Database query error: " . $e->getMessage() . " | SQL: " . $sql);
+            throw new Exception("Database query failed: " . $e->getMessage());
+        }
     }
 
     /**
