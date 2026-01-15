@@ -19,3 +19,5 @@
     © <span class="year-auto"></span> babixgo.de
   </div>
 </footer>
+
+<script src="/assets/js/main.js"></script>
