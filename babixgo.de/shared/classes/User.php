@@ -69,7 +69,7 @@ class User {
 
         // Insert user
         $query = "INSERT INTO users (username, email, password_hash, verification_token, is_verified, role, created_at) 
-                  VALUES (:username, :email, :password_hash, :verification_token, 0, 'user', NOW())";
+                  VALUES (:username, :email, :password_hash, :verification_token, false, 'user', NOW())";
 
         $stmt = $this->conn->prepare($query);
         $result = $stmt->execute([
