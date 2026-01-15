@@ -5,7 +5,6 @@
 
 define('BASE_PATH', dirname(__DIR__, 2) . '/');
 define('SHARED_PATH', BASE_PATH . 'shared/');
-define('SHARED_ASSETS_PATH', '../../shared/assets/');
 
 require_once SHARED_PATH . 'config/database.php';
 require_once SHARED_PATH . 'config/session.php';
@@ -25,15 +24,22 @@ if (User::isLoggedIn()) {
 $message = $_GET['message'] ?? '';
 $messageType = $_GET['type'] ?? 'info';
 
-// Page configuration for header partial
+// Page configuration
 $pageTitle = 'Login - babixgo.de';
 $currentPage = 'login';
-
-// Include header
-require_once SHARED_PATH . 'partials/header.php';
-require_once SHARED_PATH . 'partials/nav.php';
 ?>
-<div class="auth-container">
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><?= htmlspecialchars($pageTitle, ENT_QUOTES) ?></title>
+    <link rel="stylesheet" href="/shared/assets/css/style.css">
+    <link rel="stylesheet" href="/shared/assets/css/main.css">
+</head>
+<body>
+    <?php require_once SHARED_PATH . 'partials/header.php'; ?>
+    <div class="auth-container">
     <div class="auth-box">
         <h1>Welcome Back</h1>
         <p class="subtitle">Login to your babixgo.de account</p>
@@ -131,8 +137,8 @@ require_once SHARED_PATH . 'partials/nav.php';
     }
 </script>
 
-<?php
-// Include footer with validation JS
-$includeValidationJS = true;
-require_once SHARED_PATH . 'partials/footer.php';
-?>
+<?php require_once SHARED_PATH . 'partials/footer.php'; ?>
+
+<script src="/shared/assets/js/main.js"></script>
+</body>
+</html>

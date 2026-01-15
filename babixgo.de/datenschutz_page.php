@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <?php require dirname($_SERVER['DOCUMENT_ROOT']) . '/shared/partials/head-meta.php'; ?>
+  <?php require $_SERVER['DOCUMENT_ROOT'] . '/shared/partials/head-meta.php'; ?>
   
   <title>Datenschutzerklärung – babixGO</title>
   <meta name="description" content="Datenschutzerklärung von babixGO – Informationen zur Datenverarbeitung gemäß DSGVO." />
@@ -14,13 +14,13 @@
   <meta name="twitter:title" content="Datenschutzerklärung – babixGO" />
   <meta name="twitter:description" content="Datenschutzerklärung von babixGO – Informationen zur Datenverarbeitung gemäß DSGVO." />
   
-  <?php require dirname($_SERVER['DOCUMENT_ROOT']) . '/shared/partials/head-links.php'; ?>
+  <?php require $_SERVER['DOCUMENT_ROOT'] . '/shared/partials/head-links.php'; ?>
 </head>
 
 <body>
-  <?php require dirname($_SERVER['DOCUMENT_ROOT']) . '/shared/partials/tracking.php'; ?>
-  <?php require dirname($_SERVER['DOCUMENT_ROOT']) . '/shared/partials/cookie-banner.php'; ?>
-  <?php require dirname($_SERVER['DOCUMENT_ROOT']) . '/shared/partials/header.php'; ?>
+  <?php require $_SERVER['DOCUMENT_ROOT'] . '/shared/partials/tracking.php'; ?>
+  <?php require $_SERVER['DOCUMENT_ROOT'] . '/shared/partials/cookie-banner.php'; ?>
+  <?php require $_SERVER['DOCUMENT_ROOT'] . '/shared/partials/header.php'; ?>
 
   <!-- DATENSCHUTZ CONTENT -->
   <main id="main-content">
@@ -388,7 +388,7 @@
 
   </main>
 
-  <?php require dirname($_SERVER['DOCUMENT_ROOT']) . '/shared/partials/footer.php'; ?>
-  <?php require dirname($_SERVER['DOCUMENT_ROOT']) . '/shared/partials/footer-scripts.php'; ?>
+  <?php require $_SERVER['DOCUMENT_ROOT'] . '/shared/partials/footer.php'; ?>
+  <?php require $_SERVER['DOCUMENT_ROOT'] . '/shared/partials/footer-scripts.php'; ?>
 </body>
 </html>
