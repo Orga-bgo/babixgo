@@ -19,7 +19,7 @@ if (strpos($slug, '?') !== false) {
 }
 
 if(empty($slug) || $slug === 'kategorie') {
-    header('Location: /index.php');
+    header('Location: /files/');
     exit;
 }
 
@@ -28,159 +28,124 @@ $category = getCategoryBySlug($slug);
 
 if(!$category) {
     header('HTTP/1.0 404 Not Found');
-    echo '<!DOCTYPE html><html><head><title>404 - Kategorie nicht gefunden</title></head><body><h1>404 - Kategorie nicht gefunden</h1><p><a href="/index.php">Zurück zur Startseite</a></p></body></html>';
+    require $_SERVER['DOCUMENT_ROOT'] . '/404.php';
     exit;
 }
 
 // Downloads der Kategorie laden
 $downloads = getDownloadsByCategory($category['id']);
-$pageTitle = $category['name'];
 ?>
 <!DOCTYPE html>
 <html lang="de">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="<?= e($category['description']) ?> - BabixGO Files Download Portal">
-    <meta name="theme-color" content="#A0D8FA">
-    
-    <title><?= e($category['name']) ?> - <?= e(SITE_NAME) ?></title>
-    
-    <!-- PWA -->
-    <link rel="manifest" href="/manifest.json">
-    <link rel="apple-touch-icon" href="/assets/icons/icon-192.png">
-    
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
-    
-    <!-- Styles -->
-    <link rel="stylesheet" href="/assets/css/style.css">
-    <link rel="stylesheet" href="/assets/css/header-simple.css">
-    <link rel="stylesheet" href="/assets/css/cookie-banner.css">
-    
-    <!-- Google Analytics Tracking Configuration -->
-    <?php include SHARED_PATH . 'partials/tracking.php'; ?>
+  <?php require $_SERVER['DOCUMENT_ROOT'] . '/shared/partials/head-meta.php'; ?>
+
+  <title><?= e($category['name']) ?> - babixGO Files</title>
+  <meta name="description" content="<?= e($category['description']) ?> - BabixGO Files Download Portal" />
+  <link rel="canonical" href="https://babixgo.de/files/kategorie/<?= e($category['slug']) ?>/" />
+
+  <meta property="og:title" content="<?= e($category['name']) ?> - babixGO Files" />
+  <meta property="og:description" content="<?= e($category['description']) ?>" />
+  <meta property="og:url" content="https://babixgo.de/files/kategorie/<?= e($category['slug']) ?>/" />
+
+  <meta name="twitter:title" content="<?= e($category['name']) ?> - babixGO Files" />
+  <meta name="twitter:description" content="<?= e($category['description']) ?>" />
+
+  <?php require $_SERVER['DOCUMENT_ROOT'] . '/shared/partials/head-links.php'; ?>
 </head>
+
 <body>
-    <?php include SHARED_PATH . 'partials/header.php'; ?>
-    
-    <main class="main-content">
-        <div class="container">
-            
-            <!-- Breadcrumb Navigation -->
-            <nav class="breadcrumb">
-                <a href="/files/">Home</a>
-                <span class="separator">›</span>
-                <span class="current"><?= e($category['name']) ?></span>
-            </nav>
+  <?php require $_SERVER['DOCUMENT_ROOT'] . '/shared/partials/tracking.php'; ?>
+  <?php require $_SERVER['DOCUMENT_ROOT'] . '/shared/partials/cookie-banner.php'; ?>
+  <?php require $_SERVER['DOCUMENT_ROOT'] . '/shared/partials/header.php'; ?>
 
-            <!-- Kategorie Header -->
-            <section class="category-header">
-                <h1><?= e($category['name']) ?></h1>
-                <?php if($category['description']): ?>
-                <p class="category-intro"><?= e($category['description']) ?></p>
-                <?php endif; ?>
-            </section>
+  <main id="main-content">
+    <div class="box">
 
-            <!-- Downloads Sektion -->
-            <section class="downloads-section">
-                <h2>
-                    📥 Downloads
-                </h2>
-                
-                <?php if(empty($downloads)): ?>
-                <div class="empty-state content-card">
-                    <div class="empty-state-icon">📦</div>
-                    <h3>Noch keine Downloads verfügbar</h3>
-                    <p>In dieser Kategorie sind noch keine Downloads vorhanden. Schau später wieder vorbei!</p>
-                </div>
-                <?php else: ?>
-                <div class="downloads-list">
-                    <?php foreach($downloads as $download): ?>
-                    <div class="download-card content-card">
-                        
-                        <!-- Download Header -->
-                        <div class="download-header">
-                            <h3><?= e($download['name']) ?></h3>
-                        </div>
-                        
-                        <!-- Download Meta -->
-                        <div class="download-meta">
-                            <?php if (!empty($download['file_type'])): ?>
-                            <span class="meta-item">
-                                📄 <strong>Typ:</strong> <?= e($download['file_type']) ?>
-                            </span>
-                            <?php endif; ?>
-                            
-                            <?php if (!empty($download['file_size'])): ?>
-                            <span class="meta-item">
-                                💾 <strong>Größe:</strong> <?= e($download['file_size']) ?>
-                            </span>
-                            <?php endif; ?>
-                            
-                            <span class="meta-item">
-                                ⬇️ <strong>Downloads:</strong> <?= $download['download_count'] ?>
-                            </span>
-                            
-                            <span class="meta-item">
-                                💬 <strong>Kommentare:</strong> <?= $download['comment_count'] ?>
-                            </span>
-                        </div>
-                        
-                        <!-- Beschreibung -->
-                        <?php if(!empty($download['description'])): ?>
-                        <div class="download-description">
-                            <p><?= nl2br(e($download['description'])) ?></p>
-                        </div>
-                        <?php endif; ?>
-                        
-                        <!-- Download Actions -->
-                        <?php if(isLoggedIn()): ?>
-                        <div class="download-actions">
-                            <a href="/download.php?id=<?= $download['id'] ?>" class="btn btn-primary btn-download">
-                                ⬇️ Herunterladen
-                            </a>
-                            <?php if(!empty($download['alternative_link'])): ?>
-                            <a href="<?= e($download['alternative_link']) ?>" class="btn btn-secondary" target="_blank" rel="noopener">
-                                🔗 Alternativer Link
-                            </a>
-                            <?php endif; ?>
-                        </div>
-                        <?php else: ?>
-                        <div class="login-prompt">
-                            <p>🔒 <a href="/auth/login?redirect=<?= urlencode($_SERVER['REQUEST_URI']) ?>">Anmelden</a>, um Downloads zu sehen</p>
-                        </div>
-                        <?php endif; ?>
-                        
-                    </div>
-                    <?php endforeach; ?>
-                </div>
-                <?php endif; ?>
-            </section>
+      <!-- Breadcrumb -->
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="/">Home</a>
+        <span class="separator">›</span>
+        <a href="/files/">Files</a>
+        <span class="separator">›</span>
+        <span class="current"><?= e($category['name']) ?></span>
+      </nav>
 
-        </div>
-    </main>
-    
-    <!-- Footer -->
-    <footer class="site-footer">
-        <div class="footer-inner">
-            <div class="footer-links">
-                <a href="/">BabixGO</a>
-                <a href="/impressum">Impressum</a>
-                <a href="/datenschutz">Datenschutz</a>
+      <!-- Category Header -->
+      <div class="section-card">
+        <h1 class="welcome-title"><?php if($category['icon']): ?><?= $category['icon'] ?> <?php endif; ?><?= e($category['name']) ?></h1>
+        <?php if($category['description']): ?>
+        <p class="intro-text"><?= e($category['description']) ?></p>
+        <?php endif; ?>
+      </div>
+
+      <!-- Downloads Section -->
+      <div class="section-header">
+        <h2><img src="/assets/material-symbols/download.svg" class="icon icon-service" alt="" width="48" height="48">Downloads</h2>
+      </div>
+
+      <?php if(empty($downloads)): ?>
+        <div class="content-card">
+          <div class="content-card-header">
+            <div class="content-card-title">
+              <h3>Noch keine Downloads verfügbar</h3>
             </div>
-            <p>&copy; <?= date('Y') ?> <?= e(SITE_NAME) ?>. Alle Rechte vorbehalten.</p>
+          </div>
+          <p class="content-card-description">
+            In dieser Kategorie sind noch keine Downloads vorhanden. Schau später wieder vorbei!
+          </p>
         </div>
-    </footer>
+      <?php else: ?>
+        <?php foreach($downloads as $download): ?>
+        <div class="content-card">
+          <div class="content-card-header">
+            <div class="content-card-title">
+              <h3><?= e($download['name']) ?></h3>
+            </div>
+            <?php if(isLoggedIn()): ?>
+              <a href="/files/download.php?id=<?= $download['id'] ?>" class="btn btn-link">Herunterladen</a>
+            <?php else: ?>
+              <a href="/auth/login?redirect=<?= urlencode($_SERVER['REQUEST_URI']) ?>" class="btn btn-link">Anmelden</a>
+            <?php endif; ?>
+          </div>
+          
+          <?php if(!empty($download['description'])): ?>
+          <p class="content-card-description"><?= nl2br(e($download['description'])) ?></p>
+          <?php endif; ?>
+          
+          <div class="info-line">
+            <span class="info-line-label">Typ</span>
+            <span class="info-line-value"><?= e($download['file_type'] ?? 'Datei') ?></span>
+          </div>
+          <?php if (!empty($download['file_size'])): ?>
+          <div class="info-line">
+            <span class="info-line-label">Größe</span>
+            <span class="info-line-value"><?= e($download['file_size']) ?></span>
+          </div>
+          <?php endif; ?>
+          <div class="info-line">
+            <span class="info-line-label">Downloads</span>
+            <span class="info-line-value"><?= $download['download_count'] ?></span>
+          </div>
+          
+          <?php if(!empty($download['alternative_link'])): ?>
+          <div class="u-mt-16">
+            <a href="<?= e($download['alternative_link']) ?>" class="btn btn-secondary" target="_blank" rel="noopener">Alternativer Link</a>
+          </div>
+          <?php endif; ?>
+        </div>
+        <?php endforeach; ?>
+      <?php endif; ?>
 
-    <!-- Cookie Consent Banner -->
-    <?php include SHARED_PATH . 'partials/cookie-banner.php'; ?>
+      <!-- Back Link -->
+      <div class="u-mt-24">
+        <a href="/files/" class="btn btn-secondary">Zurück zur Übersicht</a>
+      </div>
 
-    <!-- Scripts -->
-    <script src="/assets/js/header.js"></script>
-    <script src="/assets/js/app.js"></script>
-    <script src="/assets/js/cookie-consent.js"></script>
+    </div>
+  </main>
+
+  <?php require $_SERVER['DOCUMENT_ROOT'] . '/shared/partials/footer.php'; ?>
+  <?php require $_SERVER['DOCUMENT_ROOT'] . '/shared/partials/scripts.php'; ?>
 </body>
 </html>
