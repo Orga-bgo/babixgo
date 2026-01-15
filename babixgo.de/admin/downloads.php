@@ -116,8 +116,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file']) && verifyCsr
     <title>Download Management - babixgo.de</title>
     <link rel="stylesheet" href="/shared/assets/css/style.css">
     <link rel="stylesheet" href="/shared/assets/css/admin.css">
-    <link rel="stylesheet" href="/shared/assets/css/style.css">
-    <link rel="stylesheet" href="/shared/assets/css/admin.css">
 </head>
 <body>
     <nav class="main-nav">
