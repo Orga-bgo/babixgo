@@ -1,94 +1,70 @@
 <?php
 /**
  * Database connection and helper functions
+ * Uses shared Database singleton for both MySQL and PostgreSQL support
+ * Backward compatible with old mysqli-style calls
  */
 
-require_once __DIR__ . '/config.php';
+// Track last statement for getAffectedRows()
+$_lastStatement = null;
 
 /**
- * Get database connection (singleton pattern)
- * @return mysqli
+ * Get database connection (uses shared singleton)
+ * @return PDO
  */
-function getDB(): mysqli {
-    static $db = null;
-    
-    if ($db === null) {
-        try {
-            $db = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
-            
-            if ($db->connect_error) {
-                throw new Exception('Database connection failed: ' . $db->connect_error);
-            }
-            
-            $db->set_charset(DB_CHARSET);
-        } catch (Exception $e) {
-            if (DEBUG_MODE) {
-                die('Database connection failed: ' . $e->getMessage());
-            } else {
-                // Log the error but show user-friendly message
-                error_log('Database connection error: ' . $e->getMessage());
-                die('Database connection failed. Please try again later.');
-            }
-        }
-    }
-    
-    return $db;
+function getDB(): PDO {
+    return Database::getInstance()->getConnection();
 }
 
 /**
  * Execute a prepared statement with parameters
+ * Backward compatible: accepts old mysqli signature (sql, types, params) or new PDO signature (sql, params)
  * @param string $sql SQL query with placeholders
- * @param string $types Parameter types (s=string, i=integer, d=double, b=blob)
- * @param array $params Parameters to bind
- * @return mysqli_result|bool
+ * @param mixed $typesOrParams Type string (ignored) or params array
+ * @param array|null $params Parameters to bind
+ * @return PDOStatement|false
  */
-function executeQuery(string $sql, string $types = '', array $params = []) {
+function executeQuery(string $sql, $typesOrParams = [], ?array $params = null) {
+    global $_lastStatement;
+    
+    // Handle backward compatibility with mysqli-style calls
+    if (is_string($typesOrParams)) {
+        $params = $params ?? [];
+    } else {
+        $params = $typesOrParams;
+    }
+    
     $db = getDB();
     $stmt = $db->prepare($sql);
     
     if (!$stmt) {
-        if (DEBUG_MODE) {
-            throw new Exception('Query preparation failed: ' . $db->error);
+        if (defined('DEBUG_MODE') && DEBUG_MODE) {
+            throw new Exception('Query preparation failed');
         }
         return false;
     }
     
-    if (!empty($params)) {
-        $stmt->bind_param($types, ...$params);
-    }
-    
-    $stmt->execute();
-    
-    if ($stmt->errno) {
-        if (DEBUG_MODE) {
-            throw new Exception('Query execution failed: ' . $stmt->error);
-        }
-        return false;
-    }
-    
-    $result = $stmt->get_result();
-    
-    if ($result === false && $stmt->affected_rows >= 0) {
-        return true;
-    }
-    
-    return $result;
+    $stmt->execute($params);
+    $_lastStatement = $stmt;
+    return $stmt;
 }
 
 /**
  * Get single row from query result
- * @param string $sql SQL query
- * @param string $types Parameter types
- * @param array $params Parameters to bind
- * @return array|null
+ * Backward compatible: accepts old mysqli signature (sql, types, params) or new PDO signature (sql, params)
  */
-function fetchOne(string $sql, string $types = '', array $params = []): ?array {
-    $result = executeQuery($sql, $types, $params);
+function fetchOne(string $sql, $typesOrParams = [], ?array $params = null): ?array {
+    if (is_string($typesOrParams)) {
+        $params = $params ?? [];
+    } else {
+        $params = $typesOrParams;
+    }
     
-    if ($result instanceof mysqli_result) {
-        $row = $result->fetch_assoc();
-        $result->free();
-        return $row;
+    $stmt = executeQuery($sql, $params);
+    
+    if ($stmt instanceof PDOStatement) {
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $row ?: null;
     }
     
     return null;
@@ -96,18 +72,19 @@ function fetchOne(string $sql, string $types = '', array $params = []): ?array {
 
 /**
  * Get all rows from query result
- * @param string $sql SQL query
- * @param string $types Parameter types
- * @param array $params Parameters to bind
- * @return array
+ * Backward compatible: accepts old mysqli signature (sql, types, params) or new PDO signature (sql, params)
  */
-function fetchAll(string $sql, string $types = '', array $params = []): array {
-    $result = executeQuery($sql, $types, $params);
+function fetchAll(string $sql, $typesOrParams = [], ?array $params = null): array {
+    if (is_string($typesOrParams)) {
+        $params = $params ?? [];
+    } else {
+        $params = $typesOrParams;
+    }
     
-    if ($result instanceof mysqli_result) {
-        $rows = $result->fetch_all(MYSQLI_ASSOC);
-        $result->free();
-        return $rows;
+    $stmt = executeQuery($sql, $params);
+    
+    if ($stmt instanceof PDOStatement) {
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
     
     return [];
@@ -115,17 +92,20 @@ function fetchAll(string $sql, string $types = '', array $params = []): array {
 
 /**
  * Insert a row and return the insert ID
- * @param string $sql SQL query
- * @param string $types Parameter types
- * @param array $params Parameters to bind
- * @return int|false Insert ID or false on failure
+ * Backward compatible: accepts old mysqli signature (sql, types, params) or new PDO signature (sql, params)
  */
-function insertRow(string $sql, string $types = '', array $params = []) {
-    $db = getDB();
-    $result = executeQuery($sql, $types, $params);
+function insertRow(string $sql, $typesOrParams = [], ?array $params = null) {
+    if (is_string($typesOrParams)) {
+        $params = $params ?? [];
+    } else {
+        $params = $typesOrParams;
+    }
     
-    if ($result) {
-        return $db->insert_id;
+    $db = getDB();
+    $stmt = executeQuery($sql, $params);
+    
+    if ($stmt) {
+        return (int) $db->lastInsertId();
     }
     
     return false;
@@ -136,15 +116,13 @@ function insertRow(string $sql, string $types = '', array $params = []) {
  * @return int
  */
 function getAffectedRows(): int {
-    return getDB()->affected_rows;
+    global $_lastStatement;
+    return $_lastStatement ? $_lastStatement->rowCount() : 0;
 }
 
 /**
- * Close database connection
+ * Close database connection (no-op for PDO singleton)
  */
 function closeDB(): void {
-    $db = getDB();
-    if ($db) {
-        $db->close();
-    }
+    // PDO handles connection cleanup automatically
 }
