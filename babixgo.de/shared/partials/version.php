@@ -7,5 +7,5 @@
  * to force browsers to fetch the new version.
  */
 
-define('BABIXGO_VERSION', '1.0.21');
+define('BABIXGO_VERSION', '1.0.22');
 ?>

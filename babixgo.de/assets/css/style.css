@@ -476,7 +476,7 @@ small {
   padding: calc(20px * var(--zoom-scale)) calc(18px * var(--zoom-scale));
 }
 
-.mobile-menu a {
+.mobile-menu a:not(.btn-auth) {
   display: block;
   color: var(--text);
   text-decoration: none;
@@ -539,6 +539,52 @@ small {
 
 .menu-social .facebook {
   color: var(--brand-facebook);
+}
+
+/* ===== AUTH BUTTONS ===== */
+.menu-auth {
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--stroke);
+}
+
+.menu-auth .btn-auth {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 20px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all .2s;
+  margin: 0;
+}
+
+.btn-login {
+  background: var(--surface-1);
+  color: var(--text);
+  border: 1px solid var(--stroke);
+}
+
+.btn-login:hover {
+  background: var(--card);
+  color: var(--primary);
+  transform: translateY(-2px);
+}
+
+.btn-register {
+  background: var(--primary);
+  color: #fff;
+}
+
+.btn-register:hover {
+  background: var(--primary-hover);
+  transform: translateY(-2px);
 }
 
 /* ===== DROPDOWN MENU ===== */
