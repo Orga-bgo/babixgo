@@ -1,10 +1,16 @@
-# babixgo.de Authentication & Admin System
+# babixGO Platform - Single Domain Architecture
 
-Complete authentication and administration system for babixgo.de multi-domain setup.
+**Version**: 2.0.0  
+**Architecture**: Unified Single-Domain  
+**Status**: ✅ Production Ready
 
-## Features
+Complete authentication, user management, file downloads, and administration system for babixgo.de in a unified single-domain architecture.
 
-### Authentication System
+---
+
+## 🎯 Features
+
+### 🔐 Authentication System
 - ✅ User registration with email verification
 - ✅ Secure login with "remember me" functionality
 - ✅ Password reset via email
@@ -12,7 +18,21 @@ Complete authentication and administration system for babixgo.de multi-domain se
 - ✅ Profile management
 - ✅ Friendship link sharing system
 
-### Admin Panel
+### 👤 User Area (NEW)
+- ✅ Personal dashboard
+- ✅ Profile editing
+- ✅ Comment management
+- ✅ Download history
+- ✅ Account settings
+
+### 📥 Download Portal
+- ✅ Browse downloads by category (APK, EXE, Scripts)
+- ✅ Secure file download system
+- ✅ Download tracking and analytics
+- ✅ File versioning
+- ✅ Download count tracking
+
+### ⚙️ Admin Panel
 - ✅ User management (view, edit, delete, verify)
 - ✅ Download management with file uploads
 - ✅ Comment moderation system
@@ -20,7 +40,7 @@ Complete authentication and administration system for babixgo.de multi-domain se
 - ✅ Activity logs
 - ✅ Bulk actions
 
-### Security Features
+### 🔒 Security Features
 - ✅ Password hashing with bcrypt
 - ✅ CSRF protection on all forms
 - ✅ SQL injection prevention (PDO prepared statements)
@@ -28,19 +48,34 @@ Complete authentication and administration system for babixgo.de multi-domain se
 - ✅ Session security (httponly, secure, samesite)
 - ✅ Input validation (server-side and client-side)
 - ✅ Secure file upload handling
+- ✅ Protected download directory
+- ✅ Role-based access control
 
-## Technology Stack
+### 📱 Progressive Web App (PWA)
+- ✅ Installable on mobile and desktop
+- ✅ Offline support
+- ✅ Service worker caching
+- ✅ App shortcuts (Downloads, Profile, Login)
+- ✅ Responsive design
 
-- **Backend**: Pure PHP 7.4+ (no frameworks)
+---
+
+## 🛠️ Technology Stack
+
+- **Backend**: Pure PHP 8.2+ (no frameworks)
 - **Database**: MySQL/MariaDB with PDO
 - **Frontend**: HTML5, CSS3, JavaScript (no frameworks)
 - **Deployment**: FTP-deployable to Strato hosting
+- **PWA**: Service Worker, Web App Manifest
+- **Design**: Material Design 3 Dark Medium Contrast
 
-## Directory Structure
+---
+
+## 📁 Directory Structure
 
 ```
 babixgo/                             # Monorepo root
-├── shared/                          # Shared resources across ALL domains
+├── shared/                          # Shared resources across entire platform
 │   ├── assets/
 │   │   ├── css/
 │   │   │   ├── main.css            # Global styles (v1.0.15)
@@ -52,20 +87,20 @@ babixgo/                             # Monorepo root
 │   │   ├── images/                 # Shared images
 │   │   └── logo/                   # Logo assets
 │   │
-│   ├── classes/
+│   ├── classes/                     # PHP classes
 │   │   ├── Database.php            # Database wrapper
 │   │   ├── User.php                # User management
 │   │   ├── Session.php             # Session handling
 │   │   ├── Download.php            # Download management
 │   │   └── Comment.php             # Comment management
 │   │
-│   ├── config/
-│   │   ├── database.php            # Database configuration
+│   ├── config/                      # Configuration files
+│   │   ├── database.php            # Database config
 │   │   ├── session.php             # Session management
 │   │   └── autoload.php            # Class autoloader
 │   │
-│   ├── partials/                   # Shared PHP partials
-│   │   ├── header.php              # Site header
+│   ├── partials/                    # Shared PHP partials
+│   │   ├── header.php              # Site header with user menu
 │   │   ├── footer.php              # Site footer
 │   │   ├── nav.php                 # Navigation
 │   │   ├── head-meta.php           # Meta tags
@@ -74,10 +109,10 @@ babixgo/                             # Monorepo root
 │   │   ├── version.php             # Version constant
 │   │   └── [other partials]
 │   │
-│   └── create-tables.sql           # Database schema
+│   └── create-tables.sql            # Database schema
 │
 ├── downloads/                       # Secure file storage (NOT web-accessible)
-│   ├── .htaccess                   # Deny direct access
+│   ├── .htaccess                   # Deny direct access (CRITICAL)
 │   ├── apk/                        # Android APK files
 │   ├── exe/                        # Windows executables
 │   └── scripts/                    # Script files
@@ -85,463 +120,323 @@ babixgo/                             # Monorepo root
 │       ├── python/
 │       └── powershell/
 │
-├── babixgo.de/                      # Main website (babixgo.de)
-│   ├── index.php                   # Homepage
-│   ├── about.php                   # About page
-│   ├── 404.php                     # Error page
-│   ├── .htaccess                   # Web server config
-│   │
-│   ├── assets/                     # Domain-specific assets
-│   │   ├── css/
-│   │   │   └── style.css           # Main site styles
-│   │   ├── js/
-│   │   ├── icons/
-│   │   ├── img/
-│   │   └── logo/
-│   │
-│   ├── public/                     # PWA assets
-│   │   ├── manifest.json
-│   │   ├── sw.js
-│   │   └── offline.html
-│   │
-│   └── [content directories]/      # sticker/, wuerfel/, etc.
-│
-├── auth/                            # Authentication system (auth.babixgo.de)
-│   ├── .htaccess                   # Root config
-│   │
-│   └── public/                     # Document root for auth.babixgo.de
-│       ├── index.php               # User dashboard/profile
-│       ├── login.php               # Login page
-│       ├── register.php            # Registration page
-│       ├── logout.php              # Logout handler
-│       ├── verify-email.php        # Email verification
-│       ├── forgot-password.php     # Password reset request
-│       ├── reset-password.php      # Password reset form
-│       ├── edit-profile.php        # Edit profile page
-│       ├── .htaccess               # Security configuration
-│       ├── manifest.json           # PWA manifest
-│       ├── sw.js                   # Service worker
-│       ├── offline.html            # Offline fallback
-│       │
-│       ├── admin/                  # Admin panel
-│       │   ├── index.php           # Admin dashboard
-│       │   ├── users.php           # User management
-│       │   ├── user-edit.php       # Edit user
-│       │   ├── downloads.php       # Download management
-│       │   ├── download-edit.php   # Edit download
-│       │   ├── comments.php        # Comment moderation
-│       │   └── .htaccess           # Admin protection
-│       │
-│       ├── assets/
-│       │   ├── css/
-│       │   │   ├── auth.css        # Authentication styling
-│       │   │   └── admin.css       # Admin panel styling
-│       │   └── js/
-│       │       ├── form-validation.js
-│       │       └── admin.js
-│       │
-│       └── includes/
-│           ├── auth-check.php      # Authentication guard
-│           ├── admin-check.php     # Admin authorization
-│           ├── mail-helper.php     # Email functions
-│           └── form-handlers/
-│
-└── files.babixgo.de/                # Download portal (files.babixgo.de)
-    ├── .htaccess                   # Root config
+└── babixgo.de/                      # *** UNIFIED SINGLE DOMAIN ***
+    ├── .htaccess                   # Unified routing configuration
+    ├── index.php                   # Homepage
+    ├── 404.php                     # Not Found error page
+    ├── 403.php                     # Access Denied error page
+    ├── 500.php                     # Server Error page
     │
-    └── public/                     # Document root for files.babixgo.de
-        ├── index.php               # Download listing
-        ├── download.php            # Download handler
-        ├── category.php            # Category view
-        ├── .htaccess               # Security configuration
-        ├── manifest.json           # PWA manifest
-        ├── sw.js                   # Service worker
-        ├── offline.html            # Offline fallback
-        │
-        ├── admin/                  # Admin panel
-        │   ├── dashboard.php
-        │   ├── manage-downloads.php
-        │   └── manage-users.php
-        │
-        ├── assets/                 # Domain-specific assets
-        │   ├── css/
-        │   │   └── style.css       # Files portal styles
-        │   └── js/
-        │
-        └── includes/               # Domain-specific includes
-            ├── config.php
-            ├── db.php
-            ├── auth.php
-            └── functions.php
+    ├── public/                      # PWA assets
+    │   ├── manifest.json           # PWA manifest with shortcuts
+    │   ├── sw.js                   # Service worker (unified)
+    │   └── offline.html            # Offline fallback
+    │
+    ├── assets/                      # Domain-specific assets
+    │   ├── css/
+    │   │   ├── style.css           # Main site styles
+    │   │   └── user.css            # User area styles
+    │   ├── js/
+    │   ├── icons/
+    │   ├── img/
+    │   └── logo/
+    │
+    ├── auth/                        # Authentication (babixgo.de/auth/*)
+    │   ├── login.php               # Login page
+    │   ├── register.php            # Registration
+    │   ├── logout.php              # Logout handler
+    │   ├── verify-email.php        # Email verification
+    │   ├── forgot-password.php     # Password reset request
+    │   ├── reset-password.php      # Password reset form
+    │   └── includes/
+    │       ├── auth-check.php      # Authentication guard
+    │       ├── admin-check.php     # Admin authorization
+    │       ├── mail-helper.php     # Email functions
+    │       └── form-handlers/
+    │
+    ├── user/                        # User Area (babixgo.de/user/*)
+    │   ├── index.php               # User dashboard
+    │   ├── profile.php             # Public profile view
+    │   ├── edit-profile.php        # Edit profile
+    │   ├── settings.php            # Account settings
+    │   ├── my-comments.php         # User's comments
+    │   ├── my-downloads.php        # Download history
+    │   └── includes/
+    │       └── auth-check.php      # User authentication check
+    │
+    ├── files/                       # Download Portal (babixgo.de/files/*)
+    │   ├── index.php               # Download overview
+    │   ├── browse.php              # Browse downloads
+    │   ├── category.php            # Category view
+    │   ├── download.php            # Download handler
+    │   └── includes/
+    │       └── [helper files]
+    │
+    ├── admin/                       # Admin Panel (babixgo.de/admin/*)
+    │   ├── .htaccess               # Additional admin protection
+    │   ├── index.php               # Admin dashboard
+    │   ├── users.php               # User management
+    │   ├── user-edit.php           # Edit user
+    │   ├── downloads.php           # Download management
+    │   ├── download-edit.php       # Edit download
+    │   ├── comments.php            # Comment moderation
+    │   └── includes/
+    │       ├── admin-check.php     # Admin role check
+    │       └── handlers/
+    │
+    └── [existing content]/          # Existing site content
+        ├── accounts/
+        ├── anleitungen/
+        ├── wuerfel/
+        ├── sticker/
+        └── ...
 ```
 
-### Domain to Directory Mapping
+---
 
-| Domain | Document Root | Purpose |
-|--------|--------------|---------|
-| **babixgo.de** | `/babixgo.de/` | Main website |
-| **auth.babixgo.de** | `/auth/public/` | Authentication & Admin |
-| **files.babixgo.de** | `/files.babixgo.de/public/` | Download portal |
+## 🌐 URL Structure
 
-All domains access shared resources via: `dirname($_SERVER['DOCUMENT_ROOT']) . '/shared/'`
+All features are unified under **babixgo.de**:
 
-## Installation
+### Main Site
+```
+https://babixgo.de/                  # Homepage
+https://babixgo.de/wuerfel/          # Dice service
+https://babixgo.de/accounts/         # Accounts
+https://babixgo.de/kontakt/          # Contact
+```
 
-### 1. Database Setup
+### Authentication
+```
+https://babixgo.de/auth/login        # Login
+https://babixgo.de/auth/register     # Registration
+https://babixgo.de/auth/logout       # Logout
+```
 
-1. Create a MySQL/MariaDB database:
+### User Area
+```
+https://babixgo.de/user/             # Dashboard
+https://babixgo.de/user/edit-profile # Edit profile
+https://babixgo.de/user/settings     # Settings
+https://babixgo.de/user/my-comments  # My comments
+https://babixgo.de/user/my-downloads # Download history
+```
+
+### Downloads
+```
+https://babixgo.de/files/            # Download portal
+https://babixgo.de/files/browse      # Browse files
+https://babixgo.de/files/category/apk # APK downloads
+https://babixgo.de/files/download/123/apk # Download file
+```
+
+### Admin Panel (Admins Only)
+```
+https://babixgo.de/admin/            # Admin dashboard
+https://babixgo.de/admin/users       # User management
+https://babixgo.de/admin/downloads   # Download management
+https://babixgo.de/admin/comments    # Comment moderation
+```
+
+---
+
+## 🗄️ Database Schema
+
+### users
 ```sql
-CREATE DATABASE babixgo_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-CREATE USER 'babixgo_user'@'localhost' IDENTIFIED BY 'your_secure_password';
-GRANT ALL PRIVILEGES ON babixgo_db.* TO 'babixgo_user'@'localhost';
-FLUSH PRIVILEGES;
-```
-
-2. Import the database schema:
-```bash
-mysql -u babixgo_user -p babixgo_db < shared/create-tables.sql
-```
-
-### 2. Configuration
-
-1. Configure database credentials using environment variables (recommended):
-
-   **Method 1: Using .env file (recommended for local development)**
-   ```bash
-   cp .env.example .env
-   # Edit .env and set your database credentials
-   ```
-   
-   Example `.env` file:
-   ```bash
-   DB_HOST=localhost
-   DB_NAME=babixgo_db
-   DB_USER=babixgo_user
-   DB_PASSWORT=your_secure_password
-   ```
-   
-   **Method 2: Set environment variables directly (recommended for production)**
-   ```bash
-   export DB_HOST=localhost
-   export DB_NAME=babixgo_db
-   export DB_USER=babixgo_user
-   export DB_PASSWORT=your_secure_password
-   ```
-   
-   **Method 3: Update defaults in `shared/config/database.php`** (legacy method)
-   ```php
-   return [
-       'host' => 'localhost',
-       'database' => 'babixgo_db',
-       'username' => 'babixgo_user',
-       'password' => 'your_secure_password',
-       'charset' => 'utf8mb4'
-   ];
-   ```
-   
-   > **Note:** Environment variables (DB_HOST, DB_NAME, DB_USER, DB_PASSWORT/DB_PASSWORD) take precedence over hardcoded values.
-
-2. Update session domain in `shared/config/session.php`:
-```php
-ini_set('session.cookie_domain', '.babixgo.de');
-```
-
-3. Configure error logging path in `auth/public/.htaccess`:
-```apache
-php_value error_log /path/to/error_log.txt
-```
-
-### 3. File Upload
-
-1. Upload all files via FTP to your Strato hosting
-2. Ensure proper directory structure is maintained
-3. Set permissions:
-```bash
-chmod 755 auth/public/
-chmod 755 downloads/
-chmod 755 downloads/apk/
-chmod 755 downloads/exe/
-chmod 755 downloads/scripts/
-```
-
-### 4. Email Configuration
-
-The system uses PHP's `mail()` function. For production, configure SMTP in `auth/public/includes/mail-helper.php` if needed.
-
-Update email sender in mail-helper.php:
-```php
-'From' => 'noreply@babixgo.de',
-'Reply-To' => 'support@babixgo.de',
-```
-
-### 5. Create Admin Account
-
-The database schema includes a default admin account:
-- **Username**: admin
-- **Email**: admin@babixgo.de
-- **Password**: Admin@123 (CHANGE THIS IMMEDIATELY!)
-
-To change the admin password after first login:
-1. Login at `https://auth.babixgo.de/login.php`
-2. Go to Edit Profile
-3. Change password
-
-Or create a new admin via SQL:
-```sql
--- Generate password hash (use PHP)
--- php -r "echo password_hash('YourSecurePassword', PASSWORD_DEFAULT);"
-
-INSERT INTO users (username, email, password_hash, role, is_verified, friendship_link) 
-VALUES (
-    'youradmin',
-    'youremail@example.com',
-    '$2y$10$...your_generated_hash...',
-    'admin',
-    1,
-    'ADMIN002'
+CREATE TABLE users (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    username VARCHAR(50) NOT NULL UNIQUE,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    password_hash VARCHAR(255) NOT NULL,
+    description TEXT,
+    friendship_link VARCHAR(8) UNIQUE,
+    is_verified BOOLEAN DEFAULT 0,
+    verification_token VARCHAR(64),
+    reset_token VARCHAR(64),
+    reset_token_expires DATETIME,
+    role ENUM('user', 'admin') DEFAULT 'user',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 ```
 
-### 6. Security Configuration
-
-**Important for Production:**
-
-1. **Enable HTTPS redirect** in `auth/public/.htaccess`:
-   - Uncomment the HTTPS redirect lines
-   
-2. **Update session security** in `shared/config/session.php`:
-   - Session cookies will use secure flag when HTTPS is detected
-
-3. **Configure Content Security Policy** in `.htaccess` based on your needs
-
-4. **Set up IP whitelist for admin** (optional) in `auth/public/admin/.htaccess`
-
-5. **Disable debug mode** in `shared/config/database.php`:
-```php
-define('DB_DEBUG', false);
-```
-
-6. **Create custom error pages**:
-   - Create 404.html, 403.html, 500.html in auth/public/
-
-## Usage
-
-### User Registration Flow
-
-1. User visits `https://auth.babixgo.de/register.php`
-2. Fills registration form (username, email, password)
-3. System creates account with `is_verified = 0`
-4. Verification email sent to user
-5. User clicks link in email → `verify-email.php?token=XXX`
-6. Account verified, user can login
-
-### Login Flow
-
-1. User visits `https://auth.babixgo.de/login.php`
-2. Enters username/email and password
-3. Optional: Check "Remember me" for 30-day cookie
-4. Redirected to dashboard at `https://auth.babixgo.de/`
-
-### Admin Access
-
-1. Login with admin account
-2. Access admin panel at `https://auth.babixgo.de/admin/`
-3. Manage users, downloads, and comments
-
-### File Upload (Admin)
-
-1. Navigate to Downloads management
-2. Select file type (APK, EXE, Scripts)
-3. Upload file (max 500MB)
-4. Enter version and description
-5. File stored in `downloads/{type}/` directory
-
-## Database Schema
-
-### users
-- User accounts with authentication
-- Roles: 'user', 'admin'
-- Email verification system
-- Password reset tokens
-- Unique friendship links
-
-### comments
-- User comments across domains
-- Status: 'pending', 'approved', 'spam'
-- Domain and content_id for cross-site comments
-
 ### downloads
-- File metadata and tracking
-- Types: 'apk', 'scripts', 'exe'
-- Download count tracking
-- Active/inactive status
+```sql
+CREATE TABLE downloads (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    filename VARCHAR(255) NOT NULL,
+    filepath VARCHAR(500) NOT NULL,
+    filetype ENUM('apk', 'scripts', 'exe') NOT NULL,
+    filesize BIGINT,
+    version VARCHAR(50),
+    description TEXT,
+    download_count INT DEFAULT 0,
+    active BOOLEAN DEFAULT 1,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+```
 
 ### download_logs
-- Download activity logging
-- User tracking (optional)
-- IP and user agent logging
-
-## Security Best Practices
-
-### Implemented
-- ✅ Passwords hashed with PASSWORD_DEFAULT (bcrypt)
-- ✅ CSRF tokens on all forms
-- ✅ Prepared statements (no SQL injection)
-- ✅ Output escaping (XSS prevention)
-- ✅ Session regeneration on login
-- ✅ Session timeout (30 minutes)
-- ✅ File upload validation (type, size, MIME)
-- ✅ Secure session cookies
-
-### Recommended
-- 🔒 Enable HTTPS in production
-- 🔒 Regular database backups
-- 🔒 Monitor error logs
-- 🔒 Update PHP regularly
-- 🔒 Use strong database passwords
-- 🔒 Implement rate limiting for login attempts
-- 🔒 Enable 2FA for admin accounts (future enhancement)
-
-## API Endpoints (AJAX)
-
-All form handlers return JSON responses:
-
-**Registration**: `POST /includes/form-handlers/register-handler.php`
-```json
-{
-  "success": true,
-  "message": "Registration successful!"
-}
-```
-
-**Login**: `POST /includes/form-handlers/login-handler.php`
-```json
-{
-  "success": true,
-  "redirect": "/index.php"
-}
-```
-
-**Profile Update**: `POST /includes/form-handlers/profile-handler.php`
-```json
-{
-  "success": true,
-  "message": "Profile updated!"
-}
-```
-
-**Admin Actions**: `POST /includes/form-handlers/admin-handlers.php`
-```json
-{
-  "success": true,
-  "message": "Action completed"
-}
-```
-
-## Integration with Other Domains
-
-### babixgo.de (main site)
-```php
-// Check if user is logged in
-require_once '../shared/config/database.php';
-require_once '../shared/config/session.php';
-require_once '../shared/config/autoload.php';
-
-if (User::isLoggedIn()) {
-    echo "Welcome, " . htmlspecialchars($_SESSION['username']);
-}
-```
-
-### files.babixgo.de
-```php
-// Track downloads with user
-require_once '../shared/config/database.php';
-require_once '../shared/config/session.php';
-require_once '../shared/config/autoload.php';
-
-$download = new Download();
-$userId = User::isLoggedIn() ? $_SESSION['user_id'] : null;
-$download->logDownload($fileId, $userId);
-```
-
-## Troubleshooting
-
-### Email not sending
-- Check PHP mail() configuration
-- Verify SMTP settings if using SMTP
-- Check server logs for mail errors
-
-### Session issues across domains
-- Verify cookie domain is set to `.babixgo.de`
-- Ensure all domains are using HTTPS (or all HTTP)
-- Check session.cookie_samesite setting
-
-### File upload fails
-- Check PHP upload_max_filesize and post_max_size
-- Verify directory permissions (755)
-- Check available disk space
-
-### Database connection errors
-- Verify credentials in database.php
-- Check MySQL service is running
-- Verify database user has proper privileges
-
-## Development vs Production
-
-### Development
-```php
-// database.php
-define('DB_DEBUG', true);
-
-// .htaccess - HTTPS redirect commented out
-```
-
-### Production
-```php
-// database.php
-define('DB_DEBUG', false);
-
-// .htaccess - HTTPS redirect enabled
-// RewriteCond %{HTTPS} off
-// RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R=301,L]
-```
-
-## Maintenance
-
-### Regular Tasks
-- Monitor error logs
-- Review download logs
-- Moderate pending comments
-- Check for suspicious login attempts
-- Backup database regularly
-- Update user roles as needed
-
-### Database Cleanup
 ```sql
--- Remove old unverified accounts (older than 30 days)
-DELETE FROM users 
-WHERE is_verified = 0 
-AND created_at < DATE_SUB(NOW(), INTERVAL 30 DAY);
-
--- Remove expired reset tokens
-UPDATE users 
-SET reset_token = NULL, reset_token_expires = NULL 
-WHERE reset_token_expires < NOW();
+CREATE TABLE download_logs (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    file_id INT NOT NULL,
+    user_id INT,
+    ip_address VARCHAR(45),
+    user_agent VARCHAR(500),
+    downloaded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (file_id) REFERENCES downloads(id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
+);
 ```
 
-## Support & Documentation
+### comments
+```sql
+CREATE TABLE comments (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT NOT NULL,
+    domain VARCHAR(50) NOT NULL,
+    content_id INT,
+    comment TEXT NOT NULL,
+    status ENUM('approved', 'pending', 'spam') DEFAULT 'pending',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+```
 
-For issues or questions:
-- Check error logs: `error_log.txt`
-- Review database for data integrity
-- Verify file permissions
-- Check PHP version compatibility (7.4+)
+---
 
-## License
+## 🚀 Deployment
 
-Proprietary - babixgo.de
+### Prerequisites
+- PHP 8.2+ with PDO MySQL extension
+- MySQL/MariaDB database
+- Web server with .htaccess support (Apache/LiteSpeed)
+- FTP/SFTP access to server
 
-## Credits
+### Installation Steps
 
-Built with pure PHP, no frameworks or build tools required.
-Designed for easy FTP deployment to Strato hosting.
+1. **Upload Files**
+   ```bash
+   # Upload via FTP to Strato server
+   /shared/           → /var/www/shared/
+   /downloads/        → /var/www/downloads/
+   /babixgo.de/       → /var/www/babixgo.de/
+   ```
+
+2. **Set File Permissions**
+   ```bash
+   chmod 755 /var/www/babixgo.de/
+   chmod 750 /var/www/downloads/
+   chmod 644 /var/www/downloads/.htaccess  # CRITICAL
+   ```
+
+3. **Configure Database**
+   - Create database in Strato panel
+   - Import `/shared/create-tables.sql`
+   - Update `/shared/config/database.php` with credentials
+
+4. **Configure .htaccess**
+   - Backup existing: `cp .htaccess .htaccess.backup`
+   - Deploy new: `cp .htaccess.new .htaccess`
+
+5. **Test All Sections**
+   - Homepage: https://babixgo.de/
+   - Login: https://babixgo.de/auth/login
+   - Files: https://babixgo.de/files/
+   - Admin: https://babixgo.de/admin/
+
+6. **Create First Admin User**
+   ```php
+   // Via phpMyAdmin or SQL console
+   INSERT INTO users (username, email, password_hash, role, is_verified) 
+   VALUES (
+       'admin',
+       'admin@babixgo.de',
+       '$2y$10$...',  -- Generate with password_hash('yourpassword', PASSWORD_DEFAULT)
+       'admin',
+       1
+   );
+   ```
+
+---
+
+## 📖 Documentation
+
+- **[MIGRATION_GUIDE.md](MIGRATION_GUIDE.md)** - Complete migration documentation from multi-domain to single-domain
+- **[DESIGN_SYSTEM.md](DESIGN_SYSTEM.md)** - Design tokens, components, and styling guidelines
+- **[DEPLOYMENT_GUIDE.md](DEPLOYMENT_GUIDE.md)** - Detailed deployment instructions
+- **[.github/copilot-instructions.md](.github/copilot-instructions.md)** - Development guidelines
+
+---
+
+## 🔐 Security
+
+- Password hashing: bcrypt with PASSWORD_DEFAULT
+- Session: HttpOnly, Secure, SameSite=Lax
+- CSRF tokens on all forms
+- SQL: PDO prepared statements only
+- XSS: All output escaped with htmlspecialchars()
+- File uploads: Type validation, size limits, served via PHP
+- Downloads: Protected directory, no direct access
+- Admin: Role-based access control
+
+---
+
+## 🧪 Testing
+
+### Authentication Flow
+1. Register: `/auth/register`
+2. Verify email: Check email for link
+3. Login: `/auth/login`
+4. Access dashboard: `/user/`
+
+### Download Flow
+1. Browse: `/files/`
+2. Select category: `/files/category/apk`
+3. Download: Click download button
+4. File served via `/files/download.php`
+
+### Admin Flow
+1. Login as admin
+2. Access: `/admin/`
+3. Manage users, downloads, comments
+
+---
+
+## 📝 Version History
+
+### v2.0.0 (2026-01-15)
+- ✅ Migrated to unified single-domain architecture
+- ✅ Created user area (/user/)
+- ✅ Enhanced header with user menu
+- ✅ Updated PWA with shortcuts
+- ✅ Unified .htaccess routing
+- ✅ Complete documentation
+
+### v1.0.15 (2026-01-14)
+- ✅ Cleaned up partials structure
+- ✅ Consolidated shared resources
+- ✅ Fixed auth structure
+
+---
+
+## 🆘 Support
+
+- **Issues**: Create an issue in the GitHub repository
+- **Documentation**: See guides in repository root
+- **Contact**: Via `/kontakt/` page on site
+
+---
+
+## 📜 License
+
+Proprietary - All rights reserved by babixGO
+
+---
+
+**Last Updated**: January 15, 2026  
+**Version**: 2.0.0  
+**Architecture**: Single-Domain Unified
