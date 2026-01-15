@@ -73,6 +73,25 @@ if (is_file($phpFile)) {
 }
 
 $parts = explode('/', trim($uri, '/'));
+
+// Handle /files/kategorie/{slug} routes
+if (count($parts) >= 3 && $parts[0] === 'files' && $parts[1] === 'kategorie') {
+    $categoryFile = __DIR__ . '/files/category.php';
+    if (is_file($categoryFile)) {
+        include $categoryFile;
+        return true;
+    }
+}
+
+// Handle /files/download/{id} routes
+if (count($parts) >= 3 && $parts[0] === 'files' && $parts[1] === 'download') {
+    $downloadFile = __DIR__ . '/files/download.php';
+    if (is_file($downloadFile)) {
+        include $downloadFile;
+        return true;
+    }
+}
+
 if (count($parts) >= 2) {
     $dir = __DIR__ . '/' . $parts[0];
     $subFile = $parts[1];
