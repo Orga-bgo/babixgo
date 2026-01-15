@@ -38,6 +38,58 @@ class User {
         return $stmt->execute();
     }
 
+    /**
+     * Register a new user
+     * 
+     * @param string $username
+     * @param string $email
+     * @param string $password
+     * @return array Result with success status and verification token or error
+     */
+    public function register(string $username, string $email, string $password): array {
+        // Check if username already exists
+        $stmt = $this->conn->prepare("SELECT id FROM users WHERE username = :username LIMIT 1");
+        $stmt->execute([':username' => $username]);
+        if ($stmt->fetch()) {
+            return ['success' => false, 'error' => 'Username already exists'];
+        }
+
+        // Check if email already exists
+        $stmt = $this->conn->prepare("SELECT id FROM users WHERE email = :email LIMIT 1");
+        $stmt->execute([':email' => $email]);
+        if ($stmt->fetch()) {
+            return ['success' => false, 'error' => 'Email already exists'];
+        }
+
+        // Generate verification token
+        $verificationToken = bin2hex(random_bytes(32));
+
+        // Hash password
+        $passwordHash = password_hash($password, PASSWORD_BCRYPT);
+
+        // Insert user
+        $query = "INSERT INTO users (username, email, password_hash, verification_token, is_verified, role, created_at) 
+                  VALUES (:username, :email, :password_hash, :verification_token, 0, 'user', NOW())";
+
+        $stmt = $this->conn->prepare($query);
+        $result = $stmt->execute([
+            ':username' => $username,
+            ':email' => $email,
+            ':password_hash' => $passwordHash,
+            ':verification_token' => $verificationToken
+        ]);
+
+        if ($result) {
+            return [
+                'success' => true,
+                'user_id' => $this->conn->lastInsertId(),
+                'verification_token' => $verificationToken
+            ];
+        }
+
+        return ['success' => false, 'error' => 'Registration failed'];
+    }
+
     public function login($identifier = null, $password = null) {
         if ($identifier !== null) {
             $this->email = $identifier;
