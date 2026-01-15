@@ -27,6 +27,12 @@ ErrorDocument 404 /404.php
   RewriteCond %{REQUEST_FILENAME} -d
   RewriteCond %{REQUEST_FILENAME}/index.php -f
   RewriteRule ^(.*)$ $1/index.php [L]
+  
+  # Clean URLs: Try .php extension for non-existing files/directories
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteCond %{REQUEST_FILENAME}.php -f
+  RewriteRule ^(.*)$ $1.php [L]
 </IfModule>
 
 # ==========================================
