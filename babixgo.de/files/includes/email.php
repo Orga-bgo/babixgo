@@ -58,10 +58,11 @@ function sendEmail(string $to, string $subject, string $body): bool {
             }
         };
         
-        // Recipients
-        $mail->setFrom('noreply@babixgo.de', SITE_NAME);
+        // Recipients - use MAIL_FROM_REGISTER for registration emails
+        $fromEmail = defined('MAIL_FROM_REGISTER') ? MAIL_FROM_REGISTER : 'noreply@babixgo.de';
+        $mail->setFrom($fromEmail, SITE_NAME);
         $mail->addAddress($to);
-        $mail->addReplyTo('noreply@babixgo.de', SITE_NAME);
+        $mail->addReplyTo($fromEmail, SITE_NAME);
         
         // Content
         $mail->isHTML(true);
@@ -136,7 +137,8 @@ function sendSmtpEmailFallback(string $to, string $subject, string $body): bool 
         }
         
         // Send mail from
-        fwrite($socket, "MAIL FROM:<noreply@babixgo.de>\r\n");
+        $fromEmail = defined('MAIL_FROM_REGISTER') ? MAIL_FROM_REGISTER : 'noreply@babixgo.de';
+        fwrite($socket, "MAIL FROM:<{$fromEmail}>\r\n");
         $response = fgets($socket, 512);
         
         // Send recipient
@@ -148,7 +150,8 @@ function sendSmtpEmailFallback(string $to, string $subject, string $body): bool 
         $response = fgets($socket, 512);
         
         // Build email content
-        $email = "From: " . SITE_NAME . " <noreply@babixgo.de>\r\n";
+        $fromEmail = defined('MAIL_FROM_REGISTER') ? MAIL_FROM_REGISTER : 'noreply@babixgo.de';
+        $email = "From: " . SITE_NAME . " <{$fromEmail}>\r\n";
         $email .= "To: $to\r\n";
         $email .= "Subject: $subject\r\n";
         $email .= "MIME-Version: 1.0\r\n";
@@ -171,11 +174,12 @@ function sendSmtpEmailFallback(string $to, string $subject, string $body): bool 
             error_log('SMTP Fallback Error: ' . $e->getMessage());
         }
         // Last resort: try PHP mail()
+        $fromEmail = defined('MAIL_FROM_REGISTER') ? MAIL_FROM_REGISTER : 'noreply@babixgo.de';
         $headers = [
             'MIME-Version: 1.0',
             'Content-type: text/html; charset=UTF-8',
-            'From: ' . SITE_NAME . ' <noreply@babixgo.de>',
-            'Reply-To: noreply@babixgo.de',
+            'From: ' . SITE_NAME . ' <' . $fromEmail . '>',
+            'Reply-To: ' . $fromEmail,
             'X-Mailer: PHP/' . phpversion()
         ];
         return @mail($to, $subject, $body, implode("\r\n", $headers));

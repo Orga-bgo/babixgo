@@ -29,6 +29,9 @@ define('SMTP_PORT', getenv('SMTP_PORT') ?: 587);
 define('SMTP_USER', getenv('SMTP_USER') ?: '');
 define('SMTP_PASS', getenv('SMTP_KEY') ?: '');
 
+// Email sender addresses
+define('MAIL_FROM_REGISTER', 'register@babixgo-mail.de');
+
 // Application Settings
 define('SITE_URL', getenv('SITE_URL') ?: 'https://files.babixgo.de');
 define('SITE_NAME', 'BabixGO Files');
