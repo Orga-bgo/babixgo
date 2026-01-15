@@ -43,10 +43,10 @@ $pageTitle = 'Home';
     <link rel="stylesheet" href="/assets/css/cookie-banner.css">
     
     <!-- Google Analytics Tracking Configuration -->
-    <?php include __DIR__ . '/../includes/tracking.php'; ?>
+    <?php include SHARED_PATH . 'partials/tracking.php'; ?>
 </head>
 <body>
-    <?php include __DIR__ . '/../includes/header.php'; ?>
+    <?php include SHARED_PATH . 'partials/header.php'; ?>
 
     <!-- Main Content -->
     <main class="main-content">
@@ -112,16 +112,16 @@ $pageTitle = 'Home';
     <footer class="site-footer">
         <div class="footer-inner">
             <div class="footer-links">
-                <a href="https://babixgo.de">BabixGO</a>
-                <a href="/impressum.php">Impressum</a>
-                <a href="/datenschutz.php">Datenschutz</a>
+                <a href="/">BabixGO</a>
+                <a href="/impressum">Impressum</a>
+                <a href="/datenschutz">Datenschutz</a>
             </div>
             <p>&copy; <?php echo date('Y'); ?> <?php echo e(SITE_NAME); ?>. Alle Rechte vorbehalten.</p>
         </div>
     </footer>
 
     <!-- Cookie Consent Banner -->
-    <?php include __DIR__ . '/../includes/cookie-banner.php'; ?>
+    <?php include SHARED_PATH . 'partials/cookie-banner.php'; ?>
 
     <!-- Scripts -->
     <script src="/assets/js/header.js"></script>

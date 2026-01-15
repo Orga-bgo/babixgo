@@ -3,7 +3,7 @@
  * User Management Page
  */
 
-require_once __DIR__ . '/../includes/admin-check.php';
+require_once __DIR__ . '/includes/admin-check.php';
 
 $db = Database::getInstance();
 
@@ -51,8 +51,8 @@ $users = $db->fetchAll($sql, array_merge($searchParams, [$perPage, $offset]));
                 <li><a href="/admin/users.php" class="active">Users</a></li>
                 <li><a href="/admin/downloads.php">Downloads</a></li>
                 <li><a href="/admin/comments.php">Comments</a></li>
-                <li><a href="/">My Profile</a></li>
-                <li><a href="/logout.php">Logout</a></li>
+                <li><a href="/user/">My Profile</a></li>
+                <li><a href="/auth/logout">Logout</a></li>
             </ul>
         </div>
     </nav>

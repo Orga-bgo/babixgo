@@ -3,7 +3,7 @@
  * User Edit Page
  */
 
-require_once __DIR__ . '/../includes/admin-check.php';
+require_once __DIR__ . '/includes/admin-check.php';
 
 $userId = intval($_GET['id'] ?? 0);
 
@@ -60,8 +60,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && verifyCsrfToken($_POST['csrf_token'
                 <li><a href="/admin/users.php" class="active">Users</a></li>
                 <li><a href="/admin/downloads.php">Downloads</a></li>
                 <li><a href="/admin/comments.php">Comments</a></li>
-                <li><a href="/">My Profile</a></li>
-                <li><a href="/logout.php">Logout</a></li>
+                <li><a href="/user/">My Profile</a></li>
+                <li><a href="/auth/logout">Logout</a></li>
             </ul>
         </div>
     </nav>

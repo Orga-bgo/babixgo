@@ -3,7 +3,7 @@
  * Download Management Page
  */
 
-require_once __DIR__ . '/../includes/admin-check.php';
+require_once __DIR__ . '/includes/admin-check.php';
 
 $db = Database::getInstance();
 $download = new Download();
@@ -128,8 +128,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file']) && verifyCsr
                 <li><a href="/admin/users.php">Users</a></li>
                 <li><a href="/admin/downloads.php" class="active">Downloads</a></li>
                 <li><a href="/admin/comments.php">Comments</a></li>
-                <li><a href="/">My Profile</a></li>
-                <li><a href="/logout.php">Logout</a></li>
+                <li><a href="/user/">My Profile</a></li>
+                <li><a href="/auth/logout">Logout</a></li>
             </ul>
         </div>
     </nav>
