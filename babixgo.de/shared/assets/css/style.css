@@ -543,16 +543,17 @@ small {
 
 /* ===== AUTH BUTTONS ===== */
 .menu-auth {
-  display: flex;
+  display: flex !important;
+  flex-direction: row !important;
   gap: 12px;
   margin-top: 16px;
   padding-top: 16px;
   border-top: 1px solid var(--stroke);
 }
 
-.btn-auth {
+.menu-auth .btn-auth {
   flex: 1;
-  display: flex;
+  display: flex !important;
   align-items: center;
   justify-content: center;
   padding: 12px 20px;
@@ -561,6 +562,7 @@ small {
   font-size: 14px;
   font-weight: 600;
   transition: all .2s;
+  margin: 0 !important;
 }
 
 .btn-login {
