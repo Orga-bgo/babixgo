@@ -39,8 +39,16 @@
     <a href="/kontakt/">Kontakt</a>
     
     <div class="menu-auth">
-      <a href="/auth/login" class="btn-auth btn-login">Login</a>
-      <a href="/auth/register" class="btn-auth btn-register">Registrieren</a>
+      <?php 
+      $isLoggedIn = isset($_SESSION['user_id']) && !empty($_SESSION['user_id']);
+      if ($isLoggedIn): 
+      ?>
+        <a href="/user/" class="btn-auth btn-profile">Profil</a>
+        <a href="/auth/logout" class="btn-auth btn-logout">Logout</a>
+      <?php else: ?>
+        <a href="/auth/login" class="btn-auth btn-login">Login</a>
+        <a href="/auth/register" class="btn-auth btn-register">Registrieren</a>
+      <?php endif; ?>
     </div>
     
     <div class="menu-social">

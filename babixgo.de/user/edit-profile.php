@@ -3,110 +3,115 @@
  * Edit Profile Page
  */
 
+define('BASE_PATH', dirname(__DIR__) . '/');
+define('SHARED_PATH', BASE_PATH . 'shared/');
+
 require_once __DIR__ . '/includes/auth-check.php';
 
 $user = new User();
 $userData = $user->getUserById($_SESSION['user_id']);
 
-// Page configuration
-$pageTitle = 'Edit Profile - babixgo.de';
+$pageTitle = 'Profil bearbeiten - BabixGO';
 $currentPage = 'edit-profile';
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= htmlspecialchars($pageTitle, ENT_QUOTES) ?></title>
-    <link rel="stylesheet" href="/shared/assets/css/style.css">
+    <?php require SHARED_PATH . 'partials/head-meta.php'; ?>
+    <title><?= htmlspecialchars($pageTitle) ?></title>
+    <?php require SHARED_PATH . 'partials/head-links.php'; ?>
     <link rel="stylesheet" href="/shared/assets/css/main.css">
+    <link rel="stylesheet" href="/assets/css/user.css">
 </head>
 <body>
-    <?php require_once SHARED_PATH . 'partials/header.php'; ?>
+    <?php require SHARED_PATH . 'partials/header.php'; ?>
     
-    <div class="container">
-        <h1>Edit Profile</h1>
-        
-        <div id="message-container"></div>
-        
-        <div class="profile-card">
-            <h2>Update Profile Information</h2>
+    <main class="user-content">
+        <div class="container">
+            <h1>Profil bearbeiten</h1>
             
-            <form id="profile-form" method="POST">
-                <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(getCsrfToken(), ENT_QUOTES) ?>">
-                <input type="hidden" name="action" value="update_profile">
-                
-                <div class="form-group">
-                    <label for="username">Username</label>
-                    <input 
-                        type="text" 
-                        id="username" 
-                        name="username" 
-                        value="<?= htmlspecialchars($userData['username'], ENT_QUOTES) ?>"
-                        required 
-                        pattern="[a-zA-Z0-9_]{3,50}"
-                    >
-                </div>
-                
-                <div class="form-group">
-                    <label for="description">Description</label>
-                    <textarea 
-                        id="description" 
-                        name="description" 
-                        rows="5"
-                        placeholder="Tell us about yourself..."
-                    ><?= htmlspecialchars($userData['description'] ?? '', ENT_QUOTES) ?></textarea>
-                </div>
-                
-                <button type="submit" class="btn btn-primary">Save Changes</button>
-                <a href="/" class="btn btn-secondary">Cancel</a>
-            </form>
-        </div>
-        
-        <div class="profile-card">
-            <h2>Change Password</h2>
+            <div id="message-container"></div>
             
-            <form id="password-form" method="POST">
-                <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(getCsrfToken(), ENT_QUOTES) ?>">
-                <input type="hidden" name="action" value="change_password">
+            <div class="profile-card">
+                <h2>Profilinformationen</h2>
                 
-                <div class="form-group">
-                    <label for="current_password">Current Password</label>
-                    <input 
-                        type="password" 
-                        id="current_password" 
-                        name="current_password" 
-                        required
-                    >
-                </div>
+                <form id="profile-form" method="POST">
+                    <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(getCsrfToken(), ENT_QUOTES) ?>">
+                    <input type="hidden" name="action" value="update_profile">
+                    
+                    <div class="form-group">
+                        <label for="username">Benutzername</label>
+                        <input 
+                            type="text" 
+                            id="username" 
+                            name="username" 
+                            value="<?= htmlspecialchars($userData['username'], ENT_QUOTES) ?>"
+                            required 
+                            pattern="[a-zA-Z0-9_]{3,50}"
+                        >
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="description">Beschreibung</label>
+                        <textarea 
+                            id="description" 
+                            name="description" 
+                            rows="5"
+                            placeholder="Erzähl uns etwas über dich..."
+                        ><?= htmlspecialchars($userData['description'] ?? '', ENT_QUOTES) ?></textarea>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">Änderungen speichern</button>
+                    <a href="/user/" class="btn btn-secondary">Abbrechen</a>
+                </form>
+            </div>
+            
+            <div class="profile-card">
+                <h2>Passwort ändern</h2>
                 
-                <div class="form-group">
-                    <label for="new_password">New Password</label>
-                    <input 
-                        type="password" 
-                        id="new_password" 
-                        name="new_password" 
-                        required
-                        minlength="8"
-                    >
-                    <span class="hint">At least 8 characters with 1 uppercase, 1 lowercase, and 1 number</span>
-                </div>
-                
-                <div class="form-group">
-                    <label for="confirm_password">Confirm New Password</label>
-                    <input 
-                        type="password" 
-                        id="confirm_password" 
-                        name="confirm_password" 
-                        required
-                    >
-                </div>
-                
-                <button type="submit" class="btn btn-primary">Change Password</button>
-            </form>
+                <form id="password-form" method="POST">
+                    <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(getCsrfToken(), ENT_QUOTES) ?>">
+                    <input type="hidden" name="action" value="change_password">
+                    
+                    <div class="form-group">
+                        <label for="current_password">Aktuelles Passwort</label>
+                        <input 
+                            type="password" 
+                            id="current_password" 
+                            name="current_password" 
+                            required
+                        >
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="new_password">Neues Passwort</label>
+                        <input 
+                            type="password" 
+                            id="new_password" 
+                            name="new_password" 
+                            required
+                            minlength="8"
+                        >
+                        <span class="hint">Mindestens 8 Zeichen mit 1 Großbuchstaben, 1 Kleinbuchstaben und 1 Zahl</span>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="confirm_password">Neues Passwort bestätigen</label>
+                        <input 
+                            type="password" 
+                            id="confirm_password" 
+                            name="confirm_password" 
+                            required
+                        >
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">Passwort ändern</button>
+                </form>
+            </div>
         </div>
-    </div>
+    </main>
     
+    <?php require SHARED_PATH . 'partials/footer.php'; ?>
     <script src="/shared/assets/js/main.js"></script>
     <script src="/shared/assets/js/form-validation.js"></script>
     <script>
@@ -140,7 +145,7 @@ $currentPage = 'edit-profile';
                     }
                 }
             } catch (error) {
-                showMessage('An error occurred. Please try again.', 'error');
+                showMessage('Ein Fehler ist aufgetreten. Bitte versuche es erneut.', 'error');
             }
         }
         
@@ -166,8 +171,5 @@ $currentPage = 'edit-profile';
             }
         }
     </script>
-    
-    <?php require_once SHARED_PATH . 'partials/footer.php'; ?>
-    <script src="/shared/assets/js/main.js"></script>
 </body>
 </html>

@@ -9,9 +9,8 @@ define('SHARED_PATH', BASE_PATH . 'shared/');
 
 require_once __DIR__ . '/includes/auth-check.php';
 
-// Page configuration
-$pageTitle = 'My Profile - babixGO';
-$pageDescription = 'Manage your babixGO profile, downloads, and comments';
+$pageTitle = 'Mein Profil - BabixGO';
+$pageDescription = 'Verwalte dein BabixGO Profil, Downloads und Kommentare';
 ?>
 <!DOCTYPE html>
 <html lang="de">
@@ -28,28 +27,26 @@ $pageDescription = 'Manage your babixGO profile, downloads, and comments';
     
     <main class="user-dashboard">
         <div class="container">
-            <h1>Welcome, <?= htmlspecialchars($currentUsername) ?>!</h1>
+            <h1>Willkommen, <?= htmlspecialchars($currentUsername) ?>!</h1>
             
             <div class="dashboard-grid">
-                <!-- Profile Card -->
                 <div class="dashboard-card">
-                    <h2>Profile</h2>
-                    <p><strong>Username:</strong> <?= htmlspecialchars($currentUsername) ?></p>
-                    <p><strong>Email:</strong> <?= htmlspecialchars($currentUserEmail) ?></p>
-                    <p><strong>Role:</strong> <?= htmlspecialchars($currentUserRole) ?></p>
-                    <a href="/user/edit-profile" class="btn btn-primary">Edit Profile</a>
+                    <h2>Profil</h2>
+                    <p><strong>Benutzername:</strong> <?= htmlspecialchars($currentUsername) ?></p>
+                    <p><strong>E-Mail:</strong> <?= htmlspecialchars($currentUserEmail) ?></p>
+                    <p><strong>Rolle:</strong> <?= $currentUserRole === 'admin' ? 'Administrator' : 'Benutzer' ?></p>
+                    <a href="/user/edit-profile" class="btn btn-primary">Profil bearbeiten</a>
                 </div>
                 
-                <!-- Quick Links -->
                 <div class="dashboard-card">
-                    <h2>Quick Links</h2>
+                    <h2>Schnellzugriff</h2>
                     <ul class="quick-links">
-                        <li><a href="/user/my-comments">My Comments</a></li>
-                        <li><a href="/user/my-downloads">My Downloads</a></li>
-                        <li><a href="/user/settings">Settings</a></li>
-                        <li><a href="/files/">Browse Downloads</a></li>
+                        <li><a href="/user/my-comments">Meine Kommentare</a></li>
+                        <li><a href="/user/my-downloads">Meine Downloads</a></li>
+                        <li><a href="/user/settings">Einstellungen</a></li>
+                        <li><a href="/files/">Downloads durchsuchen</a></li>
                         <?php if ($currentUserRole === 'admin'): ?>
-                            <li><a href="/admin/">Admin Panel</a></li>
+                            <li><a href="/admin/">Admin-Bereich</a></li>
                         <?php endif; ?>
                     </ul>
                 </div>

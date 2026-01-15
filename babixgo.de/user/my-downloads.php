@@ -9,8 +9,7 @@ define('SHARED_PATH', BASE_PATH . 'shared/');
 
 require_once __DIR__ . '/includes/auth-check.php';
 
-// Page configuration
-$pageTitle = 'My Downloads - babixGO';
+$pageTitle = 'Meine Downloads - BabixGO';
 ?>
 <!DOCTYPE html>
 <html lang="de">
@@ -26,9 +25,17 @@ $pageTitle = 'My Downloads - babixGO';
     
     <main class="user-content">
         <div class="container">
-            <h1>My Downloads</h1>
-            <p>View your download history on babixGO.</p>
-            <!-- TODO: Implement download history listing -->
+            <h1>Meine Downloads</h1>
+            <p>Hier findest du deine Download-Historie.</p>
+            
+            <div class="empty-state">
+                <p>Die Download-Historie wird bald verfügbar sein.</p>
+                <a href="/files/" class="btn btn-primary">Zu den Downloads</a>
+            </div>
+            
+            <div class="back-link">
+                <a href="/user/" class="btn btn-secondary">Zurück zum Profil</a>
+            </div>
         </div>
     </main>
     

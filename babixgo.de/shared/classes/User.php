@@ -111,11 +111,15 @@ class User {
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if (!$row) {
-            return ['success' => false, 'error' => 'User not found'];
+            return ['success' => false, 'error' => 'Benutzer nicht gefunden'];
         }
 
         if (!password_verify($this->password, $row['password_hash'])) {
-            return ['success' => false, 'error' => 'Invalid password'];
+            return ['success' => false, 'error' => 'Falsches Passwort'];
+        }
+
+        if (!$row['is_verified']) {
+            return ['success' => false, 'error' => 'Bitte bestätige zuerst deine E-Mail-Adresse'];
         }
 
         $this->id = $row['id'];
