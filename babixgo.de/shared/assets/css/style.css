@@ -551,6 +551,7 @@ small {
   border-top: 1px solid var(--stroke);
 }
 
+.mobile-menu .menu-auth a.btn-auth,
 .menu-auth .btn-auth {
   flex: 1;
   display: flex !important;
