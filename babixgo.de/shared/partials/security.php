@@ -40,6 +40,13 @@ function validateCsrfToken($token) {
 }
 
 /**
+ * Alias for validateCsrfToken (backwards compatibility)
+ */
+function verifyCsrfToken($token) {
+    return validateCsrfToken($token);
+}
+
+/**
  * Validate and sanitize a redirect URL to prevent open redirect vulnerabilities
  * 
  * @param string $redirect The redirect URL to validate
