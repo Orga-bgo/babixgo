@@ -57,7 +57,7 @@ desktop.ini
 
 # PHP cache
 *.cache
-
+attached_assets
 # Backup files
 *.bak
 *.backup
