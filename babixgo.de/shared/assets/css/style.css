@@ -476,7 +476,7 @@ small {
   padding: calc(20px * var(--zoom-scale)) calc(18px * var(--zoom-scale));
 }
 
-.mobile-menu a {
+.mobile-menu a:not(.btn-auth) {
   display: block;
   color: var(--text);
   text-decoration: none;
