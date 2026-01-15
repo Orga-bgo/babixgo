@@ -14,6 +14,9 @@ jobs:
     name: Deploy Repository to Server via SFTP
     runs-on: ubuntu-latest
     
+    permissions:
+      contents: read
+    
     steps:
       - name: Verify Confirmation
         run: |
