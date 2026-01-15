@@ -30,7 +30,7 @@ function sendEmail($to, $subject, $message, $headers = []) {
  * Send verification email
  */
 function sendVerificationEmail($email, $username, $token) {
-    $verifyUrl = "https://auth.babixgo.de/verify-email.php?token=" . urlencode($token);
+    $verifyUrl = "https://babixgo.de/auth/verify-email?token=" . urlencode($token);
     
     $subject = "Verify your babixgo.de account";
     
@@ -86,7 +86,7 @@ function sendVerificationEmail($email, $username, $token) {
  * Send password reset email
  */
 function sendPasswordResetEmail($email, $username, $token) {
-    $resetUrl = "https://auth.babixgo.de/reset-password.php?token=" . urlencode($token);
+    $resetUrl = "https://babixgo.de/auth/reset-password?token=" . urlencode($token);
     
     $subject = "Reset your babixgo.de password";
     
@@ -164,7 +164,7 @@ function sendWelcomeEmail($email, $username) {
             <div class='content'>
                 <p>Hello " . htmlspecialchars($username) . ",</p>
                 <p>Your email has been verified successfully! You can now log in and access all features.</p>
-                <p>Visit <a href='https://auth.babixgo.de/login.php'>auth.babixgo.de</a> to get started.</p>
+                <p>Visit <a href='https://babixgo.de/auth/login'>babixgo.de/auth</a> to get started.</p>
                 <p>Thank you for joining our community!</p>
             </div>
             <div class='footer'>
