@@ -51,6 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && verifyCsrfToken($_POST['csrf_token'
     <link rel="stylesheet" href="/shared/assets/css/main.css">
 </head>
 <body>
+    <?php require_once SHARED_PATH . 'partials/header.php'; ?>
     <div class="auth-container">
         <div class="auth-box">
             <h1>Reset Password</h1>
@@ -86,5 +87,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && verifyCsrfToken($_POST['csrf_token'
             </div>
         </div>
     </div>
+    
+    <?php require_once SHARED_PATH . 'partials/footer.php'; ?>
+    
+    <script src="/shared/assets/js/main.js"></script>
 </body>
 </html>
