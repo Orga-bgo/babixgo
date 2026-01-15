@@ -7,7 +7,7 @@
 
 define('BASE_PATH', dirname(__DIR__, 2) . '/');
 define('SHARED_PATH', BASE_PATH . 'shared/');
-define('DOWNLOADS_PATH', BASE_PATH . 'downloads/');
+define('DOWNLOADS_PATH', BASE_PATH . 'babixgo.de/file-storage/');
 
 require_once SHARED_PATH . 'config/database.php';
 require_once SHARED_PATH . 'config/session.php';

@@ -176,7 +176,7 @@ try {
             // Get file path before deleting
             $downloadData = $download->getById($downloadId);
             if ($downloadData) {
-                $filePath = BASE_PATH . 'downloads/' . $downloadData['filetype'] . '/' . basename($downloadData['filepath']);
+                $filePath = BASE_PATH . 'babixgo.de/file-storage/' . $downloadData['filetype'] . '/' . basename($downloadData['filepath']);
                 if (file_exists($filePath)) {
                     unlink($filePath);
                 }

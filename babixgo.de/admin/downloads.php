@@ -71,7 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file']) && verifyCsr
     
     if (empty($errors)) {
         // Create directory if it doesn't exist
-        $uploadDir = BASE_PATH . 'downloads/' . $filetype . '/';
+        $uploadDir = BASE_PATH . 'babixgo.de/file-storage/' . $filetype . '/';
         if (!file_exists($uploadDir)) {
             mkdir($uploadDir, 0755, true);
         }
