@@ -5,7 +5,7 @@
  * OR: babixgo.de/files/download/123/apk (via .htaccess rewrite)
  */
 
-define('BASE_PATH', dirname(__DIR__, 2) . '/');
+define('BASE_PATH', dirname(__DIR__) . '/');
 define('SHARED_PATH', BASE_PATH . 'shared/');
 define('DOWNLOADS_PATH', BASE_PATH . 'babixgo.de/file-storage/');
 

@@ -3,7 +3,7 @@
  * Forgot Password Page
  */
 
-define('BASE_PATH', dirname(__DIR__, 2) . '/');
+define('BASE_PATH', dirname(__DIR__) . '/');
 define('SHARED_PATH', BASE_PATH . 'shared/');
 
 require_once SHARED_PATH . 'config/database.php';

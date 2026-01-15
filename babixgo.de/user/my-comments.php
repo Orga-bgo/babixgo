@@ -4,7 +4,7 @@
  * URL: babixgo.de/user/my-comments
  */
 
-define('BASE_PATH', dirname(__DIR__, 2) . '/');
+define('BASE_PATH', dirname(__DIR__) . '/');
 define('SHARED_PATH', BASE_PATH . 'shared/');
 
 require_once __DIR__ . '/includes/auth-check.php';
