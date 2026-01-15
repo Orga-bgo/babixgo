@@ -52,7 +52,7 @@
             <div class="content-card-title">
               <h3>Würfel</h3>
             </div>
-            <a href="/wuerfel/" class="btn btn-link">Mehr Infos</a>
+            <a href="/angebote/wuerfel/" class="btn btn-link">Mehr Infos</a>
           </div>
           <p class="content-card-description">
             Würfel für dein Monopoly GO Abenteuer – schnell und zuverlässig geliefert.
@@ -69,7 +69,7 @@
             <div class="content-card-title">
               <h3>Partnerevent</h3>
             </div>
-            <a href="/partnerevents/" class="btn btn-link">Mehr Infos</a>
+            <a href="/angebote/partnerevents/" class="btn btn-link">Mehr Infos</a>
           </div>
           <p class="content-card-description">
             Sichere dir einen unserer zuverlässigen Partner.
@@ -94,7 +94,7 @@
             <div class="content-card-title">
               <h3>Accounts</h3>
             </div>
-            <a href="/accounts/" class="btn btn-link">Mehr Infos</a>
+            <a href="/angebote/accounts/" class="btn btn-link">Mehr Infos</a>
           </div>
           <p class="content-card-description">
             Monopoly Go Accounts in diversen Ausführungen. Immer mit dabei: Sehr, sehr viele Würfel.
@@ -111,7 +111,7 @@
             <div class="content-card-title">
               <h3>Tycoon Racers</h3>
             </div>
-            <a href="/tycoon-racers/" class="btn btn-link">Mehr Infos</a>
+            <a href="/angebote/tycoon-racers/" class="btn btn-link">Mehr Infos</a>
           </div>
           <p class="content-card-description">
             Tritt' unserem Team bei und sicher dir alle Rundenbelohnungen.
@@ -128,7 +128,7 @@
             <div class="content-card-title">
               <h3>Freundschaftsbalken</h3>
             </div>
-            <a href="/anleitungen/freundschaftsbalken-fuellen/" class="btn btn-link">Mehr Infos</a>
+            <a href="/angebote/freundschaftsbalken-fuellen/" class="btn btn-link">Mehr Infos</a>
           </div>
           <p class="content-card-description">
             Alle Balken komplett gefüllt. Jetzt mit gratis Anleitung zum selber füllen.
@@ -145,7 +145,7 @@
             <div class="content-card-title">
               <h3>Sticker</h3>
             </div>
-            <a href="/sticker/" class="btn btn-link">Mehr Infos</a>
+            <a href="/angebote/sticker/" class="btn btn-link">Mehr Infos</a>
           </div>
           <p class="content-card-description">
             Vervollständige deine Alben mit fehlenden Stickern – alle Sticker verfügbar.

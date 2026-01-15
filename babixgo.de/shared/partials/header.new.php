@@ -54,12 +54,12 @@ if (strpos($currentPath, '/admin/') !== false) {
         </svg>
       </button>
       <div class="menu-dropdown-content">
-        <a href="/wuerfel/">Würfel</a>
-        <a href="/partnerevents/">Partnerevents</a>
-        <a href="/accounts/">Accounts</a>
-        <a href="/tycoon-racers/">Tycoon Racers</a>
-        <a href="/anleitungen/freundschaftsbalken-fuellen/">Freundschaftsbalken</a>
-        <a href="/sticker/">Sticker</a>
+        <a href="/angebote/wuerfel/">Würfel</a>
+        <a href="/angebote/partnerevents/">Partnerevents</a>
+        <a href="/angebote/accounts/">Accounts</a>
+        <a href="/angebote/tycoon-racers/">Tycoon Racers</a>
+        <a href="/angebote/freundschaftsbalken-fuellen/">Freundschaftsbalken</a>
+        <a href="/angebote/sticker/">Sticker</a>
       </div>
     </div>
     
