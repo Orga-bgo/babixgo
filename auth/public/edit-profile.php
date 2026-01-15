@@ -22,7 +22,7 @@ $currentPage = 'edit-profile';
     <link rel="stylesheet" href="/shared/assets/css/main.css">
 </head>
 <body>
-    <?php require_once SHARED_PATH . 'assets/partials/header.php'; ?>
+    <?php require_once SHARED_PATH . 'partials/header.php'; ?>
     
     <div class="container">
         <h1>Edit Profile</h1>
@@ -167,7 +167,7 @@ $currentPage = 'edit-profile';
         }
     </script>
     
-    <?php require_once SHARED_PATH . 'assets/partials/footer.php'; ?>
+    <?php require_once SHARED_PATH . 'partials/footer.php'; ?>
     <script src="/shared/assets/js/main.js"></script>
 </body>
 </html>

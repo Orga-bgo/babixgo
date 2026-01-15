@@ -1,6 +1,8 @@
 # Shared Assets
 
-This directory contains CSS, JavaScript, and PHP partials that are shared across all babixgo.de domains.
+This directory contains CSS and JavaScript files that are shared across all babixgo.de domains.
+
+**Note:** PHP partials are located in `/shared/partials/` (not in this assets directory).
 
 ## Directory Structure
 
@@ -9,14 +11,15 @@ shared/assets/
 ├── css/
 │   ├── main.css      # Main site styles (base, forms, navigation, etc.)
 │   └── admin.css     # Admin panel specific styles
-├── js/
-│   ├── form-validation.js  # Client-side form validation
-│   └── admin.js           # Admin panel interactions
-└── partials/
-    ├── header.php     # HTML head with CSS includes
-    ├── footer.php     # Closing body tag with JS includes
-    ├── nav.php        # Main navigation bar
-    └── admin-nav.php  # Admin panel navigation bar
+└── js/
+    ├── form-validation.js  # Client-side form validation
+    └── admin.js           # Admin panel interactions
+
+shared/partials/      # PHP partials (separate from assets)
+├── header.php     # HTML head with CSS includes
+├── footer.php     # Closing body tag with JS includes
+├── nav.php        # Main navigation bar
+└── admin-nav.php  # Admin panel navigation bar
 ```
 
 ## Using Shared CSS
@@ -42,7 +45,7 @@ $includeValidationJS = true; // Set to true if using form validation
 $includeAdminJS = false; // Set to true for admin pages
 
 // Include header
-require_once SHARED_PATH . 'assets/partials/header.php';
+require_once SHARED_PATH . 'partials/header.php';
 ?>
 ```
 
@@ -63,7 +66,7 @@ require_once SHARED_PATH . 'assets/partials/header.php';
 // At the end of your page, before </body>
 $includeValidationJS = true; // For form validation
 $includeAdminJS = true; // For admin panel functionality
-require_once SHARED_PATH . 'assets/partials/footer.php';
+require_once SHARED_PATH . 'partials/footer.php';
 ?>
 ```
 
@@ -88,7 +91,7 @@ Includes the HTML `<head>` section with proper CSS includes.
 ```php
 $pageTitle = 'Login - babixgo.de';
 $includeAdminCSS = false;
-require_once SHARED_PATH . 'assets/partials/header.php';
+require_once SHARED_PATH . 'partials/header.php';
 ```
 
 ### Footer Partial
@@ -103,7 +106,7 @@ Includes closing `</body>` and `</html>` tags with JavaScript includes.
 ```php
 $includeValidationJS = true;
 $includeAdminJS = false;
-require_once SHARED_PATH . 'assets/partials/footer.php';
+require_once SHARED_PATH . 'partials/footer.php';
 ```
 
 ### Navigation Partial
@@ -116,7 +119,7 @@ Displays the main navigation bar with automatic login detection.
 
 ```php
 $currentPage = 'profile';
-require_once SHARED_PATH . 'assets/partials/nav.php';
+require_once SHARED_PATH . 'partials/nav.php';
 ```
 
 ### Admin Navigation Partial
@@ -128,7 +131,7 @@ Displays the admin panel navigation bar.
 
 ```php
 $currentAdminPage = 'users';
-require_once SHARED_PATH . 'assets/partials/admin-nav.php';
+require_once SHARED_PATH . 'partials/admin-nav.php';
 ```
 
 ## Complete Page Example
@@ -150,8 +153,8 @@ $pageTitle = 'Login - babixgo.de';
 $currentPage = 'login';
 
 // Include header and navigation
-require_once SHARED_PATH . 'assets/partials/header.php';
-require_once SHARED_PATH . 'assets/partials/nav.php';
+require_once SHARED_PATH . 'partials/header.php';
+require_once SHARED_PATH . 'partials/nav.php';
 ?>
 
 <div class="auth-container">
@@ -161,7 +164,7 @@ require_once SHARED_PATH . 'assets/partials/nav.php';
 <?php
 // Include footer with validation JS
 $includeValidationJS = true;
-require_once SHARED_PATH . 'assets/partials/footer.php';
+require_once SHARED_PATH . 'partials/footer.php';
 ?>
 ```
 
@@ -177,8 +180,8 @@ $currentAdminPage = 'users';
 $includeAdminCSS = true;
 
 // Include header and admin navigation
-require_once SHARED_PATH . 'assets/partials/header.php';
-require_once SHARED_PATH . 'assets/partials/admin-nav.php';
+require_once SHARED_PATH . 'partials/header.php';
+require_once SHARED_PATH . 'partials/admin-nav.php';
 ?>
 
 <div class="container">
@@ -188,7 +191,7 @@ require_once SHARED_PATH . 'assets/partials/admin-nav.php';
 <?php
 // Include footer with admin JS
 $includeAdminJS = true;
-require_once SHARED_PATH . 'assets/partials/footer.php';
+require_once SHARED_PATH . 'partials/footer.php';
 ?>
 ```
 
