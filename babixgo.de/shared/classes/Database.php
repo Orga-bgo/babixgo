@@ -10,18 +10,31 @@ class Database {
     private $driver;
 
     private function __construct() {
+        // Load primary configuration (supports both MySQL and PostgreSQL)
+        $config = require(__DIR__ . '/../config/database.php');
+
+        // Support legacy SUPABASE_* variables as fallback
         $supabaseHost = getenv('SUPABASE_DB_HOST');
-        
-        if ($supabaseHost) {
-            $config = require(__DIR__ . '/../config/database-supabase.php');
-            $this->driver = 'pgsql';
+        if ($supabaseHost && $config['host'] === 'localhost') {
+            // If SUPABASE_* variables are set and DB_HOST is not, use Supabase config
+            $supabaseConfig = require(__DIR__ . '/../config/database-supabase.php');
+            $config = array_merge($config, $supabaseConfig);
+        }
+
+        // Set driver
+        $this->driver = $config['driver'] ?? 'mysql';
+
+        // Build DSN based on driver
+        if ($this->driver === 'pgsql') {
             $dsn = "pgsql:host=" . $config['host'] . ";port=" . $config['port'] . ";dbname=" . $config['database'];
         } else {
-            $config = require(__DIR__ . '/../config/database.php');
-            $this->driver = 'mysql';
-            $dsn = "mysql:host=" . $config['host'] . ";dbname=" . $config['database'] . ";charset=utf8mb4";
+            $dsn = "mysql:host=" . $config['host'];
+            if (!empty($config['port']) && $config['port'] != '3306') {
+                $dsn .= ";port=" . $config['port'];
+            }
+            $dsn .= ";dbname=" . $config['database'] . ";charset=" . $config['charset'];
         }
-        
+
         try {
             $this->conn = new PDO($dsn, $config['username'], $config['password']);
             $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
