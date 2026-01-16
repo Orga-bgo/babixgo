@@ -17,7 +17,19 @@ $totalComments = array_sum($commentCounts);
 
 // Recent activity
 $recentUsers = $db->fetchAll("SELECT id, username, email, created_at FROM users ORDER BY created_at DESC LIMIT 10");
-$recentDownloads = $db->fetchAll("SELECT d.*, COUNT(dl.id) as recent_downloads FROM downloads d LEFT JOIN download_logs dl ON d.id = dl.file_id WHERE dl.downloaded_at > NOW() - INTERVAL '7 days' GROUP BY d.id, d.filename, d.filepath, d.filetype, d.filesize, d.version, d.description, d.download_count, d.active, d.created_at, d.updated_at ORDER BY recent_downloads DESC LIMIT 10");
+
+// Calculate date 7 days ago (database-agnostic approach)
+$sevenDaysAgo = date('Y-m-d H:i:s', strtotime('-7 days'));
+$recentDownloads = $db->fetchAll(
+    "SELECT d.*, COUNT(dl.id) as recent_downloads 
+     FROM downloads d 
+     LEFT JOIN download_logs dl ON d.id = dl.file_id AND dl.downloaded_at > ? 
+     GROUP BY d.id, d.filename, d.filepath, d.filetype, d.filesize, d.version, d.description, d.download_count, d.active, d.created_at, d.updated_at 
+     ORDER BY recent_downloads DESC 
+     LIMIT 10",
+    [$sevenDaysAgo]
+);
+
 $recentComments = $db->fetchAll("SELECT c.*, u.username FROM comments c JOIN users u ON c.user_id = u.id ORDER BY c.created_at DESC LIMIT 10");
 ?>
 <!DOCTYPE html>
