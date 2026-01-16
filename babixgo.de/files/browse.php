@@ -19,8 +19,6 @@ require_once SHARED_PATH . 'config/autoload.php';
 $pageTitle = 'Dateien durchsuchen - babixgo';
 
 $type = $_GET['type'] ?? 'all';
-
-$download = new Download();
 ?>
 <!DOCTYPE html>
 <html lang="de">

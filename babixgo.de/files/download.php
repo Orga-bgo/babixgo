@@ -7,15 +7,22 @@
 
 define('BASE_PATH', dirname(__DIR__) . '/');
 define('SHARED_PATH', BASE_PATH . 'shared/');
-define('DOWNLOADS_PATH', BASE_PATH . 'babixgo.de/file-storage/');
+define('DOWNLOADS_PATH', BASE_PATH . 'file-storage/');
 
 require_once SHARED_PATH . 'config/database.php';
 require_once SHARED_PATH . 'config/session.php';
 require_once SHARED_PATH . 'config/autoload.php';
 
+// Initialize database connection
+$db = Database::getInstance()->getConnection();
+
 // Validate parameters
 $fileId = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
-$fileType = filter_input(INPUT_GET, 'type', FILTER_SANITIZE_STRING);
+$fileType = $_GET['type'] ?? null;
+// Sanitize fileType manually
+if ($fileType) {
+    $fileType = htmlspecialchars(strip_tags($fileType), ENT_QUOTES, 'UTF-8');
+}
 
 if (!$fileId || !$fileType) {
     http_response_code(400);
@@ -28,9 +35,6 @@ if (!$fileId || !$fileType) {
 //     header('Location: /auth/login?redirect=' . urlencode($_SERVER['REQUEST_URI']));
 //     exit;
 // }
-
-// Initialize download handler
-$downloadHandler = new Download($db);
 
 // Get file information from database
 try {
