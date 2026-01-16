@@ -40,7 +40,7 @@ if (!$fileId || !$fileType) {
 try {
     error_log("Download request: id=$fileId, type=$fileType");
 
-    $stmt = $db->prepare("SELECT * FROM downloads WHERE id = ? AND filetype = ? AND active = 1");
+    $stmt = $db->prepare("SELECT * FROM downloads WHERE id = ? AND filetype = ? AND active = TRUE");
     $stmt->execute([$fileId, $fileType]);
     $fileInfo = $stmt->fetch(PDO::FETCH_ASSOC);
 
