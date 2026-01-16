@@ -1,0 +1,83 @@
+name: Manual SFTP Deployment
+
+on:
+  # Nur manuelles Deployment über GitHub Actions UI
+  workflow_dispatch:
+    inputs:
+      confirmation:
+        description: 'Type "deploy" to confirm deployment'
+        required: true
+        default: ''
+
+jobs:
+  deploy:
+    name: Deploy Repository to Server via SFTP
+    runs-on: ubuntu-latest
+    
+    permissions:
+      contents: read
+    
+    steps:
+      - name: Verify Confirmation
+        run: |
+          if [ "${{ github.event.inputs.confirmation }}" != "deploy" ]; then
+            echo "❌ Deployment cancelled. Please type 'deploy' to confirm."
+            exit 1
+          fi
+          echo "✅ Deployment confirmed"
+      
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Create Environment File with Secrets
+        run: |
+          # Erstelle .env Datei mit allen Secrets und Variablen
+          cat > ./.env << 'EOF'
+          # Database Configuration
+          DB_HOST=${{ secrets.DB_HOST }}
+          DB_NAME=${{ secrets.DB_NAME }}
+          DB_USER=${{ secrets.DB_USER }}
+          DB_PASSWORT=${{ secrets.DB_PASSWORD }}
+          
+          # SMTP Configuration
+          SMTP_HOST=${{ secrets.SMTP_HOST }}
+          SMTP_PORT=${{ secrets.SMTP_PORT }}
+          SMTP_USER=${{ secrets.SMTP_USER }}
+          SMTP_KEY=${{ secrets.SMTP_KEY }}
+          
+          # Site Configuration
+          SITE_URL=${{ secrets.SITE_URL }}
+          
+          # Debug Mode
+          DEBUG_MODE=false
+          EOF
+          
+          echo "✅ Environment file created (secrets masked in logs)"
+      
+      - name: Prepare Deployment Package
+        run: |
+          echo "📦 Preparing deployment package..."
+          echo "Repository: ${{ github.repository }}"
+          echo "Branch: ${{ github.ref_name }}"
+          echo "Commit: ${{ github.sha }}"
+          
+      - name: Deploy via SFTP
+        uses: wlixcc/SFTP-Deploy-Action@v1.2.4
+        with:
+          server: ${{ secrets.SFTP_SERVER }}
+          username: ${{ secrets.SFTP_USERNAME }}
+          password: ${{ secrets.SFTP_PASSWORD }}
+          port: ${{ secrets.SFTP_PORT != '' && secrets.SFTP_PORT || '22' }}
+          local_path: ./*
+          remote_path: ${{ secrets.SFTP_REMOTE_DIR }}
+          sftp_only: true
+          delete_remote_files: false
+          args: '-o ConnectTimeout=5'
+      
+      - name: Deployment Complete
+        run: |
+          echo "✅ Deployment completed successfully!"
+          echo "📍 Server: ${{ secrets.SFTP_SERVER }}"
+          echo "📂 Remote path: ${{ secrets.SFTP_REMOTE_DIR }}"
