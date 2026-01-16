@@ -411,7 +411,7 @@ Empfehlung: Admin-spezifische Komponenten in DESIGN_SYSTEM.md dokumentieren (Abs
 3. ✅ Hardcoded-Font-Scan (grep nach `font-family:`)
 4. ✅ Hardcoded-Spacing-Scan (grep nach `padding:|margin:`)
 5. ✅ Style-Tag-Scan (grep nach `<style`)
-6. ✅ CSS-Variable-Usage-Count (684 Verwendungen)
+6. ✅ CSS-Variable-Usage-Count (684 → 686+ nach Änderungen)
 7. ✅ Button-Class-Vollständigkeit
 8. ✅ Form-Class-Vollständigkeit
 9. ✅ Typography-Compliance
@@ -449,3 +449,25 @@ Der babixgo.de/admin-Bereich ist **vollständig konform** mit allen Design-Stand
 **Erstellt von:** GitHub Copilot Workspace  
 **Reviewed by:** babix234  
 **Letzte Aktualisierung:** 16. Januar 2026
+
+---
+
+## Anhang: Design-Token-Strategie
+
+### Hover-Token-Implementierung
+Die Hover-States für Success und Warning nutzen RGBA-Werte mit 80% Opacity. Diese Implementierung wurde bewusst gewählt, da:
+
+1. **Browser-Kompatibilität**: CSS `color-mix()` ist noch nicht in allen Browsern vollständig unterstützt
+2. **Konsistenz**: Die 0.8 Alpha-Werte sind ein etabliertes Pattern im bestehenden Design-System
+3. **Wartbarkeit**: Bei Änderung der Basis-Farben müssen die Hover-Werte entsprechend angepasst werden (dokumentiert)
+
+**Zukünftige Optimierung** (wenn Browser-Support ausreichend):
+```css
+--success-hover: color-mix(in srgb, var(--success) 80%, transparent);
+--warning-hover: color-mix(in srgb, var(--warning) 80%, transparent);
+```
+
+### Token-Zählung
+- **Initiale Zählung**: 684 `var(--*)` Verwendungen
+- **Nach Änderungen**: 686+ `var(--*)` Verwendungen
+- **Neue Tokens**: `--success-hover`, `--warning-hover`
