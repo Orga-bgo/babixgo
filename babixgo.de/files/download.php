@@ -13,6 +13,9 @@ require_once SHARED_PATH . 'config/database.php';
 require_once SHARED_PATH . 'config/session.php';
 require_once SHARED_PATH . 'config/autoload.php';
 
+// Get database connection from singleton
+$db = Database::getInstance()->getConnection();
+
 // Validate parameters
 $fileId = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
 $fileType = filter_input(INPUT_GET, 'type', FILTER_SANITIZE_STRING);
@@ -28,9 +31,6 @@ if (!$fileId || !$fileType) {
 //     header('Location: /auth/login?redirect=' . urlencode($_SERVER['REQUEST_URI']));
 //     exit;
 // }
-
-// Initialize download handler
-$downloadHandler = new Download($db);
 
 // Get file information from database
 try {
