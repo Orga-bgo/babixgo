@@ -204,13 +204,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file']) && verifyCsr
                             <option value="<?= $cat['id'] ?>"><?= htmlspecialchars($cat['name'], ENT_QUOTES) ?></option>
                         <?php endforeach; ?>
                     </select>
-                    <small style="color: #666; display: block; margin-top: 4px;">Optional: Assign this download to a category for better organization</small>
+                    <small class="form-help">Optional: Assign this download to a category for better organization</small>
                 </div>
 
                 <div class="form-group">
                     <label for="file">File (Max 500MB)</label>
                     <input type="file" id="file" name="file" required>
-                    <small id="file-size-info" style="color: var(--muted); display: block; margin-top: 4px;"></small>
+                    <small id="file-size-info" class="form-help"></small>
                 </div>
 
                 <div class="form-group">
