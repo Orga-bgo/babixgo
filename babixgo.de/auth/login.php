@@ -46,7 +46,6 @@ require_once SHARED_PATH . 'partials/header.php';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= htmlspecialchars($pageTitle, ENT_QUOTES) ?></title>
     <link rel="stylesheet" href="/shared/assets/css/style.css">
-    <link rel="stylesheet" href="/shared/assets/css/main.css">
 </head>
 <body>
     <?php require_once SHARED_PATH . 'partials/header.php'; ?>

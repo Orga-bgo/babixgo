@@ -19,7 +19,7 @@ $pageDescription = 'Verwalte dein BabixGO Profil, Downloads und Kommentare';
     <title><?= htmlspecialchars($pageTitle) ?></title>
     <meta name="description" content="<?= htmlspecialchars($pageDescription) ?>">
     <?php require SHARED_PATH . 'partials/head-links.php'; ?>
-    <link rel="stylesheet" href="/shared/assets/css/main.css">
+    <link rel="stylesheet" href="/shared/assets/css/style.css">
     <link rel="stylesheet" href="/assets/css/user.css">
 </head>
 <body>
