@@ -156,8 +156,8 @@ if (isset($_POST['remember_me'])) {
     $stmt->execute([$token, $user['id']]);
     
     // Set cookie - use environment-specific domain from config
-    // In production: 'babixgo.de', in dev: 'localhost'
-    $cookieDomain = $_ENV['COOKIE_DOMAIN'] ?? ini_get('session.cookie_domain') ?: 'babixgo.de';
+    // In production: 'babixgo.de', in dev: 'localhost', in docker: container name
+    $cookieDomain = $_ENV['COOKIE_DOMAIN'] ?? ini_get('session.cookie_domain') ?: '';
     setcookie('remember_token', $token, time() + (30 * 24 * 60 * 60), '/', $cookieDomain, true, true);
 }
 
@@ -401,7 +401,7 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_token'])) {
         session_regenerate_id(true);
     } else {
         // Invalid token - remove cookie
-        $cookieDomain = $_ENV['COOKIE_DOMAIN'] ?? ini_get('session.cookie_domain') ?: 'babixgo.de';
+        $cookieDomain = $_ENV['COOKIE_DOMAIN'] ?? ini_get('session.cookie_domain') ?: '';
         setcookie('remember_token', '', time() - 3600, '/', $cookieDomain, true, true);
     }
 }

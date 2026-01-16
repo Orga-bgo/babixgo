@@ -137,7 +137,7 @@ define('DOWNLOADS_PATH', BASE_PATH . 'downloads/');
 $allowedTypes = [
     'apk' => ['application/vnd.android.package-archive'],
     'exe' => ['application/x-msdownload', 'application/x-executable'],
-    'scripts' => ['text/x-python', 'application/x-shellscript', 'text/x-shellscript']
+    'scripts' => ['text/x-python', 'application/x-sh', 'text/x-sh']
 ];
 
 // For text/plain scripts, additional validation is needed
