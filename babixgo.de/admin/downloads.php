@@ -151,8 +151,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file']) && verifyCsr
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Download Management - babixgo.de</title>
-    <link rel="stylesheet" href="/shared/assets/css/style.css">
-    <link rel="stylesheet" href="/shared/assets/css/admin.css">
+    <link rel="stylesheet" href="/assets/css/style.css">
 </head>
 <body>
     <nav class="main-nav">
