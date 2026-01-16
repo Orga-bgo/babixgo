@@ -3260,6 +3260,65 @@ dialog::backdrop {
   color: var(--error);
 }
 
+/* Upload Progress Bar */
+.upload-progress-container {
+  margin-top: var(--space-card);
+  padding: var(--space-card);
+  background: var(--surface-1);
+  border: 1px solid var(--stroke);
+  border-radius: 12px;
+}
+
+.upload-progress-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-element);
+}
+
+#upload-status {
+  font-weight: 600;
+  color: var(--primary);
+  font-size: var(--font-size-small);
+}
+
+#upload-percentage {
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--primary);
+  font-family: 'Montserrat', sans-serif;
+}
+
+.upload-progress-bar {
+  width: 100%;
+  height: 8px;
+  background: var(--surface-2);
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: var(--space-element);
+}
+
+.upload-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary) 0%, var(--primary-hover) 100%);
+  border-radius: 8px;
+  transition: width 0.3s ease;
+  box-shadow: 0 0 10px rgba(146, 206, 245, 0.5);
+}
+
+.upload-progress-details {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: var(--font-size-xs);
+  color: var(--muted);
+}
+
+#upload-speed,
+#upload-eta {
+  font-weight: 500;
+}
+
 /* Admin Responsive */
 @media (max-width: 768px) {
   .nav-menu {
@@ -3278,6 +3337,12 @@ dialog::backdrop {
 
   .search-form {
     max-width: none;
+  }
+
+  .upload-progress-details {
+    flex-direction: column;
+    gap: 4px;
+    align-items: flex-start;
   }
 }
 
