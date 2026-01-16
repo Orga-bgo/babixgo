@@ -1,0 +1,13 @@
+# .htaccess für /files Verzeichnis
+# Kategorie-Routing
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /files/
+
+  # Route /files/kategorie/{slug}/ to category.php
+  # Example: /files/kategorie/android-apps/ -> /files/category.php
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule ^kategorie/([^/]+)/?$ category.php [L,QSA]
+</IfModule>
