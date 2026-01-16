@@ -3319,6 +3319,15 @@ dialog::backdrop {
   font-weight: 500;
 }
 
+/* Form Helper Text */
+.form-help {
+  display: block;
+  margin-top: 4px;
+  font-size: var(--font-size-small);
+  color: var(--muted);
+  line-height: 1.4;
+}
+
 /* Admin Responsive */
 @media (max-width: 768px) {
   .nav-menu {
