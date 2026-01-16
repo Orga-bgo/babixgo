@@ -100,10 +100,10 @@ $downloads = getDownloadsByCategory($category['id']);
         <div class="content-card">
           <div class="content-card-header">
             <div class="content-card-title">
-              <h3><?= e($download['name']) ?></h3>
+              <h3><?= e($download['name'] ?: $download['filename']) ?></h3>
             </div>
             <?php if(isLoggedIn()): ?>
-              <a href="/files/download.php?id=<?= $download['id'] ?>" class="btn btn-link">Herunterladen</a>
+              <a href="/files/download.php?id=<?= $download['id'] ?>&type=<?= $download['filetype'] ?>" class="btn btn-link">Herunterladen</a>
             <?php else: ?>
               <a href="/auth/login?redirect=<?= urlencode($_SERVER['REQUEST_URI']) ?>" class="btn btn-link">Anmelden</a>
             <?php endif; ?>
