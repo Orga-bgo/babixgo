@@ -18,7 +18,11 @@ $db = Database::getInstance()->getConnection();
 
 // Validate parameters
 $fileId = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
-$fileType = filter_input(INPUT_GET, 'type', FILTER_SANITIZE_STRING);
+$fileType = $_GET['type'] ?? null;
+// Sanitize fileType manually
+if ($fileType) {
+    $fileType = htmlspecialchars(strip_tags($fileType), ENT_QUOTES, 'UTF-8');
+}
 
 if (!$fileId || !$fileType) {
     http_response_code(400);
