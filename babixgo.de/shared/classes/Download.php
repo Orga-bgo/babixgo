@@ -79,14 +79,11 @@ class Download {
 
     public function add($data) {
         $query = "INSERT INTO " . $this->table_name . "
-                  (name, filename, filepath, filetype, filesize, version, description, category_id, active)
-                  VALUES (:name, :filename, :filepath, :filetype, :filesize, :version, :description, :category_id, TRUE)";
+                  (filename, filepath, filetype, filesize, version, description, category_id, active)
+                  VALUES (:filename, :filepath, :filetype, :filesize, :version, :description, :category_id, TRUE)";
 
         try {
             $stmt = $this->conn->prepare($query);
-            // Use filename as display name if no name provided
-            $name = $data['name'] ?? $data['filename'];
-            $stmt->bindParam(':name', $name);
             $stmt->bindParam(':filename', $data['filename']);
             $stmt->bindParam(':filepath', $data['filepath']);
             $stmt->bindParam(':filetype', $data['filetype']);
@@ -106,8 +103,7 @@ class Download {
 
     public function update($id, $data) {
         $query = "UPDATE " . $this->table_name . "
-                  SET name = :name,
-                      filename = :filename,
+                  SET filename = :filename,
                       filetype = :filetype,
                       filesize = :filesize,
                       version = :version,
@@ -119,9 +115,6 @@ class Download {
         try {
             $stmt = $this->conn->prepare($query);
             $stmt->bindParam(':id', $id);
-            // Use filename as display name if no name provided
-            $name = $data['name'] ?? $data['filename'];
-            $stmt->bindParam(':name', $name);
             $stmt->bindParam(':filename', $data['filename']);
             $stmt->bindParam(':filetype', $data['filetype']);
             $stmt->bindParam(':filesize', $data['filesize']);
