@@ -14,7 +14,7 @@ $categories = getCategories();
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <?php require $_SERVER['DOCUMENT_ROOT'] . '/shared/partials/head-meta.php'; ?>
+  <?php require __DIR__ . '/../shared/partials/head-meta.php'; ?>
 
   <title>Downloads - babixGO Files</title>
   <meta name="description" content="Download-Portal der BabixGO Community - Kostenlose Downloads, Apps und Tools für Monopoly GO." />
@@ -27,13 +27,13 @@ $categories = getCategories();
   <meta name="twitter:title" content="Downloads - babixGO Files" />
   <meta name="twitter:description" content="Download-Portal der BabixGO Community - Kostenlose Downloads, Apps und Tools für Monopoly GO." />
 
-  <?php require $_SERVER['DOCUMENT_ROOT'] . '/shared/partials/head-links.php'; ?>
+  <?php require __DIR__ . '/../shared/partials/head-links.php'; ?>
 </head>
 
 <body>
-  <?php require $_SERVER['DOCUMENT_ROOT'] . '/shared/partials/tracking.php'; ?>
-  <?php require $_SERVER['DOCUMENT_ROOT'] . '/shared/partials/cookie-banner.php'; ?>
-  <?php require $_SERVER['DOCUMENT_ROOT'] . '/shared/partials/header.php'; ?>
+  <?php require __DIR__ . '/../shared/partials/tracking.php'; ?>
+  <?php require __DIR__ . '/../shared/partials/cookie-banner.php'; ?>
+  <?php require __DIR__ . '/../shared/partials/header.php'; ?>
 
   <main id="main-content">
     <div class="box">
@@ -92,7 +92,7 @@ $categories = getCategories();
     </div>
   </main>
 
-  <?php require $_SERVER['DOCUMENT_ROOT'] . '/shared/partials/footer.php'; ?>
-  <?php require $_SERVER['DOCUMENT_ROOT'] . '/shared/partials/scripts.php'; ?>
+  <?php require __DIR__ . '/../shared/partials/footer.php'; ?>
+  <?php require __DIR__ . '/../shared/partials/scripts.php'; ?>
 </body>
 </html>
