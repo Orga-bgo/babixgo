@@ -151,8 +151,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file']) && verifyCsr
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Download Management - babixgo.de</title>
-    <link rel="stylesheet" href="/shared/assets/css/style.css">
-    <link rel="stylesheet" href="/shared/assets/css/admin.css">
+    <link rel="stylesheet" href="/assets/css/style.css">
 </head>
 <body>
     <nav class="main-nav">
@@ -183,8 +182,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file']) && verifyCsr
         
         <div class="profile-card">
             <h2>Add New Download</h2>
-            
-            <form method="POST" enctype="multipart/form-data">
+
+            <form id="upload-form" method="POST" enctype="multipart/form-data">
                 <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(getCsrfToken(), ENT_QUOTES) ?>">
 
                 <div class="form-group">
@@ -211,6 +210,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file']) && verifyCsr
                 <div class="form-group">
                     <label for="file">File (Max 500MB)</label>
                     <input type="file" id="file" name="file" required>
+                    <small id="file-size-info" style="color: var(--muted); display: block; margin-top: 4px;"></small>
                 </div>
 
                 <div class="form-group">
@@ -223,7 +223,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file']) && verifyCsr
                     <textarea id="description" name="description" rows="3"></textarea>
                 </div>
 
-                <button type="submit" class="btn btn-primary">Upload Download</button>
+                <button type="submit" id="upload-btn" class="btn btn-primary">Upload Download</button>
+
+                <!-- Upload Progress Bar -->
+                <div id="upload-progress-container" class="upload-progress-container" style="display: none;">
+                    <div class="upload-progress-info">
+                        <span id="upload-status">Uploading...</span>
+                        <span id="upload-percentage">0%</span>
+                    </div>
+                    <div class="upload-progress-bar">
+                        <div id="upload-progress-fill" class="upload-progress-fill"></div>
+                    </div>
+                    <div class="upload-progress-details">
+                        <span id="upload-speed">0 MB/s</span>
+                        <span id="upload-eta">Calculating...</span>
+                    </div>
+                </div>
             </form>
         </div>
         
@@ -305,24 +320,151 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file']) && verifyCsr
     <script src="/shared/assets/js/main.js"></script>
     <script src="/shared/assets/js/admin.js"></script>
     <script>
+        // File size display
+        document.getElementById('file').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            const sizeInfo = document.getElementById('file-size-info');
+
+            if (file) {
+                const sizeMB = (file.size / 1024 / 1024).toFixed(2);
+                sizeInfo.textContent = `Selected: ${file.name} (${sizeMB} MB)`;
+
+                if (file.size > 500 * 1024 * 1024) {
+                    sizeInfo.style.color = 'var(--error)';
+                    sizeInfo.textContent += ' - File too large!';
+                } else {
+                    sizeInfo.style.color = 'var(--muted)';
+                }
+            } else {
+                sizeInfo.textContent = '';
+            }
+        });
+
+        // Upload with progress tracking
+        document.getElementById('upload-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const form = e.target;
+            const formData = new FormData(form);
+            const uploadBtn = document.getElementById('upload-btn');
+            const progressContainer = document.getElementById('upload-progress-container');
+            const progressFill = document.getElementById('upload-progress-fill');
+            const progressPercentage = document.getElementById('upload-percentage');
+            const uploadStatus = document.getElementById('upload-status');
+            const uploadSpeed = document.getElementById('upload-speed');
+            const uploadEta = document.getElementById('upload-eta');
+
+            // Disable form and show progress
+            uploadBtn.disabled = true;
+            uploadBtn.textContent = 'Uploading...';
+            progressContainer.style.display = 'block';
+
+            // Track upload progress
+            let startTime = Date.now();
+            let lastLoaded = 0;
+            let lastTime = startTime;
+
+            const xhr = new XMLHttpRequest();
+
+            // Upload progress event
+            xhr.upload.addEventListener('progress', function(e) {
+                if (e.lengthComputable) {
+                    const percentComplete = (e.loaded / e.total) * 100;
+                    const currentTime = Date.now();
+                    const timeDiff = (currentTime - lastTime) / 1000; // seconds
+                    const loadedDiff = e.loaded - lastLoaded;
+
+                    // Update progress bar
+                    progressFill.style.width = percentComplete + '%';
+                    progressPercentage.textContent = Math.round(percentComplete) + '%';
+
+                    // Calculate speed (MB/s)
+                    if (timeDiff > 0) {
+                        const speedMBps = (loadedDiff / timeDiff / 1024 / 1024).toFixed(2);
+                        uploadSpeed.textContent = speedMBps + ' MB/s';
+
+                        // Calculate ETA
+                        const remaining = e.total - e.loaded;
+                        const etaSeconds = remaining / (loadedDiff / timeDiff);
+
+                        if (etaSeconds < 60) {
+                            uploadEta.textContent = 'ETA: ' + Math.round(etaSeconds) + 's';
+                        } else {
+                            const minutes = Math.floor(etaSeconds / 60);
+                            const seconds = Math.round(etaSeconds % 60);
+                            uploadEta.textContent = `ETA: ${minutes}m ${seconds}s`;
+                        }
+                    }
+
+                    lastLoaded = e.loaded;
+                    lastTime = currentTime;
+                }
+            });
+
+            // Upload complete event
+            xhr.addEventListener('load', function() {
+                if (xhr.status === 200) {
+                    uploadStatus.textContent = 'Processing...';
+                    progressFill.style.width = '100%';
+                    progressPercentage.textContent = '100%';
+                    uploadSpeed.textContent = 'Complete';
+                    uploadEta.textContent = '';
+
+                    // Redirect after short delay
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 1000);
+                } else {
+                    uploadStatus.textContent = 'Upload failed!';
+                    uploadStatus.style.color = 'var(--error)';
+                    uploadBtn.disabled = false;
+                    uploadBtn.textContent = 'Upload Download';
+
+                    showMessage('Upload failed. Please try again.', 'error');
+                }
+            });
+
+            // Upload error event
+            xhr.addEventListener('error', function() {
+                uploadStatus.textContent = 'Upload failed!';
+                uploadStatus.style.color = 'var(--error)';
+                uploadBtn.disabled = false;
+                uploadBtn.textContent = 'Upload Download';
+
+                showMessage('Network error. Please try again.', 'error');
+            });
+
+            // Upload abort event
+            xhr.addEventListener('abort', function() {
+                uploadStatus.textContent = 'Upload cancelled';
+                uploadBtn.disabled = false;
+                uploadBtn.textContent = 'Upload Download';
+                progressContainer.style.display = 'none';
+            });
+
+            // Send request
+            xhr.open('POST', window.location.href, true);
+            xhr.send(formData);
+        });
+
         async function deleteDownload(downloadId) {
             if (!confirm('Are you sure you want to delete this download? The file will be permanently deleted.')) {
                 return;
             }
-            
+
             const formData = new FormData();
             formData.append('csrf_token', '<?= getCsrfToken() ?>');
             formData.append('action', 'delete_download');
             formData.append('download_id', downloadId);
-            
+
             try {
                 const response = await fetch('/admin/includes/form-handlers/admin-handlers.php', {
                     method: 'POST',
                     body: formData
                 });
-                
+
                 const result = await response.json();
-                
+
                 if (result.success) {
                     showMessage(result.message || 'Download deleted successfully', 'success');
                     setTimeout(() => location.reload(), 1500);
