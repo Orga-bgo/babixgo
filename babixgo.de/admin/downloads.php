@@ -8,6 +8,9 @@ require_once __DIR__ . '/includes/admin-check.php';
 $db = Database::getInstance();
 $download = new Download();
 
+// Get all categories for the dropdown
+$categories = $download->getAllCategories();
+
 // Pagination
 $page = max(1, intval($_GET['page'] ?? 1));
 $perPage = 20;
@@ -30,15 +33,16 @@ $downloads = $download->getAll($filterType, false, $perPage, $offset);
 // Handle file upload
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file']) && verifyCsrfToken($_POST['csrf_token'] ?? '')) {
     $filetype = $_POST['filetype'] ?? '';
+    $categoryId = !empty($_POST['category_id']) ? intval($_POST['category_id']) : null;
     $version = trim($_POST['version'] ?? '');
     $description = trim($_POST['description'] ?? '');
-    
+
     $errors = [];
-    
+
     if (!in_array($filetype, ['apk', 'scripts', 'exe'])) {
         $errors[] = 'Invalid file type';
     }
-    
+
     if (empty($version)) {
         $errors[] = 'Version is required';
     }
@@ -46,25 +50,38 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file']) && verifyCsr
     // Validate file upload
     $file = $_FILES['file'];
     if ($file['error'] !== UPLOAD_ERR_OK) {
-        $errors[] = 'File upload failed';
+        $errorMessages = [
+            UPLOAD_ERR_INI_SIZE => 'File exceeds upload_max_filesize in php.ini',
+            UPLOAD_ERR_FORM_SIZE => 'File exceeds MAX_FILE_SIZE in form',
+            UPLOAD_ERR_PARTIAL => 'File was only partially uploaded',
+            UPLOAD_ERR_NO_FILE => 'No file was uploaded',
+            UPLOAD_ERR_NO_TMP_DIR => 'Missing temporary folder',
+            UPLOAD_ERR_CANT_WRITE => 'Failed to write file to disk',
+            UPLOAD_ERR_EXTENSION => 'File upload stopped by extension'
+        ];
+        $errorMsg = $errorMessages[$file['error']] ?? 'Unknown upload error';
+        error_log("Upload error: " . $errorMsg . " (Code: " . $file['error'] . ")");
+        $errors[] = 'File upload failed: ' . $errorMsg;
     } else {
         // Check file size (max 500MB)
         if ($file['size'] > 500 * 1024 * 1024) {
+            error_log("Upload error: File too large - " . ($file['size'] / 1024 / 1024) . " MB");
             $errors[] = 'File too large (max 500MB)';
         }
-        
+
         // Validate MIME type
         $allowedTypes = [
             'apk' => ['application/vnd.android.package-archive', 'application/octet-stream'],
             'exe' => ['application/x-msdownload', 'application/x-msdos-program', 'application/octet-stream'],
             'scripts' => ['text/plain', 'text/x-python', 'application/x-sh', 'application/octet-stream']
         ];
-        
+
         $finfo = finfo_open(FILEINFO_MIME_TYPE);
         $mimeType = finfo_file($finfo, $file['tmp_name']);
         finfo_close($finfo);
-        
+
         if (!in_array($mimeType, $allowedTypes[$filetype])) {
+            error_log("Upload error: Invalid MIME type '$mimeType' for filetype '$filetype'");
             $errors[] = 'Invalid file type for selected category';
         }
     }
@@ -73,38 +90,58 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file']) && verifyCsr
         // Create directory if it doesn't exist
         $uploadDir = BASE_PATH . 'babixgo.de/file-storage/' . $filetype . '/';
         if (!file_exists($uploadDir)) {
-            mkdir($uploadDir, 0755, true);
-        }
-        
-        // Generate safe filename
-        $originalName = pathinfo($file['name'], PATHINFO_FILENAME);
-        $extension = pathinfo($file['name'], PATHINFO_EXTENSION);
-        $safeFilename = preg_replace('/[^a-zA-Z0-9_-]/', '_', $originalName);
-        $filename = $safeFilename . '_' . time() . '.' . $extension;
-        $filepath = $uploadDir . $filename;
-        
-        if (move_uploaded_file($file['tmp_name'], $filepath)) {
-            chmod($filepath, 0644);
-            
-            $result = $download->add([
-                'filename' => $file['name'],
-                'filepath' => $filetype . '/' . $filename,
-                'filetype' => $filetype,
-                'filesize' => $file['size'],
-                'version' => $version,
-                'description' => $description
-            ]);
-            
-            if ($result['success']) {
-                $success = 'Download added successfully';
-            } else {
-                $uploadError = 'Failed to save download metadata';
+            if (!mkdir($uploadDir, 0755, true)) {
+                error_log("Failed to create upload directory: " . $uploadDir);
+                $uploadError = 'Failed to create upload directory';
             }
-        } else {
-            $uploadError = 'Failed to move uploaded file';
+        }
+
+        if (!isset($uploadError)) {
+            // Check if directory is writable
+            if (!is_writable($uploadDir)) {
+                error_log("Upload directory not writable: " . $uploadDir);
+                $uploadError = 'Upload directory not writable';
+            } else {
+                // Generate safe filename
+                $originalName = pathinfo($file['name'], PATHINFO_FILENAME);
+                $extension = pathinfo($file['name'], PATHINFO_EXTENSION);
+                $safeFilename = preg_replace('/[^a-zA-Z0-9_-]/', '_', $originalName);
+                $filename = $safeFilename . '_' . time() . '.' . $extension;
+                $filepath = $uploadDir . $filename;
+
+                if (move_uploaded_file($file['tmp_name'], $filepath)) {
+                    chmod($filepath, 0644);
+
+                    $result = $download->add([
+                        'filename' => $file['name'],
+                        'filepath' => $filetype . '/' . $filename,
+                        'filetype' => $filetype,
+                        'filesize' => $file['size'],
+                        'version' => $version,
+                        'description' => $description,
+                        'category_id' => $categoryId
+                    ]);
+
+                    if ($result['success']) {
+                        $success = 'Download added successfully';
+                        error_log("Upload success: " . $file['name'] . " (ID: " . $result['id'] . ", Category: " . ($categoryId ?? 'none') . ")");
+                    } else {
+                        error_log("Failed to save download metadata: " . ($result['error'] ?? 'unknown error'));
+                        $uploadError = 'Failed to save download metadata: ' . ($result['error'] ?? 'unknown error');
+                        // Clean up uploaded file since DB insert failed
+                        if (file_exists($filepath)) {
+                            unlink($filepath);
+                        }
+                    }
+                } else {
+                    error_log("Failed to move uploaded file from " . $file['tmp_name'] . " to " . $filepath);
+                    $uploadError = 'Failed to move uploaded file';
+                }
+            }
         }
     } else {
         $uploadError = implode(', ', $errors);
+        error_log("Upload validation errors: " . $uploadError);
     }
 }
 ?>
@@ -149,7 +186,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file']) && verifyCsr
             
             <form method="POST" enctype="multipart/form-data">
                 <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(getCsrfToken(), ENT_QUOTES) ?>">
-                
+
                 <div class="form-group">
                     <label for="filetype">File Type</label>
                     <select id="filetype" name="filetype" required>
@@ -159,22 +196,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file']) && verifyCsr
                         <option value="scripts">Scripts</option>
                     </select>
                 </div>
-                
+
+                <div class="form-group">
+                    <label for="category_id">Category</label>
+                    <select id="category_id" name="category_id">
+                        <option value="">-- No Category --</option>
+                        <?php foreach ($categories as $cat): ?>
+                            <option value="<?= $cat['id'] ?>"><?= htmlspecialchars($cat['name'], ENT_QUOTES) ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                    <small style="color: #666; display: block; margin-top: 4px;">Optional: Assign this download to a category for better organization</small>
+                </div>
+
                 <div class="form-group">
                     <label for="file">File (Max 500MB)</label>
                     <input type="file" id="file" name="file" required>
                 </div>
-                
+
                 <div class="form-group">
                     <label for="version">Version</label>
                     <input type="text" id="version" name="version" required placeholder="e.g., 1.0.0">
                 </div>
-                
+
                 <div class="form-group">
                     <label for="description">Description</label>
                     <textarea id="description" name="description" rows="3"></textarea>
                 </div>
-                
+
                 <button type="submit" class="btn btn-primary">Upload Download</button>
             </form>
         </div>

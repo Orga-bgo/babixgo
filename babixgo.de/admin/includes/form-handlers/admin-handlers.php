@@ -155,16 +155,18 @@ try {
         case 'update_download':
             $downloadId = intval($_POST['download_id'] ?? 0);
             $download = new Download();
-            
+            $categoryId = !empty($_POST['category_id']) ? intval($_POST['category_id']) : null;
+
             $data = [
                 'filename' => trim($_POST['filename'] ?? ''),
                 'filetype' => $_POST['filetype'] ?? '',
                 'filesize' => intval($_POST['filesize'] ?? 0),
                 'version' => trim($_POST['version'] ?? ''),
                 'description' => trim($_POST['description'] ?? ''),
+                'category_id' => $categoryId,
                 'active' => isset($_POST['active']) ? 1 : 0
             ];
-            
+
             $result = $download->update($downloadId, $data);
             echo json_encode($result);
             break;
@@ -172,16 +174,8 @@ try {
         case 'delete_download':
             $downloadId = intval($_POST['download_id'] ?? 0);
             $download = new Download();
-            
-            // Get file path before deleting
-            $downloadData = $download->getById($downloadId);
-            if ($downloadData) {
-                $filePath = BASE_PATH . 'babixgo.de/file-storage/' . $downloadData['filetype'] . '/' . basename($downloadData['filepath']);
-                if (file_exists($filePath)) {
-                    unlink($filePath);
-                }
-            }
-            
+
+            // Delete method in Download class now handles file deletion
             $result = $download->delete($downloadId);
             echo json_encode($result);
             break;

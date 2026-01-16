@@ -22,22 +22,28 @@ if (!$downloadData) {
 
 $db = Database::getInstance();
 
+// Get all categories for the dropdown
+$categories = $download->getAllCategories();
+
 // Get download logs
 $logs = $download->getLogs($downloadId, 20);
 
 // Handle form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && verifyCsrfToken($_POST['csrf_token'] ?? '')) {
+    $categoryId = !empty($_POST['category_id']) ? intval($_POST['category_id']) : null;
+
     $data = [
         'filename' => trim($_POST['filename'] ?? ''),
         'filetype' => $_POST['filetype'] ?? '',
         'filesize' => $downloadData['filesize'], // Keep original filesize
         'version' => trim($_POST['version'] ?? ''),
         'description' => trim($_POST['description'] ?? ''),
+        'category_id' => $categoryId,
         'active' => isset($_POST['active']) ? 1 : 0
     ];
-    
+
     $result = $download->update($downloadId, $data);
-    
+
     if ($result['success']) {
         $success = 'Download updated successfully';
         $downloadData = $download->getById($downloadId);
@@ -123,18 +129,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && verifyCsrfToken($_POST['csrf_token'
                 
                 <form method="POST">
                     <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(getCsrfToken(), ENT_QUOTES) ?>">
-                    
+
                     <div class="form-group">
                         <label for="filename">Filename</label>
-                        <input 
-                            type="text" 
-                            id="filename" 
-                            name="filename" 
+                        <input
+                            type="text"
+                            id="filename"
+                            name="filename"
                             value="<?= htmlspecialchars($downloadData['filename'], ENT_QUOTES) ?>"
                             required
                         >
                     </div>
-                    
+
                     <div class="form-group">
                         <label for="filetype">File Type</label>
                         <select id="filetype" name="filetype" required>
@@ -143,34 +149,47 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && verifyCsrfToken($_POST['csrf_token'
                             <option value="scripts" <?= $downloadData['filetype'] === 'scripts' ? 'selected' : '' ?>>Scripts</option>
                         </select>
                     </div>
-                    
+
+                    <div class="form-group">
+                        <label for="category_id">Category</label>
+                        <select id="category_id" name="category_id">
+                            <option value="">-- No Category --</option>
+                            <?php foreach ($categories as $cat): ?>
+                                <option value="<?= $cat['id'] ?>" <?= $downloadData['category_id'] == $cat['id'] ? 'selected' : '' ?>>
+                                    <?= htmlspecialchars($cat['name'], ENT_QUOTES) ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                        <small style="color: #666; display: block; margin-top: 4px;">Optional: Assign this download to a category for better organization</small>
+                    </div>
+
                     <div class="form-group">
                         <label for="version">Version</label>
-                        <input 
-                            type="text" 
-                            id="version" 
-                            name="version" 
+                        <input
+                            type="text"
+                            id="version"
+                            name="version"
                             value="<?= htmlspecialchars($downloadData['version'], ENT_QUOTES) ?>"
                             required
                         >
                     </div>
-                    
+
                     <div class="form-group">
                         <label for="description">Description</label>
-                        <textarea 
-                            id="description" 
-                            name="description" 
+                        <textarea
+                            id="description"
+                            name="description"
                             rows="5"
                         ><?= htmlspecialchars($downloadData['description'] ?? '', ENT_QUOTES) ?></textarea>
                     </div>
-                    
+
                     <div class="form-group checkbox-group">
                         <label>
                             <input type="checkbox" name="active" value="1" <?= $downloadData['active'] ? 'checked' : '' ?>>
                             Active (visible to users)
                         </label>
                     </div>
-                    
+
                     <button type="submit" class="btn btn-primary">Save Changes</button>
                     <a href="/admin/downloads.php" class="btn btn-secondary">Back to Downloads</a>
                 </form>
