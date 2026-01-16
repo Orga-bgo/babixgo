@@ -247,6 +247,7 @@ if (empty($errors)) {
     $stmt = $db->prepare("UPDATE users SET password = ? WHERE id = ?");
     $stmt->execute([$hashedPassword, $_SESSION['user_id']]);
     
+    // Set success message
     $_SESSION['success_message'] = 'Password changed successfully';
     header('Location: /user/settings');
     exit;
@@ -266,9 +267,6 @@ if (!password_verify($password, $user['password'])) {
     die('Incorrect password');
 }
 
-// Set success message BEFORE destroying session
-$_SESSION['success_message'] = 'Account deleted successfully';
-
 // Soft delete (preferred) - add deleted_at column
 $stmt = $db->prepare("UPDATE users SET deleted_at = NOW() WHERE id = ?");
 $stmt->execute([$_SESSION['user_id']]);
@@ -280,8 +278,8 @@ $stmt->execute([$_SESSION['user_id']]);
 // Clear session
 session_destroy();
 
-// Redirect to homepage
-header('Location: /');
+// Redirect to homepage with message via URL parameter
+header('Location: /?message=account_deleted');
 exit;
 ```
 
