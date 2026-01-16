@@ -9,8 +9,7 @@ This directory contains CSS and JavaScript files that are shared across all babi
 ```
 shared/assets/
 ├── css/
-│   ├── main.css      # Main site styles (base, forms, navigation, etc.)
-│   └── admin.css     # Admin panel specific styles
+│   └── style.css      # Shared styles (auth, forms, navigation, etc.)
 └── js/
     ├── form-validation.js  # Client-side form validation
     └── admin.js           # Admin panel interactions
@@ -40,7 +39,6 @@ require_once SHARED_PATH . 'config/autoload.php';
 
 // Page configuration
 $pageTitle = 'My Page - babixgo.de';
-$includeAdminCSS = false; // Set to true for admin pages
 $includeValidationJS = true; // Set to true if using form validation
 $includeAdminJS = false; // Set to true for admin pages
 
@@ -52,9 +50,7 @@ require_once SHARED_PATH . 'partials/header.php';
 ### Method 2: Direct Link
 
 ```html
-<link rel="stylesheet" href="../../shared/assets/css/main.css">
-<!-- For admin pages, also include: -->
-<link rel="stylesheet" href="../../shared/assets/css/admin.css">
+<link rel="stylesheet" href="../../shared/assets/css/style.css">
 ```
 
 ## Using Shared JavaScript
@@ -85,12 +81,10 @@ Includes the HTML `<head>` section with proper CSS includes.
 
 **Variables you can set:**
 - `$pageTitle` - Page title (default: 'babixgo.de')
-- `$includeAdminCSS` - Include admin.css (default: false)
 - `$additionalCSS` - Array of additional CSS files to include
 
 ```php
 $pageTitle = 'Login - babixgo.de';
-$includeAdminCSS = false;
 require_once SHARED_PATH . 'partials/header.php';
 ```
 
@@ -177,7 +171,6 @@ require_once __DIR__ . '/../includes/admin-check.php';
 // Page configuration
 $pageTitle = 'User Management - babixgo.de Admin';
 $currentAdminPage = 'users';
-$includeAdminCSS = true;
 
 // Include header and admin navigation
 require_once SHARED_PATH . 'partials/header.php';
@@ -223,21 +216,15 @@ define('SHARED_ASSETS_PATH', '../../../shared/assets/');
 
 ## CSS Classes Available
 
-### Main.css includes:
+### style.css includes:
 - Navigation (`.main-nav`, `.nav-menu`, `.logo`)
 - Forms (`.form-group`, `.btn`, `.form-control`)
 - Messages (`.message`, `.message-success`, `.message-error`)
 - Containers (`.container`, `.auth-container`, `.auth-box`)
 - Cards (`.profile-card`, `.profile-grid`, `.profile-header`)
 - Badges (`.badge`, `.badge-admin`, `.badge-success`, etc.)
+- Authentication buttons (`.btn-auth`, `.btn-login`, `.btn-register`)
 - Responsive utilities
-
-### Admin.css includes:
-- Statistics (`.stats-grid`, `.stat-card`, `.stat-value`)
-- Tables (`.admin-table`, `.table-container`)
-- Toolbar (`.toolbar`, `.search-form`, `.bulk-actions`)
-- Admin-specific buttons (`.btn-small`)
-- Pagination (`.pagination`)
 
 ## JavaScript Functions Available
 
