@@ -12,10 +12,8 @@ const PRECACHE_ASSETS = [
   '/',
   '/offline.html',
   '/assets/css/style.css',
-  '/assets/css/user.css',
   '/assets/js/main.js',
   '/assets/logo/babixGO-logo-hell.png',
-  '/shared/assets/css/style.css',
   '/shared/assets/js/main.js'
 ];
 

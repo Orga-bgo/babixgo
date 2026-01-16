@@ -42,10 +42,10 @@ require_once SHARED_PATH . 'partials/header.php';
 <!DOCTYPE html>
 <html lang="de">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <?php require_once SHARED_PATH . 'partials/head-meta.php'; ?>
     <title><?= htmlspecialchars($pageTitle, ENT_QUOTES) ?></title>
-    <link rel="stylesheet" href="/shared/assets/css/style.css">
+    <meta name="description" content="Login to your babixgo.de account">
+    <?php require_once SHARED_PATH . 'partials/head-links.php'; ?>
 </head>
 <body>
     <?php require_once SHARED_PATH . 'partials/header.php'; ?>
