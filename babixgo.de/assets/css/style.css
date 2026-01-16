@@ -3128,6 +3128,28 @@ dialog::backdrop {
   transform: translateY(-1px);
 }
 
+.btn-success {
+  background: var(--success);
+  color: var(--on-success);
+  border-color: var(--success);
+}
+
+.btn-success:hover {
+  background: rgba(126, 226, 184, 0.8);
+  transform: translateY(-1px);
+}
+
+.btn-warning {
+  background: var(--warning);
+  color: var(--on-warning);
+  border-color: var(--warning);
+}
+
+.btn-warning:hover {
+  background: rgba(255, 211, 153, 0.8);
+  transform: translateY(-1px);
+}
+
 .btn-small {
   padding: 6px 12px;
   font-size: var(--font-size-xs);
