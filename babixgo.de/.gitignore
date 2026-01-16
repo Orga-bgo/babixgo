@@ -11,6 +11,11 @@ composer.lock
 *.phar
 .phpunit.result.cache
 
+# Environment files (contain secrets)
+.env
+.env.local
+.env.*.local
+
 # Replit
 .replit
 replit.nix
