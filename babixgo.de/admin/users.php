@@ -37,10 +37,7 @@ $users = $db->fetchAll($sql, array_merge($searchParams, [$perPage, $offset]));
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Management - babixgo.de</title>
-    <link rel="stylesheet" href="/shared/assets/css/style.css">
-    <link rel="stylesheet" href="/shared/assets/css/admin.css">
-    <link rel="stylesheet" href="/shared/assets/css/style.css">
-    <link rel="stylesheet" href="/shared/assets/css/admin.css">
+    <link rel="stylesheet" href="/assets/css/style.css">
 </head>
 <body>
     <nav class="main-nav">
