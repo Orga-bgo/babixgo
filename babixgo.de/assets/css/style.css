@@ -102,8 +102,10 @@
   --card-hover: var(--md-surface-container-high);
 
   --success: rgb(126 226 184);
+  --success-hover: rgba(126, 226, 184, 0.8);
   --error: var(--md-error);
   --warning: rgb(255 211 153);
+  --warning-hover: rgba(255, 211, 153, 0.8);
   --info: var(--md-primary);
   --on-success: rgb(13 59 42);
   --on-error: var(--md-on-error);
@@ -3125,6 +3127,28 @@ dialog::backdrop {
 
 .btn-danger:hover {
   background: var(--md-error-container);
+  transform: translateY(-1px);
+}
+
+.btn-success {
+  background: var(--success);
+  color: var(--on-success);
+  border-color: var(--success);
+}
+
+.btn-success:hover {
+  background: var(--success-hover);
+  transform: translateY(-1px);
+}
+
+.btn-warning {
+  background: var(--warning);
+  color: var(--on-warning);
+  border-color: var(--warning);
+}
+
+.btn-warning:hover {
+  background: var(--warning-hover);
   transform: translateY(-1px);
 }
 
