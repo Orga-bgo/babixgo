@@ -23,8 +23,7 @@ $sevenDaysAgo = date('Y-m-d H:i:s', strtotime('-7 days'));
 $recentDownloads = $db->fetchAll(
     "SELECT d.*, COUNT(dl.id) as recent_downloads 
      FROM downloads d 
-     LEFT JOIN download_logs dl ON d.id = dl.file_id 
-     WHERE dl.downloaded_at > ? 
+     LEFT JOIN download_logs dl ON d.id = dl.file_id AND dl.downloaded_at > ? 
      GROUP BY d.id, d.filename, d.filepath, d.filetype, d.filesize, d.version, d.description, d.download_count, d.active, d.created_at, d.updated_at 
      ORDER BY recent_downloads DESC 
      LIMIT 10",
