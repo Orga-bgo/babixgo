@@ -155,8 +155,9 @@ if (isset($_POST['remember_me'])) {
     $stmt = $db->prepare("UPDATE users SET remember_token = ? WHERE id = ?");
     $stmt->execute([$token, $user['id']]);
     
-    // Set cookie
-    setcookie('remember_token', $token, time() + (30 * 24 * 60 * 60), '/', 'babixgo.de', true, true);
+    // Set cookie (use configured domain from session config)
+    $cookieDomain = ini_get('session.cookie_domain') ?: 'babixgo.de';
+    setcookie('remember_token', $token, time() + (30 * 24 * 60 * 60), '/', $cookieDomain, true, true);
 }
 
 // Redirect to return URL or user dashboard
@@ -399,7 +400,8 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_token'])) {
         session_regenerate_id(true);
     } else {
         // Invalid token - remove cookie
-        setcookie('remember_token', '', time() - 3600, '/', 'babixgo.de', true, true);
+        $cookieDomain = ini_get('session.cookie_domain') ?: 'babixgo.de';
+        setcookie('remember_token', '', time() - 3600, '/', $cookieDomain, true, true);
     }
 }
 ```

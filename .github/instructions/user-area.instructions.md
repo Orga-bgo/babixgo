@@ -266,6 +266,9 @@ if (!password_verify($password, $user['password'])) {
     die('Incorrect password');
 }
 
+// Set success message BEFORE destroying session
+$_SESSION['success_message'] = 'Account deleted successfully';
+
 // Soft delete (preferred) - add deleted_at column
 $stmt = $db->prepare("UPDATE users SET deleted_at = NOW() WHERE id = ?");
 $stmt->execute([$_SESSION['user_id']]);
@@ -278,7 +281,6 @@ $stmt->execute([$_SESSION['user_id']]);
 session_destroy();
 
 // Redirect to homepage
-$_SESSION['success_message'] = 'Account deleted successfully';
 header('Location: /');
 exit;
 ```

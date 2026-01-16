@@ -137,8 +137,18 @@ define('DOWNLOADS_PATH', BASE_PATH . 'downloads/');
 $allowedTypes = [
     'apk' => ['application/vnd.android.package-archive'],
     'exe' => ['application/x-msdownload', 'application/x-executable'],
-    'scripts' => ['text/plain', 'text/x-python', 'application/x-sh']
+    'scripts' => ['text/x-python', 'application/x-sh', 'application/x-shellscript']
 ];
+
+// For text/plain scripts, additional validation is needed
+if ($fileType === 'scripts' && $mimeType === 'text/plain') {
+    // Verify file extension is allowed
+    $extension = strtolower(pathinfo($uploadedFile['name'], PATHINFO_EXTENSION));
+    $allowedExtensions = ['py', 'sh', 'bash', 'txt'];
+    if (!in_array($extension, $allowedExtensions)) {
+        die('Invalid script file extension');
+    }
+}
 
 $fileType = $_POST['file_type'];
 $uploadedFile = $_FILES['download_file'];
