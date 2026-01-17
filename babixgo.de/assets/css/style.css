@@ -4609,7 +4609,7 @@ details[open] summary {
   font-size: 1.5rem;
   font-weight: 600;
   margin: 0;
-  color: var(--text);
+  color: var(--md-secondary);
   flex: 1;
   overflow-wrap: break-word;
   word-break: break-word;
