@@ -4598,14 +4598,24 @@ details[open] summary {
 
 /* Header Section */
 .download-card .card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
   margin-bottom: 12px;
+  gap: 12px;
 }
 
 .download-card .filename {
   font-size: 1.5rem;
   font-weight: 600;
-  margin: 0 0 6px 0;
-  color: var(--text);
+  margin: 0;
+  color: var(--md-secondary);
+  flex: 1;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  min-width: 0;
+  position: relative;
+  padding-bottom: 0.4rem;
 }
 
 .download-card .version {
@@ -4615,6 +4625,7 @@ details[open] summary {
   background: var(--surface-1);
   padding: 2px 8px;
   border-radius: 4px;
+  flex-shrink: 0;
 }
 
 /* Meta Information */
@@ -4642,13 +4653,14 @@ details[open] summary {
   margin-bottom: 16px;
   color: var(--text);
   white-space: pre-wrap;
+  padding-top: 16px;
+  border-top: 1px solid var(--stroke);
 }
 
 /* Dates */
 .download-card .card-dates {
   display: flex;
-  flex-direction: column;
-  gap: 4px;
+  gap: 12px;
   font-size: 0.75rem;
   color: var(--muted);
   margin-bottom: 20px;

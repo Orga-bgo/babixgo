@@ -203,7 +203,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && verifyCsrfToken($_POST['csrf_token'
                             type="url"
                             id="alternative_link"
                             name="alternative_link"
-                            class="form-control"
                             placeholder="https://play.google.com/store/apps/..."
                             value="<?= htmlspecialchars($downloadData['alternative_link'] ?? '', ENT_QUOTES) ?>"
                         >

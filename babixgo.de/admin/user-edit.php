@@ -127,7 +127,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && verifyCsrfToken($_POST['csrf_token'
                     
                     <div class="form-group">
                         <label for="role">Role</label>
-                        <select id="role" name="role" class="form-control">
+                        <select id="role" name="role">
                             <option value="user" <?= $user['role'] === 'user' ? 'selected' : '' ?>>User</option>
                             <option value="admin" <?= $user['role'] === 'admin' ? 'selected' : '' ?>>Admin</option>
                         </select>

@@ -21,13 +21,16 @@ function e(?string $string): string {
  * @return string
  */
 function formatFileSize(int $bytes): string {
-    $units = ['B', 'KB', 'MB', 'GB', 'TB'];
-    $bytes = max($bytes, 0);
-    $pow = floor(($bytes ? log($bytes) : 0) / log(1024));
-    $pow = min($pow, count($units) - 1);
-    $bytes /= pow(1024, $pow);
+    $bytes = max($bytes, 0); // Ensure non-negative
     
-    return round($bytes, 2) . ' ' . $units[$pow];
+    if ($bytes >= 1024 * 1024 * 1024) {
+        return number_format($bytes / (1024 * 1024 * 1024), 2) . ' GB';
+    } elseif ($bytes >= 1024 * 1024) {
+        return number_format($bytes / (1024 * 1024), 2) . ' MB';
+    } elseif ($bytes >= 1024) {
+        return number_format($bytes / 1024, 2) . ' KB';
+    }
+    return $bytes . ' B';
 }
 
 /**
@@ -36,7 +39,7 @@ function formatFileSize(int $bytes): string {
  * @return string
  */
 function formatDate(string $date): string {
-    return date('d.m.Y H:i', strtotime($date));
+    return date('d.m.Y', strtotime($date));
 }
 
 /**
