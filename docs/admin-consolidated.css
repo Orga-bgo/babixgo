@@ -1,0 +1,108 @@
+/* ============================================
+   Admin Dashboard Styles
+   Konsolidiert aus: /admin/*.php
+   Datum: 2026-01-17
+   ============================================ */
+
+
+/* --- admin/index.php --- */
+/* Keine <style> tags gefunden */
+
+/* CSS-Klassen verwendet in index.php: */
+/* active, activity-card, activity-grid, admin-table, badge, badge-approved, badge-pending, badge-spam, comment-preview, container, empty-state, logo, main-nav, nav-container, nav-menu, stat-breakdown, stat-card, stat-link, stat-value, stats-grid */
+
+/* --- admin/users.php --- */
+/* Keine <style> tags gefunden */
+
+/* CSS-Klassen verwendet in users.php: */
+/* actions, active, admin-table, btn, btn-danger, btn-primary, btn-secondary, btn-small, bulk-actions, container, empty-state, logo, main-nav, nav-container, nav-menu, page-info, pagination, search-form, table-container, toolbar, user-checkbox */
+
+/* --- admin/comments.php --- */
+/* Keine <style> tags gefunden */
+
+/* CSS-Klassen verwendet in comments.php: */
+/* actions, active, admin-table, btn, btn-danger, btn-secondary, btn-small, btn-success, btn-warning, bulk-actions, comment-checkbox, comment-preview, container, empty-state, filter-buttons, logo, main-nav, nav-container, nav-menu, page-info, pagination, table-container, toolbar */
+
+/* --- admin/downloads.php --- */
+/* Keine <style> tags gefunden */
+
+/* CSS-Klassen verwendet in downloads.php: */
+/* actions, active, admin-table, btn, btn-danger, btn-primary, btn-secondary, btn-small, container, empty-state, filter-buttons, form-group, form-help, is-hidden, logo, main-nav, message, message-error, message-success, nav-container, nav-menu, page-info, pagination, profile-card, table-container, toolbar, upload-progress-bar, upload-progress-container, upload-progress-details, upload-progress-fill, upload-progress-info */
+
+/* --- admin/user-edit.php --- */
+/* Keine <style> tags gefunden */
+
+/* CSS-Klassen verwendet in user-edit.php: */
+/* active, btn, btn-primary, btn-secondary, checkbox-group, container, form-control, form-group, info-row, logo, main-nav, message, message-error, message-success, nav-container, nav-menu, profile-card, profile-grid */
+
+/* --- admin/download-edit.php --- */
+/* Keine <style> tags gefunden */
+
+/* CSS-Klassen verwendet in download-edit.php: */
+/* active, admin-table, btn, btn-primary, btn-secondary, checkbox-group, container, empty-state, form-group, form-help, info-row, logo, main-nav, message, message-error, message-success, nav-container, nav-menu, profile-card, profile-grid */
+
+
+/* ============================================
+   LAYOUT CLASSES
+   ============================================ */
+/* .activity-grid - Verwendet in: index.php  */
+/* .container - Verwendet in: index.php, users.php, comments.php ... */
+/* .main-nav - Verwendet in: index.php, users.php, comments.php ... */
+/* .nav-container - Verwendet in: index.php, users.php, comments.php ... */
+/* .nav-menu - Verwendet in: index.php, users.php, comments.php ... */
+/* .profile-grid - Verwendet in: user-edit.php, download-edit.php  */
+/* .stats-grid - Verwendet in: index.php  */
+/* .table-container - Verwendet in: users.php, comments.php, downloads.php  */
+/* .upload-progress-container - Verwendet in: downloads.php  */
+
+/* ============================================
+   COMPONENT CLASSES
+   ============================================ */
+/* .actions - Verwendet in: users.php, comments.php, downloads.php  */
+/* .activity-card - Verwendet in: index.php, index.php, index.php  */
+/* .admin-table - Verwendet in: index.php, index.php, index.php ... */
+/* .bulk-actions - Verwendet in: users.php, comments.php  */
+/* .checkbox-group - Verwendet in: user-edit.php, download-edit.php  */
+/* .comment-checkbox - Verwendet in: comments.php  */
+/* .comment-preview - Verwendet in: index.php, comments.php  */
+/* .empty-state - Verwendet in: index.php, index.php, index.php ... */
+/* .filter-buttons - Verwendet in: comments.php, downloads.php  */
+/* .info-row - Verwendet in: user-edit.php, user-edit.php, user-edit.php ... */
+/* .logo - Verwendet in: index.php, users.php, comments.php ... */
+/* .message - Verwendet in: downloads.php, downloads.php, user-edit.php ... */
+/* .message-error - Verwendet in: downloads.php, user-edit.php, download-edit.php  */
+/* .message-success - Verwendet in: downloads.php, user-edit.php, download-edit.php  */
+/* .page-info - Verwendet in: users.php, comments.php, downloads.php  */
+/* .pagination - Verwendet in: users.php, comments.php, downloads.php  */
+/* .profile-card - Verwendet in: downloads.php, user-edit.php, user-edit.php ... */
+/* .search-form - Verwendet in: users.php  */
+/* .stat-breakdown - Verwendet in: index.php  */
+/* .stat-card - Verwendet in: index.php, index.php, index.php  */
+/* .stat-link - Verwendet in: index.php, index.php, index.php  */
+/* .stat-value - Verwendet in: index.php, index.php, index.php  */
+/* .toolbar - Verwendet in: users.php, comments.php, downloads.php  */
+/* .upload-progress-bar - Verwendet in: downloads.php  */
+/* .upload-progress-details - Verwendet in: downloads.php  */
+/* .upload-progress-fill - Verwendet in: downloads.php  */
+/* .upload-progress-info - Verwendet in: downloads.php  */
+/* .user-checkbox - Verwendet in: users.php  */
+
+/* ============================================
+   UTILITY CLASSES
+   ============================================ */
+/* .active - Verwendet in: index.php, users.php, comments.php ... */
+/* .badge - Verwendet in: index.php, index.php, index.php  */
+/* .badge-approved - Verwendet in: index.php  */
+/* .badge-pending - Verwendet in: index.php  */
+/* .badge-spam - Verwendet in: index.php  */
+/* .btn - Verwendet in: users.php, users.php, users.php ... */
+/* .btn-danger - Verwendet in: users.php, users.php, comments.php ... */
+/* .btn-primary - Verwendet in: users.php, downloads.php, downloads.php ... */
+/* .btn-secondary - Verwendet in: users.php, users.php, users.php ... */
+/* .btn-small - Verwendet in: users.php, users.php, comments.php ... */
+/* .btn-success - Verwendet in: comments.php  */
+/* .btn-warning - Verwendet in: comments.php  */
+/* .form-control - Verwendet in: user-edit.php  */
+/* .form-group - Verwendet in: downloads.php, downloads.php, downloads.php ... */
+/* .form-help - Verwendet in: downloads.php, downloads.php, download-edit.php  */
+/* .is-hidden - Verwendet in: downloads.php  */
