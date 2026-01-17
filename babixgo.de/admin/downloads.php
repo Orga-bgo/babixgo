@@ -36,6 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file']) && verifyCsr
     $categoryId = !empty($_POST['category_id']) ? intval($_POST['category_id']) : null;
     $version = trim($_POST['version'] ?? '');
     $description = trim($_POST['description'] ?? '');
+    $alternativeLink = trim($_POST['alternative_link'] ?? '');
 
     $errors = [];
 
@@ -45,6 +46,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file']) && verifyCsr
 
     if (empty($version)) {
         $errors[] = 'Version is required';
+    }
+    
+    // Validate alternative_link
+    if (!empty($alternativeLink)) {
+        if (!filter_var($alternativeLink, FILTER_VALIDATE_URL)) {
+            $errors[] = 'Alternativer Link ist keine gültige URL';
+        }
+    } else {
+        $alternativeLink = null;
     }
     
     // Validate file upload
@@ -119,7 +129,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file']) && verifyCsr
                         'filesize' => $file['size'],
                         'version' => $version,
                         'description' => $description,
-                        'category_id' => $categoryId
+                        'category_id' => $categoryId,
+                        'alternative_link' => $alternativeLink
                     ]);
 
                     if ($result['success']) {
@@ -221,6 +232,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file']) && verifyCsr
                 <div class="form-group">
                     <label for="description">Description</label>
                     <textarea id="description" name="description" rows="3"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="alternative_link">
+                        Alternativer Link
+                        <span style="color: #666; font-weight: normal;">(Optional)</span>
+                    </label>
+                    <input
+                        type="url"
+                        id="alternative_link"
+                        name="alternative_link"
+                        placeholder="https://play.google.com/store/apps/..."
+                    >
+                    <small class="form-help">Link zum PlayStore, Website der App oder externer Download-Quelle</small>
                 </div>
 
                 <button type="submit" id="upload-btn" class="btn btn-primary">Upload Download</button>
