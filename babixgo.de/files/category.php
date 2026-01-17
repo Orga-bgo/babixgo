@@ -120,10 +120,16 @@ $downloads = getDownloadsByCategory($category['id']);
           <p class="description"><?= nl2br(e($download['description'])) ?></p>
           <?php endif; ?>
           
+          <?php if (!empty($download['created_at']) || !empty($download['updated_at'])): ?>
           <div class="card-dates">
-            <span>Erstellt am: <?= date('d.m.Y', strtotime($download['created_at'])) ?></span>
-            <span>Update am: <?= date('d.m.Y', strtotime($download['updated_at'])) ?></span>
+            <?php if (!empty($download['created_at'])): ?>
+              <span>Erstellt am: <?= date('d.m.Y', strtotime($download['created_at'])) ?></span>
+            <?php endif; ?>
+            <?php if (!empty($download['updated_at'])): ?>
+              <span>Update am: <?= date('d.m.Y', strtotime($download['updated_at'])) ?></span>
+            <?php endif; ?>
           </div>
+          <?php endif; ?>
           
           <div class="card-actions">
             <?php if(isLoggedIn()): ?>
