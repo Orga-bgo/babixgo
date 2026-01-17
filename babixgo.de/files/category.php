@@ -97,42 +97,63 @@ $downloads = getDownloadsByCategory($category['id']);
         </div>
       <?php else: ?>
         <?php foreach($downloads as $download): ?>
-        <div class="content-card">
-          <div class="content-card-header">
-            <div class="content-card-title">
-              <h3><?= e($download['name']) ?></h3>
-            </div>
-            <?php if(isLoggedIn()): ?>
-              <a href="/files/download.php?id=<?= $download['id'] ?>" class="btn btn-link">Herunterladen</a>
-            <?php else: ?>
-              <a href="/auth/login?redirect=<?= urlencode($_SERVER['REQUEST_URI']) ?>" class="btn btn-link">Anmelden</a>
+        <div class="download-card">
+          <div class="card-header">
+            <h3 class="filename"><?= e($download['filename'] ?? $download['name']) ?></h3>
+            <?php if (!empty($download['version'])): ?>
+              <span class="version">Version <?= e($download['version']) ?></span>
             <?php endif; ?>
           </div>
           
+          <div class="card-meta">
+            <?php if (!empty($download['filesize'])): ?>
+              <span class="filesize"><?= formatFileSize($download['filesize']) ?></span>
+              <span class="separator">•</span>
+            <?php elseif (!empty($download['file_size'])): ?>
+              <span class="filesize"><?= e($download['file_size']) ?></span>
+              <span class="separator">•</span>
+            <?php endif; ?>
+            <span class="filetype"><?= strtoupper(e($download['filetype'] ?? $download['file_type'] ?? 'Datei')) ?></span>
+          </div>
+          
           <?php if(!empty($download['description'])): ?>
-          <p class="content-card-description"><?= nl2br(e($download['description'])) ?></p>
+          <p class="description"><?= nl2br(e($download['description'])) ?></p>
           <?php endif; ?>
           
-          <div class="info-line">
-            <span class="info-line-label">Typ</span>
-            <span class="info-line-value"><?= e($download['file_type'] ?? 'Datei') ?></span>
-          </div>
-          <?php if (!empty($download['file_size'])): ?>
-          <div class="info-line">
-            <span class="info-line-label">Größe</span>
-            <span class="info-line-value"><?= e($download['file_size']) ?></span>
+          <?php if (!empty($download['created_at']) || !empty($download['updated_at'])): ?>
+          <div class="card-dates">
+            <?php if (!empty($download['created_at'])): ?>
+              <span>Erstellt am: <?= date('d.m.Y', strtotime($download['created_at'])) ?></span>
+            <?php endif; ?>
+            <?php if (!empty($download['updated_at'])): ?>
+              <span>Update am: <?= date('d.m.Y', strtotime($download['updated_at'])) ?></span>
+            <?php endif; ?>
           </div>
           <?php endif; ?>
-          <div class="info-line">
-            <span class="info-line-label">Downloads</span>
-            <span class="info-line-value"><?= $download['download_count'] ?></span>
-          </div>
           
-          <?php if(!empty($download['alternative_link'])): ?>
-          <div class="u-mt-16">
-            <a href="<?= e($download['alternative_link']) ?>" class="btn btn-secondary" target="_blank" rel="noopener">Alternativer Link</a>
+          <div class="card-actions">
+            <?php if(isLoggedIn()): ?>
+              <a href="/files/download.php?id=<?= $download['id'] ?>" class="btn btn-primary">
+                <span class="icon">↓</span>
+                Direkt Download
+              </a>
+            <?php else: ?>
+              <a href="/auth/login?redirect=<?= urlencode($_SERVER['REQUEST_URI']) ?>" class="btn btn-primary">
+                <span class="icon">↓</span>
+                Anmelden zum Download
+              </a>
+            <?php endif; ?>
+            
+            <?php if (!empty($download['alternative_link'])): ?>
+              <a href="<?= e($download['alternative_link']) ?>" 
+                 class="btn btn-secondary" 
+                 target="_blank" 
+                 rel="noopener noreferrer">
+                <span class="icon">🔗</span>
+                Alternativer Link
+              </a>
+            <?php endif; ?>
           </div>
-          <?php endif; ?>
         </div>
         <?php endforeach; ?>
       <?php endif; ?>

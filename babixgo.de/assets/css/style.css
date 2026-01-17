@@ -4580,3 +4580,142 @@ details[open] summary {
     font-size: 1.5rem;
   }
 }
+
+/* ===== Download Card Component ===== */
+.download-card {
+  background: var(--card);
+  border: 1px solid var(--stroke);
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 20px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.download-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Header Section */
+.download-card .card-header {
+  margin-bottom: 12px;
+}
+
+.download-card .filename {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0 0 6px 0;
+  color: var(--text);
+}
+
+.download-card .version {
+  display: inline-block;
+  font-size: 0.875rem;
+  color: var(--muted);
+  background: var(--surface-1);
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+/* Meta Information */
+.download-card .card-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.875rem;
+  color: var(--muted);
+  margin-bottom: 16px;
+}
+
+.download-card .card-meta .separator {
+  opacity: 0.5;
+}
+
+.download-card .filetype {
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+/* Description */
+.download-card .description {
+  line-height: 1.6;
+  margin-bottom: 16px;
+  color: var(--text);
+  white-space: pre-wrap;
+}
+
+/* Dates */
+.download-card .card-dates {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.75rem;
+  color: var(--muted);
+  margin-bottom: 20px;
+  padding-top: 12px;
+  border-top: 1px solid var(--stroke);
+}
+
+/* Action Buttons */
+.download-card .card-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.download-card .btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  border: none;
+  cursor: pointer;
+}
+
+.download-card .btn-primary {
+  background: var(--primary);
+  color: var(--on-primary);
+}
+
+.download-card .btn-primary:hover {
+  background: var(--primary-hover);
+}
+
+.download-card .btn-secondary {
+  background: var(--surface-1);
+  color: var(--text);
+  border: 1px solid var(--stroke);
+}
+
+.download-card .btn-secondary:hover {
+  background: var(--surface-2);
+}
+
+.download-card .btn .icon {
+  font-size: 1.125rem;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .download-card {
+    padding: 16px;
+  }
+  
+  .download-card .filename {
+    font-size: 1.25rem;
+  }
+  
+  .download-card .card-actions {
+    flex-direction: column;
+  }
+  
+  .download-card .btn {
+    width: 100%;
+    justify-content: center;
+  }
+}

@@ -31,24 +31,38 @@ $logs = $download->getLogs($downloadId, 20);
 // Handle form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && verifyCsrfToken($_POST['csrf_token'] ?? '')) {
     $categoryId = !empty($_POST['category_id']) ? intval($_POST['category_id']) : null;
-
-    $data = [
-        'filename' => trim($_POST['filename'] ?? ''),
-        'filetype' => $_POST['filetype'] ?? '',
-        'filesize' => $downloadData['filesize'], // Keep original filesize
-        'version' => trim($_POST['version'] ?? ''),
-        'description' => trim($_POST['description'] ?? ''),
-        'category_id' => $categoryId,
-        'active' => isset($_POST['active']) ? 1 : 0
-    ];
-
-    $result = $download->update($downloadId, $data);
-
-    if ($result['success']) {
-        $success = 'Download updated successfully';
-        $downloadData = $download->getById($downloadId);
+    
+    // Validate alternative_link
+    $alternativeLink = trim($_POST['alternative_link'] ?? '');
+    if (!empty($alternativeLink)) {
+        if (!filter_var($alternativeLink, FILTER_VALIDATE_URL)) {
+            $error = 'Alternativer Link ist keine gültige URL';
+            $alternativeLink = null;
+        }
     } else {
-        $error = $result['error'];
+        $alternativeLink = null;
+    }
+
+    if (!isset($error)) {
+        $data = [
+            'filename' => trim($_POST['filename'] ?? ''),
+            'filetype' => $_POST['filetype'] ?? '',
+            'filesize' => $downloadData['filesize'], // Keep original filesize
+            'version' => trim($_POST['version'] ?? ''),
+            'description' => trim($_POST['description'] ?? ''),
+            'category_id' => $categoryId,
+            'alternative_link' => $alternativeLink,
+            'active' => isset($_POST['active']) ? 1 : 0
+        ];
+
+        $result = $download->update($downloadId, $data);
+
+        if ($result['success']) {
+            $success = 'Download updated successfully';
+            $downloadData = $download->getById($downloadId);
+        } else {
+            $error = $result['error'];
+        }
     }
 }
 ?>
@@ -178,6 +192,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && verifyCsrfToken($_POST['csrf_token'
                             name="description"
                             rows="5"
                         ><?= htmlspecialchars($downloadData['description'] ?? '', ENT_QUOTES) ?></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="alternative_link">
+                            Alternativer Link
+                            <span style="color: #666; font-weight: normal;">(Optional)</span>
+                        </label>
+                        <input
+                            type="url"
+                            id="alternative_link"
+                            name="alternative_link"
+                            class="form-control"
+                            placeholder="https://play.google.com/store/apps/..."
+                            value="<?= htmlspecialchars($downloadData['alternative_link'] ?? '', ENT_QUOTES) ?>"
+                        >
+                        <small style="color: #666; display: block; margin-top: 4px;">
+                            Link zum PlayStore, Website der App oder externer Download-Quelle
+                        </small>
                     </div>
 
                     <div class="form-group checkbox-group">
