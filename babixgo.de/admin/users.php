@@ -3,6 +3,11 @@
  * User Management Page
  */
 
+// Define paths
+define('BASE_PATH', dirname(__DIR__, 2) . '/');
+define('SHARED_PATH', BASE_PATH . 'shared/');
+
+// Required security check
 require_once __DIR__ . '/includes/admin-check.php';
 
 $db = Database::getInstance();
@@ -30,14 +35,18 @@ $totalPages = ceil($totalUsers / $perPage);
 // Get users
 $sql = "SELECT id, username, email, role, is_verified, created_at FROM users" . $searchWhere . " ORDER BY created_at DESC LIMIT ? OFFSET ?";
 $users = $db->fetchAll($sql, array_merge($searchParams, [$perPage, $offset]));
+
+$pageTitle = 'User Management - babixgo.de';
+$pageDescription = 'Manage user accounts, roles, and permissions';
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Management - babixgo.de</title>
-    <link rel="stylesheet" href="/assets/css/style.css">
+    <?php require_once SHARED_PATH . 'partials/head-meta.php'; ?>
+    <title><?= htmlspecialchars($pageTitle) ?></title>
+    <meta name="description" content="<?= htmlspecialchars($pageDescription) ?>">
+    <link rel="canonical" href="https://babixgo.de/admin/users.php">
+    <?php require_once SHARED_PATH . 'partials/head-links.php'; ?>
 </head>
 <body>
     <nav class="main-nav">
