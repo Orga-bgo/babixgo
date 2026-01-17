@@ -157,7 +157,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && verifyCsrfToken($_POST['csrf_token'
                                 </option>
                             <?php endforeach; ?>
                         </select>
-                        <small class="form-help">Optional: Assign this download to a category for better organization</small>
+                        <small style="color: #666; display: block; margin-top: 4px;">Optional: Assign this download to a category for better organization</small>
                     </div>
 
                     <div class="form-group">
