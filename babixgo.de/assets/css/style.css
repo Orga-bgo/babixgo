@@ -4614,6 +4614,22 @@ details[open] summary {
   overflow-wrap: break-word;
   word-break: break-word;
   min-width: 0;
+  position: relative;
+  padding-bottom: 0.4rem;
+}
+
+.download-card .filename::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(
+    to right,
+    currentColor,
+    transparent
+  );
 }
 
 .download-card .version {
@@ -4651,13 +4667,15 @@ details[open] summary {
   margin-bottom: 16px;
   color: var(--text);
   white-space: pre-wrap;
+  padding-top: 16px;
+  border-top: 1px solid var(--stroke);
 }
 
 /* Dates */
 .download-card .card-dates {
   display: flex;
-  flex-direction: column;
-  gap: 4px;
+  flex-direction: row;
+  gap: 12px;
   font-size: 0.75rem;
   color: var(--muted);
   margin-bottom: 20px;
