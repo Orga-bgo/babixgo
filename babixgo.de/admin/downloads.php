@@ -3,11 +3,6 @@
  * Download Management Page
  */
 
-// Define paths
-define('BASE_PATH', dirname(__DIR__, 2) . '/');
-define('SHARED_PATH', BASE_PATH . 'shared/');
-
-// Required security check
 require_once __DIR__ . '/includes/admin-check.php';
 
 $db = Database::getInstance();
@@ -149,18 +144,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file']) && verifyCsr
         error_log("Upload validation errors: " . $uploadError);
     }
 }
-
-$pageTitle = 'Download Management - babixgo.de';
-$pageDescription = 'Manage downloads, uploads, and file categories';
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <?php require_once SHARED_PATH . 'partials/head-meta.php'; ?>
-    <title><?= htmlspecialchars($pageTitle) ?></title>
-    <meta name="description" content="<?= htmlspecialchars($pageDescription) ?>">
-    <link rel="canonical" href="https://babixgo.de/admin/downloads.php">
-    <?php require_once SHARED_PATH . 'partials/head-links.php'; ?>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Download Management - babixgo.de</title>
+    <link rel="stylesheet" href="/assets/css/style.css">
 </head>
 <body>
     <nav class="main-nav">

@@ -23,10 +23,11 @@ $type = $_GET['type'] ?? 'all';
 <!DOCTYPE html>
 <html lang="de">
 <head>
-    <?php require_once SHARED_PATH . 'partials/head-meta.php'; ?>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= htmlspecialchars($pageTitle, ENT_QUOTES) ?></title>
-    <meta name="description" content="Browse and download files from babixgo.de">
-    <?php require_once SHARED_PATH . 'partials/head-links.php'; ?>
+    <link rel="stylesheet" href="/shared/assets/css/main.css">
+    <link rel="stylesheet" href="/assets/css/style.css">
 </head>
 <body>
     <?php require_once SHARED_PATH . 'partials/header.php'; ?>
