@@ -79,8 +79,8 @@ class Download {
 
     public function add($data) {
         $query = "INSERT INTO " . $this->table_name . "
-                  (filename, filepath, filetype, filesize, version, description, category_id, active)
-                  VALUES (:filename, :filepath, :filetype, :filesize, :version, :description, :category_id, TRUE)";
+                  (filename, filepath, filetype, filesize, version, description, category_id, alternative_link, active)
+                  VALUES (:filename, :filepath, :filetype, :filesize, :version, :description, :category_id, :alternative_link, TRUE)";
 
         try {
             $stmt = $this->conn->prepare($query);
@@ -92,6 +92,8 @@ class Download {
             $stmt->bindParam(':description', $data['description']);
             $categoryId = $data['category_id'] ?? null;
             $stmt->bindParam(':category_id', $categoryId, PDO::PARAM_INT);
+            $alternativeLink = $data['alternative_link'] ?? null;
+            $stmt->bindParam(':alternative_link', $alternativeLink);
             $stmt->execute();
 
             return ['success' => true, 'id' => $this->conn->lastInsertId()];
@@ -109,6 +111,7 @@ class Download {
                       version = :version,
                       description = :description,
                       category_id = :category_id,
+                      alternative_link = :alternative_link,
                       active = :active
                   WHERE id = :id";
 
@@ -122,6 +125,8 @@ class Download {
             $stmt->bindParam(':description', $data['description']);
             $categoryId = $data['category_id'] ?? null;
             $stmt->bindParam(':category_id', $categoryId, PDO::PARAM_INT);
+            $alternativeLink = $data['alternative_link'] ?? null;
+            $stmt->bindParam(':alternative_link', $alternativeLink);
             $stmt->bindParam(':active', $data['active']);
             $stmt->execute();
 
