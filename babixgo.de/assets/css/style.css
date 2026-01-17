@@ -4611,6 +4611,9 @@ details[open] summary {
   margin: 0;
   color: var(--text);
   flex: 1;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  min-width: 0;
 }
 
 .download-card .version {
