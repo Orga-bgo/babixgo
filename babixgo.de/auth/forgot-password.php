@@ -44,11 +44,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && verifyCsrfToken($_POST['csrf_token'
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <?php require_once SHARED_PATH . 'partials/head-meta.php'; ?>
     <title>Forgot Password - babixgo.de</title>
-    <link rel="stylesheet" href="/shared/assets/css/style.css">
-    <link rel="stylesheet" href="/shared/assets/css/main.css">
+    <meta name="description" content="Reset your babixgo.de account password">
+    <?php require_once SHARED_PATH . 'partials/head-links.php'; ?>
 </head>
 <body>
     <?php require_once SHARED_PATH . 'partials/header.php'; ?>

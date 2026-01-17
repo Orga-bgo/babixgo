@@ -97,7 +97,7 @@ BABIXGO_DB_HOST, BABIXGO_DB_NAME, BABIXGO_DB_USER, BABIXGO_DB_PASS
 /
 ├── shared/                          # Shared across ALL sections
 │   ├── assets/
-│   │   ├── css/main.css            # SINGLE global CSS source
+│   │   ├── css/                     # (REMOVED - consolidated into /babixgo.de/assets/css/)
 │   │   ├── js/main.js              # Global scripts
 │   │   └── icons/                  # PWA icons, shared icons
 │   ├── classes/                     # PHP classes (Database, User, Email, etc.)
@@ -118,9 +118,8 @@ BABIXGO_DB_HOST, BABIXGO_DB_NAME, BABIXGO_DB_USER, BABIXGO_DB_PASS
     ├── manifest.json, sw.js, offline.html  # PWA files
     │
     ├── assets/                     # Domain-specific assets
-    │   ├── css/                    # Section-specific styles
-    │   │   ├── style.css          # Main site (3,852 lines)
-    │   │   ├── files.css, user.css, admin.css
+    │   ├── css/                    
+    │   │   └── style.css          # SINGLE consolidated CSS file (all styles)
     │   ├── js/                     # Section-specific scripts
     │   └── icons/, images/
     │

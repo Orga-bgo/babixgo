@@ -3,6 +3,11 @@
  * Admin Dashboard
  */
 
+// Define paths
+define('BASE_PATH', dirname(__DIR__, 2) . '/');
+define('SHARED_PATH', BASE_PATH . 'shared/');
+
+// Required security check
 require_once __DIR__ . '/includes/admin-check.php';
 
 $db = Database::getInstance();
@@ -31,14 +36,18 @@ $recentDownloads = $db->fetchAll(
 );
 
 $recentComments = $db->fetchAll("SELECT c.*, u.username FROM comments c JOIN users u ON c.user_id = u.id ORDER BY c.created_at DESC LIMIT 10");
+
+$pageTitle = 'Admin Dashboard - babixgo.de';
+$pageDescription = 'Manage users, downloads, and comments on babixgo.de';
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard - babixgo.de</title>
-    <link rel="stylesheet" href="/assets/css/style.css">
+    <?php require_once SHARED_PATH . 'partials/head-meta.php'; ?>
+    <title><?= htmlspecialchars($pageTitle) ?></title>
+    <meta name="description" content="<?= htmlspecialchars($pageDescription) ?>">
+    <link rel="canonical" href="https://babixgo.de/admin/">
+    <?php require_once SHARED_PATH . 'partials/head-links.php'; ?>
 </head>
 <body>
     <nav class="main-nav">

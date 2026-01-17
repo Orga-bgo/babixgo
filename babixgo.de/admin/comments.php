@@ -3,6 +3,11 @@
  * Comment Moderation Page
  */
 
+// Define paths
+define('BASE_PATH', dirname(__DIR__, 2) . '/');
+define('SHARED_PATH', BASE_PATH . 'shared/');
+
+// Required security check
 require_once __DIR__ . '/includes/admin-check.php';
 
 $db = Database::getInstance();
@@ -26,14 +31,18 @@ $totalPages = ceil($totalComments / $perPage);
 
 // Get comments
 $comments = $comment->getAll($statusFilter, null, $perPage, $offset);
+
+$pageTitle = 'Comment Moderation - babixgo.de';
+$pageDescription = 'Moderate and manage user comments';
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Comment Moderation - babixgo.de</title>
-    <link rel="stylesheet" href="/assets/css/style.css">
+    <?php require_once SHARED_PATH . 'partials/head-meta.php'; ?>
+    <title><?= htmlspecialchars($pageTitle) ?></title>
+    <meta name="description" content="<?= htmlspecialchars($pageDescription) ?>">
+    <link rel="canonical" href="https://babixgo.de/admin/comments.php">
+    <?php require_once SHARED_PATH . 'partials/head-links.php'; ?>
 </head>
 <body>
     <nav class="main-nav">
