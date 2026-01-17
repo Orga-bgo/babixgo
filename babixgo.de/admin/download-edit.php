@@ -66,7 +66,7 @@ $pageDescription = 'Edit download file details and settings';
     <?php require_once SHARED_PATH . 'partials/head-meta.php'; ?>
     <title><?= htmlspecialchars($pageTitle) ?></title>
     <meta name="description" content="<?= htmlspecialchars($pageDescription) ?>">
-    <link rel="canonical" href="https://babixgo.de/admin/download-edit.php?id=<?= $downloadId ?>">
+    <link rel="canonical" href="https://babixgo.de/admin/download-edit.php?id=<?= htmlspecialchars((string)$downloadId, ENT_QUOTES, 'UTF-8') ?>">
     <?php require_once SHARED_PATH . 'partials/head-links.php'; ?>
 </head>
 <body>

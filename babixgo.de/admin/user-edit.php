@@ -54,7 +54,7 @@ $pageDescription = 'Edit user account and permissions';
     <?php require_once SHARED_PATH . 'partials/head-meta.php'; ?>
     <title><?= htmlspecialchars($pageTitle) ?></title>
     <meta name="description" content="<?= htmlspecialchars($pageDescription) ?>">
-    <link rel="canonical" href="https://babixgo.de/admin/user-edit.php?id=<?= $userId ?>">
+    <link rel="canonical" href="https://babixgo.de/admin/user-edit.php?id=<?= htmlspecialchars((string)$userId, ENT_QUOTES, 'UTF-8') ?>">
     <?php require_once SHARED_PATH . 'partials/head-links.php'; ?>
 </head>
 <body>
