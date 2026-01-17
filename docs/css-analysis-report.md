@@ -1,5 +1,5 @@
 # CSS Analyse Report für Admin Seiten
-Generiert: 2026-01-17 01:13:07
+Generiert: 2026-01-17 01:18:44
 
 ## 1. Seiten ohne eigene Styles
 
@@ -69,26 +69,26 @@ Generiert: 2026-01-17 01:13:07
 
 ## 6. Meistverwendete CSS-Klassen
 
+✓ `.main-nav` - Verwendet in 6 Seite(n): comments.php, index.php, user-edit.php
+✓ `.nav-container` - Verwendet in 6 Seite(n): comments.php, index.php, user-edit.php
+✓ `.logo` - Verwendet in 6 Seite(n): comments.php, index.php, user-edit.php
+✓ `.nav-menu` - Verwendet in 6 Seite(n): comments.php, index.php, user-edit.php
+✓ `.active` - Verwendet in 6 Seite(n): comments.php, index.php, user-edit.php
+✓ `.container` - Verwendet in 6 Seite(n): comments.php, index.php, user-edit.php
+✓ `.admin-table` - Verwendet in 5 Seite(n): comments.php, index.php, download-edit.php
+✓ `.empty-state` - Verwendet in 5 Seite(n): comments.php, index.php, download-edit.php
 ✓ `.btn` - Verwendet in 5 Seite(n): comments.php, download-edit.php, user-edit.php
-✓ `.info-row` - Verwendet in 2 Seite(n): download-edit.php, user-edit.php
-✓ `.form-group` - Verwendet in 3 Seite(n): downloads.php, download-edit.php, user-edit.php
 ✓ `.btn-secondary` - Verwendet in 5 Seite(n): comments.php, download-edit.php, user-edit.php
-✓ `.admin-table` - Verwendet in 5 Seite(n): comments.php, download-edit.php, downloads.php
-✓ `.empty-state` - Verwendet in 5 Seite(n): comments.php, download-edit.php, downloads.php
-✓ `.btn-small` - Verwendet in 3 Seite(n): downloads.php, users.php, comments.php
-✓ `.main-nav` - Verwendet in 6 Seite(n): comments.php, user-edit.php, download-edit.php
-✓ `.nav-container` - Verwendet in 6 Seite(n): comments.php, user-edit.php, download-edit.php
-✓ `.logo` - Verwendet in 6 Seite(n): comments.php, user-edit.php, download-edit.php
-✓ `.nav-menu` - Verwendet in 6 Seite(n): comments.php, user-edit.php, download-edit.php
-✓ `.active` - Verwendet in 6 Seite(n): comments.php, user-edit.php, download-edit.php
-✓ `.container` - Verwendet in 6 Seite(n): comments.php, user-edit.php, download-edit.php
-✓ `.message` - Verwendet in 3 Seite(n): downloads.php, download-edit.php, user-edit.php
-✓ `.profile-card` - Verwendet in 3 Seite(n): downloads.php, download-edit.php, user-edit.php
-✓ `.btn-danger` - Verwendet in 3 Seite(n): downloads.php, users.php, comments.php
-✓ `.btn-primary` - Verwendet in 4 Seite(n): downloads.php, download-edit.php, users.php
-✓ `.stat-card` - Verwendet in 1 Seite(n): index.php
-✓ `.stat-value` - Verwendet in 1 Seite(n): index.php
-✓ `.stat-link` - Verwendet in 1 Seite(n): index.php
+✓ `.btn-primary` - Verwendet in 4 Seite(n): download-edit.php, downloads.php, users.php
+✓ `.toolbar` - Verwendet in 3 Seite(n): comments.php, downloads.php, users.php
+✓ `.btn-danger` - Verwendet in 3 Seite(n): comments.php, downloads.php, users.php
+✓ `.table-container` - Verwendet in 3 Seite(n): comments.php, downloads.php, users.php
+✓ `.actions` - Verwendet in 3 Seite(n): comments.php, downloads.php, users.php
+✓ `.btn-small` - Verwendet in 3 Seite(n): comments.php, downloads.php, users.php
+✓ `.pagination` - Verwendet in 3 Seite(n): comments.php, downloads.php, users.php
+✓ `.page-info` - Verwendet in 3 Seite(n): comments.php, downloads.php, users.php
+✓ `.message` - Verwendet in 3 Seite(n): download-edit.php, downloads.php, user-edit.php
+✓ `.message-success` - Verwendet in 3 Seite(n): download-edit.php, downloads.php, user-edit.php
 
 ## 7. Klassen nach Kategorie
 

@@ -59,27 +59,27 @@
    COMPONENT CLASSES
    ============================================ */
 /* .actions - Verwendet in: users.php, comments.php, downloads.php  */
-/* .activity-card - Verwendet in: index.php, index.php, index.php  */
-/* .admin-table - Verwendet in: index.php, index.php, index.php ... */
+/* .activity-card - Verwendet in: index.php  */
+/* .admin-table - Verwendet in: index.php, users.php, comments.php ... */
 /* .bulk-actions - Verwendet in: users.php, comments.php  */
 /* .checkbox-group - Verwendet in: user-edit.php, download-edit.php  */
 /* .comment-checkbox - Verwendet in: comments.php  */
 /* .comment-preview - Verwendet in: index.php, comments.php  */
-/* .empty-state - Verwendet in: index.php, index.php, index.php ... */
+/* .empty-state - Verwendet in: index.php, users.php, comments.php ... */
 /* .filter-buttons - Verwendet in: comments.php, downloads.php  */
-/* .info-row - Verwendet in: user-edit.php, user-edit.php, user-edit.php ... */
+/* .info-row - Verwendet in: user-edit.php, download-edit.php  */
 /* .logo - Verwendet in: index.php, users.php, comments.php ... */
-/* .message - Verwendet in: downloads.php, downloads.php, user-edit.php ... */
+/* .message - Verwendet in: downloads.php, user-edit.php, download-edit.php  */
 /* .message-error - Verwendet in: downloads.php, user-edit.php, download-edit.php  */
 /* .message-success - Verwendet in: downloads.php, user-edit.php, download-edit.php  */
 /* .page-info - Verwendet in: users.php, comments.php, downloads.php  */
 /* .pagination - Verwendet in: users.php, comments.php, downloads.php  */
-/* .profile-card - Verwendet in: downloads.php, user-edit.php, user-edit.php ... */
+/* .profile-card - Verwendet in: downloads.php, user-edit.php, download-edit.php  */
 /* .search-form - Verwendet in: users.php  */
 /* .stat-breakdown - Verwendet in: index.php  */
-/* .stat-card - Verwendet in: index.php, index.php, index.php  */
-/* .stat-link - Verwendet in: index.php, index.php, index.php  */
-/* .stat-value - Verwendet in: index.php, index.php, index.php  */
+/* .stat-card - Verwendet in: index.php  */
+/* .stat-link - Verwendet in: index.php  */
+/* .stat-value - Verwendet in: index.php  */
 /* .toolbar - Verwendet in: users.php, comments.php, downloads.php  */
 /* .upload-progress-bar - Verwendet in: downloads.php  */
 /* .upload-progress-details - Verwendet in: downloads.php  */
@@ -91,18 +91,18 @@
    UTILITY CLASSES
    ============================================ */
 /* .active - Verwendet in: index.php, users.php, comments.php ... */
-/* .badge - Verwendet in: index.php, index.php, index.php  */
+/* .badge - Verwendet in: index.php  */
 /* .badge-approved - Verwendet in: index.php  */
 /* .badge-pending - Verwendet in: index.php  */
 /* .badge-spam - Verwendet in: index.php  */
-/* .btn - Verwendet in: users.php, users.php, users.php ... */
-/* .btn-danger - Verwendet in: users.php, users.php, comments.php ... */
-/* .btn-primary - Verwendet in: users.php, downloads.php, downloads.php ... */
-/* .btn-secondary - Verwendet in: users.php, users.php, users.php ... */
-/* .btn-small - Verwendet in: users.php, users.php, comments.php ... */
+/* .btn - Verwendet in: users.php, comments.php, downloads.php ... */
+/* .btn-danger - Verwendet in: users.php, comments.php, downloads.php  */
+/* .btn-primary - Verwendet in: users.php, downloads.php, user-edit.php ... */
+/* .btn-secondary - Verwendet in: users.php, comments.php, downloads.php ... */
+/* .btn-small - Verwendet in: users.php, comments.php, downloads.php  */
 /* .btn-success - Verwendet in: comments.php  */
 /* .btn-warning - Verwendet in: comments.php  */
 /* .form-control - Verwendet in: user-edit.php  */
-/* .form-group - Verwendet in: downloads.php, downloads.php, downloads.php ... */
-/* .form-help - Verwendet in: downloads.php, downloads.php, download-edit.php  */
+/* .form-group - Verwendet in: downloads.php, user-edit.php, download-edit.php  */
+/* .form-help - Verwendet in: downloads.php, download-edit.php  */
 /* .is-hidden - Verwendet in: downloads.php  */
