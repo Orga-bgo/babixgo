@@ -226,7 +226,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file']) && verifyCsr
                 <button type="submit" id="upload-btn" class="btn btn-primary">Upload Download</button>
 
                 <!-- Upload Progress Bar -->
-                <div id="upload-progress-container" class="upload-progress-container is-hidden">
+                <div id="upload-progress-container" class="upload-progress-container" style="display: none;">
                     <div class="upload-progress-info">
                         <span id="upload-status">Uploading...</span>
                         <span id="upload-percentage">0%</span>
@@ -357,7 +357,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file']) && verifyCsr
             // Disable form and show progress
             uploadBtn.disabled = true;
             uploadBtn.textContent = 'Uploading...';
-            progressContainer.classList.remove('is-hidden');
+            progressContainer.style.display = 'block';
 
             // Track upload progress
             let startTime = Date.now();
@@ -439,7 +439,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file']) && verifyCsr
                 uploadStatus.textContent = 'Upload cancelled';
                 uploadBtn.disabled = false;
                 uploadBtn.textContent = 'Upload Download';
-                progressContainer.classList.add('is-hidden');
+                progressContainer.style.display = 'none';
             });
 
             // Send request
