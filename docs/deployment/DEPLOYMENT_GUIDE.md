@@ -85,7 +85,7 @@ In Strato Customer Portal, configure subdomains to point to:
 2. Navigate to /shared/
 3. Upload entire /shared/ directory from local repo
 4. Verify upload:
-   - /shared/assets/css/style.css exists
+   - /shared/assets/css/main.css exists
    - /shared/partials/header.php exists
    - /shared/classes/Database.php exists
    - /shared/config/database.php exists
